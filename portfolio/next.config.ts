@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   output: "export",
   images: {unoptimized: true},
   reactCompiler: true,
+  basePath: "/atcoder",
 };
 
 export default nextConfig;
