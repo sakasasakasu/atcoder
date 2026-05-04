@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Separator } from "@/components/ui/separator"
 import { Code } from "@/components/ui/code"
+import ReactMarkdown from 'react-markdown'
 
 interface Problem {
   id: string
@@ -27,7 +28,7 @@ export default function Home() {
     <main className="container mx-auto py-10 space-y-10 px-4 sm:px-6 lg:px-8">
       <header className="space-y-4">
         <div className="max-w-3xl space-y-3">
-          <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">AtCoderの精進</h1>
+          <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">AtCoder</h1>
         </div>
         <Separator />
       </header>
@@ -48,12 +49,15 @@ export default function Home() {
             
             <CardContent>
               {contest.problems.map((prob: Problem, index: number) => (
-                <article key={prob.id} className="space-y-4">
+                <article key={prob.id} className="space-y-4 mt-4">
                   <div className="space-y-1">
-                    <h3 className="text-xl font-semibold tracking-tight text-foreground">{prob.title}</h3>
+                    <h2 className="text-xl font-semibold tracking-tight text-foreground">{prob.title}</h2>
                   </div>
-
-                  <p className="text-muted-foreground whitespace-pre-wrap leading-7">{prob.content}</p>
+                  <div className="prose prose-slate max-w-none mb-4 text-gray-700">
+                    <ReactMarkdown>
+                      {prob.content}
+                    </ReactMarkdown>
+                  </div>
 
                   {prob.cpp && (
                     <Accordion type="single" collapsible className="w-full">
