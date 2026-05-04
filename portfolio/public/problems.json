@@ -1,0 +1,56 @@
+[
+  {
+    "abc": "ABC456",
+    "summary": "上振れでした。",
+    "problems": [
+      {
+        "id": "A",
+        "title": "A問題",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int X;\r\n    cin >> X;\r\n    if (3 <= X && X <= 18) {\r\n        cout << \"Yes\" << endl;\r\n    } else {\r\n        cout << \"No\" << endl;\r\n    }\r\n}",
+        "content": "AC"
+      },
+      {
+        "id": "B",
+        "title": "B問題",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    vector<vector<int>> A(3, vector<int>(3, 0));\r\n\r\n    for (int i = 0; i < 3; i++) {\r\n        for (int j = 0; j < 6; j++) {\r\n            int a;\r\n            cin >> a;\r\n            if (a >= 4 && a <= 6) {\r\n                A.at(i).at(a - 4)++;\r\n            }\r\n        }\r\n    }\r\n\r\n    int d[6][3] = {\r\n        {4, 5, 6},\r\n        {4, 6, 5},\r\n        {5, 4, 6},\r\n        {5, 6, 4},\r\n        {6, 4, 5},\r\n        {6, 5, 4}\r\n    };\r\n\r\n    long long ans = 0;\r\n    for (int i = 0; i < 6; i++) {\r\n        ans += (long long)A.at(0).at(d[i][0] - 4) * A.at(1).at(d[i][1] - 4) * A.at(2).at(d[i][2] - 4);\r\n    }\r\n\r\n    cout << fixed << setprecision(10) << (double)ans / pow(6, 3) << endl;\r\n}",
+        "content": "AC\r\n\r\n### 思った事\r\nsetprecision()を使う問題が出てきて嬉しかった。\r\nサイコロの状態管理に面食らってしまい、すこし実装に時間がかかってしまった。"
+      },
+      {
+        "id": "C",
+        "title": "C問題",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nconst int MOD = 998244353;\r\n\r\nvoid add(long long &a, long long b) {\r\n    a += b;\r\n    if (a >= MOD) a -= MOD;\r\n}\r\n\r\nint main() {\r\n    string S;\r\n    cin >> S;\r\n    int n = S.size();\r\n\r\n    vector<long long> dp(n);\r\n    dp.at(0) = 1;\r\n    long long ans = 1;\r\n\r\n    for (int i = 1; i < n; i++) {\r\n        if (S.at(i) != S.at(i - 1)) {\r\n            dp.at(i) = (dp.at(i - 1) + 1) % MOD;\r\n        } else {\r\n            dp.at(i) = 1;\r\n        }\r\n        ans = (ans + dp.at(i)) % MOD;\r\n    }\r\n\r\n    cout << ans << endl;\r\n}",
+        "content": "AC\r\n\r\n### 思った事\r\n部分文字列！？DPやんけ！ということでDPを使って実装しました。\r\n部分列と見事に勘違いしてしまい、Qiita見ながらやったのでadd()関数が残っています。"
+      },
+      {
+        "id": "D",
+        "title": "D問題",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nconst int MOD = 998244353;\r\n\r\nvector<vector<int>> calc_next(const string &S) {\r\n    int n = S.size();\r\n    vector<vector<int>> res(n + 1, vector<int>(26, n));\r\n    for (int i = n - 1; i >= 0; i--) {\r\n        res[i] = res[i + 1];\r\n        res[i][S[i] - 'a'] = i;\r\n    }\r\n    return res;\r\n}\r\n\r\nvoid add(long long &a, long long b) {\r\n    a += b;\r\n    if (a >= MOD) a -= MOD;\r\n}\r\n\r\nint main() {\r\n    string S;\r\n    cin >> S;\r\n    int n = S.size();\r\n\r\n    vector<vector<int>> next = calc_next(S);\r\n    vector<long long> dp(n + 1, 0);\r\n    dp.at(0) = 1;\r\n\r\n    for (int i = 0; i < n; i++) {\r\n        for (int j = 0; j <26; j++) { \r\n            int target = next.at(i).at(j);\r\n            if (target < n) add(dp.at(target + 1), dp.at(i));\r\n        }\r\n    }\r\n\r\n    long long res = 0;\r\n    for (int i = 1; i <= n; i++) add(res, dp.at(i));\r\n    cout << res << endl;\r\n}",
+        "content": "AC\r\n\r\n### 思った事\r\n実はC問題でこっちを実装していたため、同時にクリアという感じ。\r\n部分列はDPで、部分文字列はもっと簡単に引っ張ってこれたらしい。\r\n悔しさ、もあるけど、うれしさも同時に"
+      }
+    ]
+  },
+  {
+    "abc": "ABC455",
+    "summary": "悔いの残る一戦。\r\n夜ご飯を食べすぎてしまったため、眠気との勝負だった。",
+    "problems": [
+      {
+        "id": "A",
+        "title": "A問題",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int A, B, C;\r\n    cin >> A>> B >> C;\r\n    if (A != B && B == C) {\r\n        cout << \"Yes\" << endl;\r\n    } else {\r\n        cout << \"No\" << endl;\r\n    }\r\n}",
+        "content": "AC"
+      },
+      {
+        "id": "B",
+        "title": "B問題",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int H, W;\r\n    cin >> H >> W;\r\n    vector<string> S(H);\r\n    for (int i = 0; i < H; i++) {\r\n        cin >> S.at(i);\r\n    }\r\n    \r\n    int count = 0;\r\n\r\n    for (int h1 = 0; h1 < H; h1++) {\r\n        for (int h2 = h1; h2 < H; h2++) {\r\n            for (int w1 = 0; w1 < W; w1++) {\r\n                for (int w2 = w1; w2 < W; w2++) {\r\n\r\n                    bool ans = true;\r\n                    for (int i = h1; i <= h2; i++) {\r\n                        for (int j = w1; j <= w2; j++) {\r\n                            int ni = h1 + h2 - i;\r\n                            int nj = w1 + w2 - j;\r\n                            if (S.at(i).at(j) != S.at(ni).at(nj)) {\r\n                                ans = false;\r\n                                break;\r\n                            }\r\n                        }\r\n                        if (!ans) break;\r\n                    }\r\n                    if (ans) {\r\n                        count++;\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n    cout << count << endl;\r\n}",
+        "content": "AC"
+      },
+      {
+        "id": "C",
+        "title": "C問題",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std;\r\nusing ll = long long;\r\n\r\nint main() {\r\n    int N, K;\r\n    cin >> N >> K;\r\n    map<ll, ll> A;\r\n    \r\n    for (int i = 0; i < N; i++) {\r\n        ll a;\r\n        cin >> a;\r\n        A[a]++;\r\n    }\r\n\r\n    vector<ll> sum;\r\n    for (auto [f, s] : A) sum.push_back(f * s);\r\n    sort(sum.begin(), sum.end());\r\n    for(int i = 0; i < K; i++) if (!sum.empty()) sum.pop_back();\r\n    ll ans = reduce(sum.begin(), sum.end());\r\n    cout << ans << endl;\r\n}",
+        "content": "解説AC\r\n### 思った事\r\nlong longをllにするやつ、大事だなと思いました。\r\nreduce()って知らない関数だった。dorループで足していた俺って、、、。\r\nたとえばフィボナッチ数列NEOがあったとして、reduce(dp.at(i - 2), dp.at(i))みたいな事が出来るってわけだ。"
+      }
+    ]
+  }
+]
