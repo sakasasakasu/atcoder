@@ -40,7 +40,7 @@ export function AppSidebar() {
         <ScrollArea>
           {contests.map((contest) => (
             <div key={contest.abc} className="px-4 py-2">
-              <h2 className="text-md font-semibold">{contest.abc}</h2>
+              <h2 className="text-md font-semibold py-2">{contest.abc}</h2>
               <ul>
                 {contest.problems.map((problem) => (
                   <div key={problem.id}>
@@ -61,7 +61,7 @@ export function AppSidebar() {
       <Separator />
       <SidebarFooter>
         <p className="px-4 py-2 text-xs text-muted-foreground">
-          AtCoder精進
+          なんかカッコいい文章を書く。
         </p>
       </SidebarFooter>
     </Sidebar>
