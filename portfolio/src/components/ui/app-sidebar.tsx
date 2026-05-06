@@ -1,3 +1,4 @@
+import { Separator } from "@/components/ui/separator"
 import {
   Sidebar,
   SidebarContent,
@@ -5,12 +6,11 @@ import {
   SidebarGroup,
   SidebarHeader,
 } from "@/components/ui/sidebar"
-import { Separator } from "@/components/ui/separator"
 
 import fs from "fs"
 import path from "path"
 
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface Problem {
   id: string
@@ -45,7 +45,12 @@ export function AppSidebar() {
                 {contest.problems.map((problem) => (
                   <div key={problem.id}>
                     <li className="px-4 py-2 text-sm">
-                      <a className="text-blue-500 hover:underline">{problem.title}</a>
+                      <a
+                        className="text-blue-500 hover:underline"
+                        href={`#${contest.abc}-${problem.id}`}
+                      >
+                        {problem.title}
+                      </a>
                     </li>
                     <Separator className="my-2" />
                   </div>
