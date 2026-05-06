@@ -40,16 +40,14 @@ export function AppSidebar() {
         <ScrollArea>
           {contests.map((contest) => (
             <div key={contest.abc} className="px-4 py-2">
-              <h2 className="text-md font-semibold py-2">{contest.abc}</h2>
+              <h2 className="text-md py-2 font-semibold">{contest.abc}</h2>
               <ul>
                 {contest.problems.map((problem) => (
                   <div key={problem.id}>
                     <li className="px-4 py-2 text-sm">
-                    <a className="text-blue-500 hover:underline">
-                      {problem.title}
-                    </a>
-                  </li>
-                  <Separator className="my-2" />
+                      <a className="text-blue-500 hover:underline">{problem.title}</a>
+                    </li>
+                    <Separator className="my-2" />
                   </div>
                 ))}
               </ul>
@@ -60,9 +58,7 @@ export function AppSidebar() {
       </SidebarContent>
       <Separator />
       <SidebarFooter>
-        <p className="px-4 py-2 text-xs text-muted-foreground">
-          なんかカッコいい文章を書く。
-        </p>
+        <p className="text-muted-foreground px-4 py-2 text-xs">なんかカッコいい文章を書く。</p>
       </SidebarFooter>
     </Sidebar>
   )
