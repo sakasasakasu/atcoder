@@ -1,13 +1,4 @@
-import fs from "fs"
-import path from "path"
-
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
+import { Accordion, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 
 interface Problem {
@@ -34,6 +25,7 @@ export function ContestCard({ contest }: { contest: Contest }) {
           {contest.problems.map((problem) => (
             <div
               key={problem.id}
+              id={`${contest.abc}-${problem.id}`}
               className="bg-card flex w-[350px] shrink-0 flex-col space-y-3 rounded-lg border p-4 whitespace-normal"
             >
               {/* 問題タイトル */}
