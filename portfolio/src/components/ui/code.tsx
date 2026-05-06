@@ -20,7 +20,7 @@ function Code({ code, language = "text", className, ...props }: CodeProps) {
         showLineNumbers
         wrapLongLines
         customStyle={{ margin: 0, padding: "1rem", background: "transparent" }}
-        lineNumberStyle={{fontSize: "0.78rem", minWidth: "2rem", paddingRight: "0.75rem" }}
+        lineNumberStyle={{ fontSize: "0.78rem", minWidth: "2rem", paddingRight: "0.75rem" }}
       >
         {code}
       </SyntaxHighlighter>
