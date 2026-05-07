@@ -1,5 +1,6 @@
 import { Accordion, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import ReactMarkdown from "react-markdown"
 
 interface Problem {
   id: string
@@ -32,8 +33,10 @@ export function ContestCard({ contest }: { contest: Contest }) {
               <h3 className="border-b pb-2 text-lg font-bold">{problem.title}</h3>
 
               {/* 問題内容（スクロール可能） */}
-              <div className="text-muted-foreground h-24 overflow-y-auto text-sm">
-                {problem.content}
+              <div className="prose text-muted-foreground h-24 overflow-y-auto text-sm">
+                <ReactMarkdown>
+                  {problem.content}
+                </ReactMarkdown>                
               </div>
 
               {/* C++コード（あれば） */}

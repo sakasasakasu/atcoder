@@ -11,7 +11,6 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { Code } from "@/components/ui/code"
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import ReactMarkdown from "react-markdown"
 import { AppSidebar } from "@/components/ui/app-sidebar"
 import { ContestCard } from "@/components/ui/contest-card"
 
