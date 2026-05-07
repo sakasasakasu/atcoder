@@ -1,5 +1,8 @@
 import { Accordion, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism"
+
 import ReactMarkdown from "react-markdown"
 
 interface Problem {
@@ -34,9 +37,7 @@ export function ContestCard({ contest }: { contest: Contest }) {
 
               {/* 問題内容（スクロール可能） */}
               <div className="prose text-muted-foreground h-24 overflow-y-auto text-sm">
-                <ReactMarkdown>
-                  {problem.content}
-                </ReactMarkdown>                
+                <ReactMarkdown>{problem.content}</ReactMarkdown>
               </div>
 
               {/* C++コード（あれば） */}
@@ -45,9 +46,25 @@ export function ContestCard({ contest }: { contest: Contest }) {
                   <AccordionTrigger>コードを見る</AccordionTrigger>
                   {problem.cpp && (
                     <div className="mt-auto">
-                      <pre className="max-h-48 overflow-x-auto overflow-y-auto rounded bg-slate-950 p-3 text-xs text-slate-50">
-                        <code className="font-mono">{problem.cpp}</code>
-                      </pre>
+                      <div className="overflow-hidden rounded-md text-xs">
+                        <SyntaxHighlighter
+                          language="cpp"
+                          style={oneDark}
+                          showLineNumbers={true}
+                          customStyle={{
+                            margin: 0,
+                            padding: "12px",
+                            maxHeight: "12rem",
+                          }}
+                          codeTagProps={{
+                            style: {
+                              fontFamily: "var(--font-mono)",
+                            },
+                          }}
+                        >
+                          {problem.cpp}
+                        </SyntaxHighlighter>
+                      </div>
                     </div>
                   )}
                 </AccordionItem>
