@@ -36,7 +36,7 @@ export default function Home() {
       <SidebarProvider>
         <AppSidebar />
         <main className="flex-1 space-y-6 p-6">
-          <h1 className="mb-4 text-2xl font-bold">Contest Archive</h1>
+          <h1 className="mb-4 text-2xl font-bold">コンテストの一覧</h1>
           <div className="grid gap-6">
             {/* 全てのコンテストをリスト表示 */}
             {contests.map((contest, index) => (

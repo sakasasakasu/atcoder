@@ -1,4 +1,9 @@
-import { Accordion, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism"
@@ -20,11 +25,11 @@ interface Contest {
 
 export function ContestCard({ contest }: { contest: Contest }) {
   return (
-    <div className="w-full overflow-hidden">
+    <div className="w-full overflow-hidden p-4">
       <h2 className="mb-2 text-xl font-bold">{contest.abc}</h2>
       <p className="text-muted-foreground mb-4 text-sm">{contest.summary}</p>
       {/* 問題 A, B, C... を横に並べるエリア */}
-      <ScrollArea className="w-full p-4 whitespace-nowrap">
+      <ScrollArea className="h-full w-full whitespace-nowrap">
         <div className="flex gap-4">
           {contest.problems.map((problem) => (
             <div
@@ -35,8 +40,8 @@ export function ContestCard({ contest }: { contest: Contest }) {
               {/* 問題タイトル */}
               <h3 className="border-b pb-2 text-lg font-bold">{problem.title}</h3>
 
-              {/* 問題内容（スクロール可能） */}
-              <div className="prose text-muted-foreground h-24 overflow-y-auto text-sm">
+              {/* レビュー */}
+              <div className="prose text-muted-foreground h-[200px] overflow-y-auto text-sm">
                 <ReactMarkdown>{problem.content}</ReactMarkdown>
               </div>
 
@@ -44,29 +49,31 @@ export function ContestCard({ contest }: { contest: Contest }) {
               <Accordion type="single" collapsible>
                 <AccordionItem value="cpp">
                   <AccordionTrigger>コードを見る</AccordionTrigger>
-                  {problem.cpp && (
-                    <div className="mt-auto">
-                      <div className="overflow-hidden rounded-md text-xs">
-                        <SyntaxHighlighter
-                          language="cpp"
-                          style={oneDark}
-                          showLineNumbers={true}
-                          customStyle={{
-                            margin: 0,
-                            padding: "12px",
-                            maxHeight: "12rem",
-                          }}
-                          codeTagProps={{
-                            style: {
-                              fontFamily: "var(--font-mono)",
-                            },
-                          }}
-                        >
-                          {problem.cpp}
-                        </SyntaxHighlighter>
+                  <AccordionContent>
+                    {problem.cpp && (
+                      <div className="mt-auto">
+                        <div className="overflow-hidden rounded-md text-xs">
+                          <SyntaxHighlighter
+                            language="cpp"
+                            style={oneDark}
+                            showLineNumbers={true}
+                            customStyle={{
+                              margin: 0,
+                              padding: "12px",
+                              maxHeight: "12rem",
+                            }}
+                            codeTagProps={{
+                              style: {
+                                fontFamily: "var(--font-mono)",
+                              },
+                            }}
+                          >
+                            {problem.cpp}
+                          </SyntaxHighlighter>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </AccordionContent>
                 </AccordionItem>
               </Accordion>
             </div>
