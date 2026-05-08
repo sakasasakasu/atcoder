@@ -14,7 +14,7 @@ const notoSerifJP = Noto_Serif_JP({
 
 export const metadata: Metadata = {
   title: "AtCoder精進",
-  description: "AtCoder精進のポートフォリオサイト",
+  description: "AtCoder精進",
 }
 
 export default function RootLayout({
