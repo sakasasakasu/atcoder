@@ -1,7 +1,7 @@
 const fs = require("fs")
 const path = require("path")
 
-const baseDir = path.join(__dirname, "..", "..", "problems")
+const baseDir = path.join(__dirname, "..", "..", "problems", "ABC")
 const results = []
 
 if (!fs.existsSync(baseDir)) {

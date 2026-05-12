@@ -27,6 +27,8 @@
   "files.insertFinalNewline": true,
   "javascript.updateImportsOnFileMove.enabled": "always",
   "typescript.updateImportsOnFileMove.enabled": "never",
-  "editor.fontSize": 15
+  "editor.fontSize": 15,
+  "[cpp]": {
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+  }
 }
-
