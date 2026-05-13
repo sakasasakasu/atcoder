@@ -1,37 +1,67 @@
 [
   {
+    "abc": "ABC457",
+    "summary": "上振れでした。",
+    "problems": [
+      {
+        "id": "A",
+        "title": "A問題",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int N;\r\n    cin >> N;\r\n    vector<int> A(N);\r\n    for (int i = 0; i < N; i++) {\r\n        cin >> A.at(i);\r\n    }\r\n    int X;\r\n    cin >> X;\r\n\r\n    cout << A.at(X - 1) << endl;\r\n}\r\n",
+        "content": "AC"
+      },
+      {
+        "id": "B",
+        "title": "B問題",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int N;\r\n    cin >> N;\r\n\r\n    vector<vector<int>> A(N);\r\n\r\n    for (int i = 0; i < N; i++) {\r\n        int L;\r\n        cin >> L;\r\n        A.at(i).resize(L);\r\n        for (int j = 0; j < L; j++) {\r\n            cin >> A.at(i).at(j);\r\n        }\r\n    }\r\n\r\n    int X, Y;\r\n    cin >> X >> Y;\r\n\r\n    cout << A.at(X - 1).at(Y - 1) << endl;\r\n}\r\n",
+        "content": "AC\r\n\r\n### 思った事\r\n\r\nresizeの事を忘れていたので、巨大な配列を用意しようとしてしまった。"
+      },
+      {
+        "id": "C",
+        "title": "C問題",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    long long N, K;\r\n    cin >> N >> K;\r\n\r\n    vector<long long> L(N);\r\n    vector<vector<int>> A(N);\r\n    for (int i = 0; i < N; i++) {\r\n        cin >> L.at(i);\r\n        A.at(i).resize(L.at(i));\r\n        for (int j = 0; j < L.at(i); j++) {\r\n            cin >> A.at(i).at(j);\r\n        }\r\n    }\r\n\r\n    vector<long long> C(N);\r\n    for (int i = 0; i < N; i++) {\r\n        cin >> C.at(i);\r\n    }\r\n\r\n    long long total_length = 0;\r\n    for (int i =0; i < N; i++) {\r\n        //配列の長さ\r\n        long long length = L.at(i) * C.at(i);\r\n\r\n        if (K <= length + total_length) {\r\n            long long num = K - total_length - 1;\r\n            cout << A.at(i).at(num % L.at(i)) << endl;\r\n            return 0;\r\n        }\r\n        total_length += length;\r\n    }\r\n}\r\n",
+        "content": "AC\r\n\r\n### 思った事\r\n\r\n∑を知らないので焦ってしまった。\r\n\r\n問題の理解が難しかったが、出力例１を見て納得。実際に配列を用意するとメモリ制限とかに引っかかるかな？という事で、配列をシミュレーションする事で解決。"
+      },
+      {
+        "id": "D",
+        "title": "D問題",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std;\r\nusing ll = long long;\r\n\r\nbool isok (ll mid, ll N, ll K, vector<ll> &A) {\r\n    ll nk = 0;\r\n    for (ll i = 1; i <= N; i++) {\r\n        if (A.at(i) < mid) {\r\n            nk += (mid - A.at(i) + i - 1) / i;\r\n            if (nk > K) return false;\r\n        }\r\n    }\r\n    return nk <= K;\r\n}\r\n\r\nint main() {\r\n    ll N, K;\r\n    cin >> N >> K;\r\n    \r\n    vector<ll> A(N + 1);\r\n    for (ll i = 1; i <= N; i++) {\r\n        cin >> A.at(i);\r\n    }\r\n\r\n    ll ok = 1;\r\n    ll ng = A.at(1) + K + 1;\r\n\r\n    while (ng - ok > 1) {\r\n        ll mid = (ok + ng) / 2;\r\n        if (isok(mid, N, K, A)) {\r\n            ok = mid;\r\n        } else {\r\n            ng = mid;\r\n        }\r\n    }\r\n    cout << ok << endl;\r\n}\r\n",
+        "content": "WA\r\n\r\n### 思った事\r\n\r\nちょっと分からなかった。\r\n\r\npriority queで少ないものに足していくのかと思いきや二分探索を使う必要があった。\r\n\r\n二分探索って知ってるけど使ったことは無かったのでWA"
+      }
+    ]
+  },
+  {
     "abc": "ABC456",
     "summary": "上振れでした。",
     "problems": [
       {
         "id": "A",
         "title": "A問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int X;\r\n    cin >> X;\r\n    if (3 <= X && X <= 18) {\r\n        cout << \"Yes\" << endl;\r\n    } else {\r\n        cout << \"No\" << endl;\r\n    }\r\n}",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int X;\r\n    cin >> X;\r\n    if (3 <= X && X <= 18) {\r\n        cout << \"Yes\" << endl;\r\n    } else {\r\n        cout << \"No\" << endl;\r\n    }\r\n}\r\n",
         "content": "AC"
       },
       {
         "id": "B",
         "title": "B問題",
         "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    vector<vector<int>> A(3, vector<int>(3, 0));\r\n\r\n    for (int i = 0; i < 3; i++) {\r\n        for (int j = 0; j < 6; j++) {\r\n            int a;\r\n            cin >> a;\r\n            if (a >= 4 && a <= 6) {\r\n                A.at(i).at(a - 4)++;\r\n            }\r\n        }\r\n    }\r\n\r\n    int d[6][3] = {\r\n        {4, 5, 6},\r\n        {4, 6, 5},\r\n        {5, 4, 6},\r\n        {5, 6, 4},\r\n        {6, 4, 5},\r\n        {6, 5, 4}\r\n    };\r\n\r\n    long long ans = 0;\r\n    for (int i = 0; i < 6; i++) {\r\n        ans += (long long)A.at(0).at(d[i][0] - 4) * A.at(1).at(d[i][1] - 4) * A.at(2).at(d[i][2] - 4);\r\n    }\r\n\r\n    cout << fixed << setprecision(10) << (double)ans / pow(6, 3) << endl;\r\n}",
-        "content": "AC\r\n\r\n### 思った事\r\nsetprecision()を使う問題が出てきて嬉しかった。\r\nサイコロの状態管理に面食らってしまい、すこし実装に時間がかかってしまった。"
+        "content": "AC\r\n\r\n### 思った事\r\nsetprecision()を使う問題が出てきて嬉しかった。\r\n\r\nサイコロの状態管理に面食らってしまい、すこし実装に時間がかかってしまった。"
       },
       {
         "id": "C",
         "title": "C問題",
         "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nconst int MOD = 998244353;\r\n\r\nvoid add(long long &a, long long b) {\r\n    a += b;\r\n    if (a >= MOD) a -= MOD;\r\n}\r\n\r\nint main() {\r\n    string S;\r\n    cin >> S;\r\n    int n = S.size();\r\n\r\n    vector<long long> dp(n);\r\n    dp.at(0) = 1;\r\n    long long ans = 1;\r\n\r\n    for (int i = 1; i < n; i++) {\r\n        if (S.at(i) != S.at(i - 1)) {\r\n            dp.at(i) = (dp.at(i - 1) + 1) % MOD;\r\n        } else {\r\n            dp.at(i) = 1;\r\n        }\r\n        ans = (ans + dp.at(i)) % MOD;\r\n    }\r\n\r\n    cout << ans << endl;\r\n}",
-        "content": "AC\r\n\r\n### 思った事\r\n部分文字列！？DPやんけ！ということでDPを使って実装しました。\r\n部分列と見事に勘違いしてしまい、Qiita見ながらやったのでadd()関数が残っています。"
+        "content": "AC\r\n\r\n### 思った事\r\n部分文字列！？DPやんけ！ということでDPを使って実装しました。\r\n\r\n部分列と見事に勘違いしてしまい、Qiita見ながらやったのでadd()関数が残っています。"
       },
       {
         "id": "D",
         "title": "D問題",
         "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nconst int MOD = 998244353;\r\n\r\nvector<vector<int>> calc_next(const string &S) {\r\n    int n = S.size();\r\n    vector<vector<int>> res(n + 1, vector<int>(26, n));\r\n    for (int i = n - 1; i >= 0; i--) {\r\n        res[i] = res[i + 1];\r\n        res[i][S[i] - 'a'] = i;\r\n    }\r\n    return res;\r\n}\r\n\r\nvoid add(long long &a, long long b) {\r\n    a += b;\r\n    if (a >= MOD) a -= MOD;\r\n}\r\n\r\nint main() {\r\n    string S;\r\n    cin >> S;\r\n    int n = S.size();\r\n\r\n    vector<vector<int>> next = calc_next(S);\r\n    vector<long long> dp(n + 1, 0);\r\n    dp.at(0) = 1;\r\n\r\n    for (int i = 0; i < n; i++) {\r\n        for (int j = 0; j <26; j++) { \r\n            int target = next.at(i).at(j);\r\n            if (target < n) add(dp.at(target + 1), dp.at(i));\r\n        }\r\n    }\r\n\r\n    long long res = 0;\r\n    for (int i = 1; i <= n; i++) add(res, dp.at(i));\r\n    cout << res << endl;\r\n}",
-        "content": "AC\r\n\r\n### 思った事\r\n実はC問題でこっちを実装していたため、同時にクリアという感じ。\r\n部分列はDPで、部分文字列はもっと簡単に引っ張ってこれたらしい。\r\n悔しさ、もあるけど、うれしさも同時に"
+        "content": "AC\r\n\r\n### 思った事\r\n実はC問題でこっちを実装していたため、同時にクリアという感じ。\r\n\r\n部分列はDPで、部分文字列はもっと簡単に引っ張ってこれたらしい。\r\n\r\n悔しさ、もあるけど、うれしさも同時に"
       }
     ]
   },
   {
     "abc": "ABC455",
-    "summary": "悔いの残る一戦。\r\n夜ご飯を食べすぎてしまったため、眠気との勝負だった。",
+    "summary": "悔いの残る一戦。\r\n\r\n夜ご飯を食べすぎてしまったため、眠気との勝負だった。",
     "problems": [
       {
         "id": "A",
@@ -49,7 +79,25 @@
         "id": "C",
         "title": "C問題",
         "cpp": "#include <bits/stdc++.h>\r\nusing namespace std;\r\nusing ll = long long;\r\n\r\nint main() {\r\n    int N, K;\r\n    cin >> N >> K;\r\n    map<ll, ll> A;\r\n    \r\n    for (int i = 0; i < N; i++) {\r\n        ll a;\r\n        cin >> a;\r\n        A[a]++;\r\n    }\r\n\r\n    vector<ll> sum;\r\n    for (auto [f, s] : A) sum.push_back(f * s);\r\n    sort(sum.begin(), sum.end());\r\n    for(int i = 0; i < K; i++) if (!sum.empty()) sum.pop_back();\r\n    ll ans = reduce(sum.begin(), sum.end());\r\n    cout << ans << endl;\r\n}",
-        "content": "解説AC\r\n### 思った事\r\nlong longをllにするやつ、大事だなと思いました。\r\nreduce()って知らない関数だった。dorループで足していた俺って、、、。\r\nたとえばフィボナッチ数列NEOがあったとして、reduce(dp.at(i - 2), dp.at(i))みたいな事が出来るってわけだ。"
+        "content": "解説AC\r\n### 思った事\r\nlong longをllにするやつ、大事だなと思いました。\r\n\r\nreduce()って知らない関数だった。dorループで足していた俺って、、、。\r\n\r\nたとえばフィボナッチ数列NEOがあったとして、reduce(dp.at(i - 2), dp.at(i))みたいな事が出来るってわけだ。"
+      }
+    ]
+  },
+  {
+    "abc": "ABC454",
+    "summary": "0-indexと1-indexが混ざってしまいA問題しか解けなかった。",
+    "problems": [
+      {
+        "id": "A",
+        "title": "A問題",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\nusing ll = long long;\r\n#define rep(i, n) for (int i = 0; i < (int)(n); i++)\r\n#define all(x) (x).begin(), (x).end()\r\n\r\nint main() {\r\n    int N;\r\n    string S;\r\n    cin >> N >> S;\r\n    bool flag = false;\r\n    if (S.at(0) == 'o') {\r\n        flag = true;\r\n    }\r\n        for (int i = 0; i < N; i++) {\r\n            if (S.at(i) == 'o' && flag == true) {\r\n                // Do nothing\r\n            } else {\r\n                flag = false;\r\n                cout << S.at(i);\r\n        }\r\n    }\r\n    cout << endl;\r\n    return 0;\r\n}",
+        "content": "AC"
+      },
+      {
+        "id": "B",
+        "title": "B問題",
+        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int T, X;\r\n    cin >> T >> X;\r\n    vector<int> A(T + 1);\r\n    for (int i = 0; i <= T; i++) cin >> A.at(i);\r\n\r\n    int record = A.at(0);\r\n    cout << 0 << ' ' << A.at(0) << endl;\r\n\r\n    for (int i = 1; i <= T; i++) {\r\n        if (abs(record - A.at(i)) >= X) {\r\n            cout << i << ' ' << A.at(i) << endl;\r\n            record = A.at(i);\r\n        }\r\n    } \r\n}",
+        "content": "解説AC\r\n\r\n\r\n### 思った事"
       }
     ]
   }
