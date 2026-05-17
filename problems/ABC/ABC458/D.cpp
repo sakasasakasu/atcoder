@@ -1,7 +1,16 @@
 #include <bits/stdc++.h>
-using namespace std; 
+#include <queue>
+using namespace std;
+using ll = long long;
 
 int main() {
+    int X, Q;
+    cin >> X >> Q;
+    vector<int> A(Q), B(Q);
+    for (int i = 0; i < Q; i++) {
+        cin >> A.at(i) >> B.at(i);
+    }
+
     priority_queue<int, vector<int>, greater<int> > right;
     priority_queue<int> left;
     int mid = X;
@@ -29,3 +38,6 @@ int main() {
         cout << mid << endl;
     }
 }
+
+
+// thanks for https://algo-logic.info/abc023d/
