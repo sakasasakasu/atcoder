@@ -29,6 +29,6 @@
   "typescript.updateImportsOnFileMove.enabled": "never",
   "editor.fontSize": 15,
   "[cpp]": {
-    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    "editor.defaultFormatter": "ms-vscode.cpptools"
   }
 }

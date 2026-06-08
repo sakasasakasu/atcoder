@@ -1,1 +1,5 @@
-problems/mian.cpp
+problems/main.cpp
+test/
+*.out
+MEMO.md
+.vscode/
