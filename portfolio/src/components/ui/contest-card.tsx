@@ -23,7 +23,7 @@ export function ContestCard({ contest }: { contest: Contest }) {
             <div
               key={problem.id}
               id={`${contest.abc}-${problem.id}`}
-              className="bg-card flex w-[350px] shrink-0 flex-col space-y-3 rounded-lg border p-4 whitespace-normal"
+              className="bg-card flex w-[350px] shrink-0 flex-col space-y-3 rounded-lg border p-4 whitespace-normal scroll-mt-28"
             >
               {/* 問題タイトル */}
               <h3 className="border-b pb-2 text-lg font-bold">{problem.title}</h3>
