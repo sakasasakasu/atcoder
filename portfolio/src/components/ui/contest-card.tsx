@@ -7,21 +7,9 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism"
+import { Contest } from "@/types/contest"
 
 import ReactMarkdown from "react-markdown"
-
-interface Problem {
-  id: string
-  title: string
-  content: string
-  cpp?: string
-}
-
-interface Contest {
-  abc: string
-  summary: string
-  problems: Problem[]
-}
 
 export function ContestCard({ contest }: { contest: Contest }) {
   return (

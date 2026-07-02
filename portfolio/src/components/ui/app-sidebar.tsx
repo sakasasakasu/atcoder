@@ -7,27 +7,11 @@ import {
   SidebarHeader,
 } from "@/components/ui/sidebar"
 
-import fs from "fs"
-import path from "path"
-
 import { ScrollArea } from "@/components/ui/scroll-area"
-
-interface Problem {
-  id: string
-  title: string
-  content: string
-  cpp?: string
-}
-
-interface Contest {
-  abc: string
-  summary: string
-  problems: Problem[]
-}
+import { getContests } from "@/lib/data"
 
 export function AppSidebar() {
-  const jsonPath = path.join(process.cwd(), "public", "problems.json")
-  const contests = JSON.parse(fs.readFileSync(jsonPath, "utf8")) as Contest[]
+  const contests = getContests()
 
   return (
     <Sidebar>

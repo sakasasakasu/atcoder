@@ -14,7 +14,7 @@ int main() {
     int maxW = -1;
 
     rep(i, H) {
-        rep (j, W) {
+        rep(j, W) {
             if (C.at(i).at(j) == '#') {
                 minH = min(minH, i);
                 minW = min(minW, j);
