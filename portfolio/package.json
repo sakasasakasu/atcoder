@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "generate:problems": "node scripts/main.js",
+    "predev": "npm run generate:problems",
     "dev": "next dev",
+    "prebuild": "npm run generate:problems",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

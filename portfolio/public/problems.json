@@ -1,31 +1,175 @@
 [
   {
+    "abc": "ABC464",
+    "summary": "精進不足が目立ってきた。\n\nあと、違うゲームにドはまりしてしまったため。こう。",
+    "problems": [
+      {
+        "id": "A",
+        "title": "A問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int E, W = 0;\n    string S;\n    cin >> S;\n    for (char c : S) {\n        if (c == 'E')\n            E++;\n        else\n            W++;\n    }\n    cout << (E > W ? \"East\" : \"West\") << endl;\n}\n",
+        "content": "AC\n\n### 思った事\n\n特にいう事は無い。\n\n簡単。"
+      },
+      {
+        "id": "B",
+        "title": "B問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int H, W;\n    cin >> H >> W;\n    vector<vector<char>> C(H, vector<char>(W));\n    rep(i, H) rep(j, W) cin >> C.at(i).at(j);\n\n    int minH = H;\n    int minW = W;\n    int maxH = -1;\n    int maxW = -1;\n\n    rep(i, H) {\n        rep(j, W) {\n            if (C.at(i).at(j) == '#') {\n                minH = min(minH, i);\n                minW = min(minW, j);\n                maxH = max(maxH, i);\n                maxW = max(maxW, j);\n            }\n        }\n    }\n\n    for (int i = minH; i <= maxH; i++) {\n        for (int j = minW; j <= maxW; j++) {\n            cout << C.at(i).at(j);\n        }\n        cout << endl;\n    }\n}\n",
+        "content": "AC\n\n### 思った事\n\n配列を直接操作しようとしてみたが、違うな～と。\n\n尺取りっぽく（？）見る部分を減らしていくことに。"
+      },
+      {
+        "id": "C",
+        "title": "C問題",
+        "cpp": "",
+        "content": "WA\n\n### 思った事\n\n分からなかった。"
+      }
+    ]
+  },
+  {
+    "abc": "ABC463",
+    "summary": "A問題2WA最悪",
+    "problems": [
+      {
+        "id": "A",
+        "title": "A問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int X, Y;\n    cin >> X >> Y;\n    if(9 * X == 16 * Y) {\n        cout << \"Yes\" << endl;\n    } else {\n        cout << \"No\" << endl;\n    }\n}\n",
+        "content": "AC\n\n### 思った事\n\n手間取りました。割り算って上手にできないから。"
+      },
+      {
+        "id": "B",
+        "title": "B問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    char X;\n    cin >> N >> X;\n    vector<string> S(N);\n    rep(i, N) cin >> S.at(i);\n\n    bool ans = false;\n    rep(i, N) {\n        rep(j, N) {\n            if (j == X - 'A' && S.at(i).at(j) == 'o') {\n                ans = true;\n            }\n        }\n    }\n\n    cout << (ans ? \"Yes\" : \"No\") << endl;\n}\n",
+        "content": "AC\n\n### 思った事\n\n見た通り。"
+      },
+      {
+        "id": "C",
+        "title": "C問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    vector<pair<long long, long long>> HL(N);\n    rep(i, N) cin >> HL.at(i).first >> HL.at(i).second;\n\n    vector<long long> maxH(N);\n    maxH.at(N - 1) = HL.at(N - 1).first;\n    for (int i = N - 2; i >= 0; i--) {\n        maxH.at(i) = max(HL.at(i).first, maxH.at(i + 1));\n    }\n\n    int Q;\n    cin >> Q;\n    while(Q--) {\n        long long T;\n        cin >> T;\n        long long ans = 0;\n        rep(i, N) {\n            if(HL.at(i).second > T) {\n                break;\n            }\n            if(HL.at(i).first > ans) {\n                ans = HL.at(i).first;\n            }\n        }\n        cout << ans << endl;\n    }\n}\n",
+        "content": "WA\n\n### 思った事\n\n分からなかった。"
+      }
+    ]
+  },
+  {
+    "abc": "ABC462",
+    "summary": "わるくない。",
+    "problems": [
+      {
+        "id": "A",
+        "title": "A問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    string S;\n    cin >> S;\n    for (int i = 0; i < S.size(); i++) {\n        if (S.at(i) >= '0' && S.at(i) <= '9') {\n            cout << S.at(i); \n        }\n    }\n    cout << endl;\n}\n",
+        "content": "AC\n\n### 思った事\n\nそのまま、文字通り実装、簡単♪"
+      },
+      {
+        "id": "B",
+        "title": "B問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    for (int i = 0; i < N; i++) {\n        int K;\n        cin >> K;\n        vector<int> A(K);\n        rep(j, K) cin >> A.at(j);\n        for (int j = 0; j < K; j++) {\n            if (A.at(j) == i + 1) {\n                cout << A.at(j);\n            }\n        }\n        cout << endl;\n    }\n}\n",
+        "content": "AC\n\n### 思った事\n\nそのまま"
+      },
+      {
+        "id": "C",
+        "title": "C問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    /*\n        pair<int, int> points;\n        rep(i, N) {\n            int x, y;\n            cin >> x >> y;\n            points = {x, y};\n        }\n    */\n\n    vector<int> points(N + 1);\n    rep(i, N) {\n        int x, y;\n        cin >> x >> y;\n        points.at(x) = y;\n    }\n\n    int ans = 0;\n    int min_y = 1e9;\n\n    for (int i = 1; i <= N; i++) {\n        int cy = points.at(i);\n\n        if (cy < min_y) {\n            ans++;\n            min_y = cy;\n        }\n    }\n\n    cout << ans << endl;\n}\n",
+        "content": "AC\n\n### 思った事\n\n良い感じだね。"
+      }
+    ]
+  },
+  {
+    "abc": "ABC461",
+    "summary": "C問題意味が分からない。",
+    "problems": [
+      {
+        "id": "A",
+        "title": "A問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i,n) for (int i=0; i<(n); i++)\nusing namespace std;\n\nint main() {\n    int A, D;\n    cin >> A >> D;\n    cout << (A <= D ? \"Yes\" : \"No\") << endl;\n}\n",
+        "content": "AC\n\n### 思った事\n\nそのまま、文字通り実装、簡単♪"
+      },
+      {
+        "id": "B",
+        "title": "B問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    vector<int> A(N);\n    rep(i, N) cin >> A[i];\n    vector<int> B(N);\n    rep(i, N) cin >> B[i];\n\n    bool ans = true;\n\n    for (int i = 0; i < N; i++) {\n        if (i + 1 != B.at(A.at(i) - 1)) {\n            ans = false;\n        }\n    }\n\n    cout << (ans ? \"Yes\" : \"No\") << endl;\n}\n",
+        "content": "AC\n\n### 思った事\n\nめちゃくちゃ手間取った\n\n何を思ったか配列Aのi番目をイテレーターとして取って配列Bについて考えて、、、\n\nみたいなことをしてしまい。3ミス。これが無ければ茶パフォでした。"
+      },
+      {
+        "id": "C",
+        "title": "C問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N, K, M;\n    cin >> N >> K >> M;\n    vector<pair<int, long long>> CV(N);\n    rep(i, N) cin >> CV[i].second >> CV[i].first;\n\n    sort(CV.rbegin(), CV.rend());\n\n    vector<bool> isHold(N + 1, false);\n    int colorCount = 0;\n    int amountCount = 0;\n    long long ans = 0;\n\n    for (int i = 0; i < N; i++) {\n        if (amountCount == K) {\n            break;\n        } else if (colorCount >= M || amountCount <= K - M) {\n            ans += CV.at(i).first;\n            amountCount++;\n            if (isHold.at(CV.at(i).second) == false) {\n                colorCount++;\n                isHold.at(CV.at(i).second) = true;\n            }\n        } else if (isHold.at(CV.at(i).second) == false) {\n            ans += CV.at(i).first;\n            amountCount++;\n            colorCount++;\n            isHold.at(CV.at(i).second) = true;\n        }\n    }\n\n    cout << ans << endl;\n}\n",
+        "content": "WA\n\n### 思った事\n\n全く分からない。\n\nソートして上から自由に取って、ある程度まで行ったら色数確認して、、、ってやればよさそうなのに。\n\nテストケース通ったのに。。。"
+      }
+    ]
+  },
+  {
+    "abc": "ABC460",
+    "summary": "覚えていない。",
+    "problems": [
+      {
+        "id": "A",
+        "title": "A問題",
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nusing ll = long long;\n\nint main() {\n    int N, M;\n    cin >> N >> M;\n    int ans = 0;\n\n    while (M != 0) {\n        int x = N % M;\n        M = x;\n        ans++;\n    }\n\n    cout << ans << endl;\n    return 0;\n}\n",
+        "content": "AC\n\n### 思った事\n\n覚えていない。"
+      },
+      {
+        "id": "B",
+        "title": "B問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int T;\n    cin >> T;\n\n    while (T--) {\n        int X1, Y1, R1, X2, Y2, R2;\n        cin >> X1, Y1, R1, X2, Y2, R2;\n        \n        int a = pow(X1 - X2, 2);\n        int b = pow(Y1 - Y2, 2);\n        int c = a + b;\n\n        bool ans = R1 - R2 <= c && c <= R1 + R2;\n\n        cout << (ans ? \"Yes\" : \"No\");\n    }\n}\n",
+        "content": "AC\n\n### 思った事\n\n覚えていない。"
+      }
+    ]
+  },
+  {
+    "abc": "ABC458",
+    "summary": "D問題の実装に手こずった",
+    "problems": [
+      {
+        "id": "A",
+        "title": "A問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i,n) for (int i=0; i<(n); i++)\nusing namespace std;\n\nint main() {\n    string S;\n    int N;\n\n    cin >> S >> N;\n    int len = S.size();\n\n    for (int i = 0; i < len; i++){\n        if (i < N || i >= len - N) {\n            \n        } else {\n            cout << S.at(i);\n        }\n    }\n    cout << endl;\n}\n",
+        "content": "AC\n\n### 思った事\n\n愚直に文字列操作をするべきだったのに。。。\n\nどうしてか1文字ずつ見て、、、という感じに実装してしまった。\n\n次は文字列操作を使います。"
+      },
+      {
+        "id": "B",
+        "title": "B問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i,n) for (int i=0; i<(n); i++)\nusing namespace std;\n\nint main() {\n    int H, W;\n    cin >> H >> W;\n\n    if (H == 1 && W == 1) {\n        cout << 0 << endl;\n        return 0;\n    }\n\n    if (H == 1) {\n        for (int i = 0; i < W; i++) {\n            if (i == 0 || i == W - 1) {\n                cout << 1;\n            } else {\n                cout << 2;\n            }\n            if (i != W - 1) {\n                cout << \" \";\n            }\n        }\n        return 0;\n    }\n\n    if (W == 1) {\n        for (int i = 0; i < H; i++) {\n            if (i == 0 || i == H - 1) {\n                cout << 1 << endl;\n            } else {\n                cout << 2 << endl;\n            }\n        }\n        return 0;\n    }\n\n    for (int i = 0; i < H; i++) {\n        for (int j = 0; j < W; j++) {\n            if (i == 0 && j == 0 || i == H - 1 && j == W - 1 || i == 0 && j == W - 1 || i == H - 1 && j == 0) {\n                cout << 2;\n            } else if (i == 0 || i == H - 1 || j == 0 || j == W - 1) {\n                cout << 3;\n            } else {\n                cout << 4;\n            }\n            if (j != W - 1) {\n                cout << \" \";\n            }\n        }\n        cout << endl;\n    }\n}\n",
+        "content": "AC\n\n### 思った事\n\n例外を見て、、、という実装。\n\n恐らくもっときれいに実装できます。"
+      },
+      {
+        "id": "C",
+        "title": "C問題",
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    string S;\n    vector<int> C;\n    cin >> S;\n\n    int len  = S.size();\n    for (int i = 0; i < S.size(); i++) {\n        if (S.at(i) == 'C') C.push_back(i);\n    }\n\n    long long ans = 0;\n    for (int i = 0; i < C.size(); i++) {\n        ans += 1;\n        ans += min(C.at(i), len - 1 - C.at(i));\n    }\n    cout << ans << endl;\n}\n",
+        "content": "AC\n\n### 思った事\n\nこれはとっても簡単、楽しい。\n\n絵を描いたら2秒でわかった"
+      },
+      {
+        "id": "D",
+        "title": "D問題",
+        "cpp": "#include <bits/stdc++.h>\n#include <queue>\nusing namespace std;\nusing ll = long long;\n\nint main() {\n    int X, Q;\n    cin >> X >> Q;\n    vector<int> A(Q), B(Q);\n    for (int i = 0; i < Q; i++) {\n        cin >> A.at(i) >> B.at(i);\n    }\n\n    priority_queue<int, vector<int>, greater<int> > right;\n    priority_queue<int> left;\n    int mid = X;\n    for (int i = 0; i < Q; i++) {\n        if (A.at(i) < mid) {\n            left.push(A.at(i));\n        } else {\n            right.push(A.at(i));\n        }\n        if (B.at(i) < mid) {\n            left.push(B.at(i));\n        } else {\n            right.push(B.at(i));\n        }\n\n        if (left.size() > right.size()) {\n            right.push(mid);\n            mid = left.top();\n            left.pop();\n        } else if (left.size() < right.size()) {\n            left.push(mid);\n            mid = right.top();\n            right.pop();\n        }\n        cout << mid << endl;\n    }\n}\n\n\n// thanks for https://algo-logic.info/abc023d/\n",
+        "content": "CA\n\n### 思った事\n\nあまりにも時間がかかってしまった。\n\nお絵描きをしながら操作を抽象化していったら分かりました。\n\n総評として、お絵描きをしよう。というものがあります。"
+      }
+    ]
+  },
+  {
     "abc": "ABC457",
     "summary": "上振れでした。",
     "problems": [
       {
         "id": "A",
         "title": "A問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int N;\r\n    cin >> N;\r\n    vector<int> A(N);\r\n    for (int i = 0; i < N; i++) {\r\n        cin >> A.at(i);\r\n    }\r\n    int X;\r\n    cin >> X;\r\n\r\n    cout << A.at(X - 1) << endl;\r\n}\r\n",
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    int N;\n    cin >> N;\n    vector<int> A(N);\n    for (int i = 0; i < N; i++) {\n        cin >> A.at(i);\n    }\n    int X;\n    cin >> X;\n\n    cout << A.at(X - 1) << endl;\n}\n",
         "content": "AC"
       },
       {
         "id": "B",
         "title": "B問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int N;\r\n    cin >> N;\r\n\r\n    vector<vector<int>> A(N);\r\n\r\n    for (int i = 0; i < N; i++) {\r\n        int L;\r\n        cin >> L;\r\n        A.at(i).resize(L);\r\n        for (int j = 0; j < L; j++) {\r\n            cin >> A.at(i).at(j);\r\n        }\r\n    }\r\n\r\n    int X, Y;\r\n    cin >> X >> Y;\r\n\r\n    cout << A.at(X - 1).at(Y - 1) << endl;\r\n}\r\n",
-        "content": "AC\r\n\r\n### 思った事\r\n\r\nresizeの事を忘れていたので、巨大な配列を用意しようとしてしまった。"
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    int N;\n    cin >> N;\n\n    vector<vector<int>> A(N);\n\n    for (int i = 0; i < N; i++) {\n        int L;\n        cin >> L;\n        A.at(i).resize(L);\n        for (int j = 0; j < L; j++) {\n            cin >> A.at(i).at(j);\n        }\n    }\n\n    int X, Y;\n    cin >> X >> Y;\n\n    cout << A.at(X - 1).at(Y - 1) << endl;\n}\n",
+        "content": "AC\n\n### 思った事\n\nresizeの事を忘れていたので、巨大な配列を用意しようとしてしまった。"
       },
       {
         "id": "C",
         "title": "C問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    long long N, K;\r\n    cin >> N >> K;\r\n\r\n    vector<long long> L(N);\r\n    vector<vector<int>> A(N);\r\n    for (int i = 0; i < N; i++) {\r\n        cin >> L.at(i);\r\n        A.at(i).resize(L.at(i));\r\n        for (int j = 0; j < L.at(i); j++) {\r\n            cin >> A.at(i).at(j);\r\n        }\r\n    }\r\n\r\n    vector<long long> C(N);\r\n    for (int i = 0; i < N; i++) {\r\n        cin >> C.at(i);\r\n    }\r\n\r\n    long long total_length = 0;\r\n    for (int i =0; i < N; i++) {\r\n        //配列の長さ\r\n        long long length = L.at(i) * C.at(i);\r\n\r\n        if (K <= length + total_length) {\r\n            long long num = K - total_length - 1;\r\n            cout << A.at(i).at(num % L.at(i)) << endl;\r\n            return 0;\r\n        }\r\n        total_length += length;\r\n    }\r\n}\r\n",
-        "content": "AC\r\n\r\n### 思った事\r\n\r\n∑を知らないので焦ってしまった。\r\n\r\n問題の理解が難しかったが、出力例１を見て納得。実際に配列を用意するとメモリ制限とかに引っかかるかな？という事で、配列をシミュレーションする事で解決。"
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    priority_queue<int, vector<int>, greater<int> > right;\n    priority_queue<int> left;\n    int mid = X;\n    for (int i = 0; i < Q; i++) {\n        if (A.at(i) < mid) {\n            left.push(A.at(i));\n        } else {\n            right.push(A.at(i));\n        }\n        if (B.at(i) < mid) {\n            left.push(B.at(i));\n        } else {\n            right.push(B.at(i));\n        }\n\n        if (left.size() > right.size()) {\n            right.push(mid);\n            mid = left.top();\n            left.pop();\n        } else if (left.size() < right.size()) {\n            left.push(mid);\n            mid = right.top();\n            right.pop();\n        }\n        cout << mid << endl;\n    }\n}\n",
+        "content": "AC\n\n### 思った事\n\n∑を知らないので焦ってしまった。\n\n問題の理解が難しかったが、出力例１を見て納得。実際に配列を用意するとメモリ制限とかに引っかかるかな？という事で、配列をシミュレーションする事で解決。"
       },
       {
         "id": "D",
         "title": "D問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std;\r\nusing ll = long long;\r\n\r\nbool isok (ll mid, ll N, ll K, vector<ll> &A) {\r\n    ll nk = 0;\r\n    for (ll i = 1; i <= N; i++) {\r\n        if (A.at(i) < mid) {\r\n            nk += (mid - A.at(i) + i - 1) / i;\r\n            if (nk > K) return false;\r\n        }\r\n    }\r\n    return nk <= K;\r\n}\r\n\r\nint main() {\r\n    ll N, K;\r\n    cin >> N >> K;\r\n    \r\n    vector<ll> A(N + 1);\r\n    for (ll i = 1; i <= N; i++) {\r\n        cin >> A.at(i);\r\n    }\r\n\r\n    ll ok = 1;\r\n    ll ng = A.at(1) + K + 1;\r\n\r\n    while (ng - ok > 1) {\r\n        ll mid = (ok + ng) / 2;\r\n        if (isok(mid, N, K, A)) {\r\n            ok = mid;\r\n        } else {\r\n            ng = mid;\r\n        }\r\n    }\r\n    cout << ok << endl;\r\n}\r\n",
-        "content": "WA\r\n\r\n### 思った事\r\n\r\nちょっと分からなかった。\r\n\r\npriority queで少ないものに足していくのかと思いきや二分探索を使う必要があった。\r\n\r\n二分探索って知ってるけど使ったことは無かったのでWA"
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nusing ll = long long;\n\nbool isok (ll mid, ll N, ll K, vector<ll> &A) {\n    ll nk = 0;\n    for (ll i = 1; i <= N; i++) {\n        if (A.at(i) < mid) {\n            nk += (mid - A.at(i) + i - 1) / i;\n            if (nk > K) return false;\n        }\n    }\n    return nk <= K;\n}\n\nint main() {\n    ll N, K;\n    cin >> N >> K;\n    \n    vector<ll> A(N + 1);\n    for (ll i = 1; i <= N; i++) {\n        cin >> A.at(i);\n    }\n\n    ll ok = 1;\n    ll ng = A.at(1) + K + 1;\n\n    while (ng - ok > 1) {\n        ll mid = (ok + ng) / 2;\n        if (isok(mid, N, K, A)) {\n            ok = mid;\n        } else {\n            ng = mid;\n        }\n    }\n    cout << ok << endl;\n}\n",
+        "content": "WA\n\n### 思った事\n\nちょっと分からなかった。\n\npriority queで少ないものに足していくのかと思いきや二分探索を使う必要があった。\n\n二分探索って知ってるけど使ったことは無かったのでWA"
       }
     ]
   },
@@ -36,50 +180,56 @@
       {
         "id": "A",
         "title": "A問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int X;\r\n    cin >> X;\r\n    if (3 <= X && X <= 18) {\r\n        cout << \"Yes\" << endl;\r\n    } else {\r\n        cout << \"No\" << endl;\r\n    }\r\n}\r\n",
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    int X;\n    cin >> X;\n    if (3 <= X && X <= 18) {\n        cout << \"Yes\" << endl;\n    } else {\n        cout << \"No\" << endl;\n    }\n}\n",
         "content": "AC"
       },
       {
         "id": "B",
         "title": "B問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    vector<vector<int>> A(3, vector<int>(3, 0));\r\n\r\n    for (int i = 0; i < 3; i++) {\r\n        for (int j = 0; j < 6; j++) {\r\n            int a;\r\n            cin >> a;\r\n            if (a >= 4 && a <= 6) {\r\n                A.at(i).at(a - 4)++;\r\n            }\r\n        }\r\n    }\r\n\r\n    int d[6][3] = {\r\n        {4, 5, 6},\r\n        {4, 6, 5},\r\n        {5, 4, 6},\r\n        {5, 6, 4},\r\n        {6, 4, 5},\r\n        {6, 5, 4}\r\n    };\r\n\r\n    long long ans = 0;\r\n    for (int i = 0; i < 6; i++) {\r\n        ans += (long long)A.at(0).at(d[i][0] - 4) * A.at(1).at(d[i][1] - 4) * A.at(2).at(d[i][2] - 4);\r\n    }\r\n\r\n    cout << fixed << setprecision(10) << (double)ans / pow(6, 3) << endl;\r\n}",
-        "content": "AC\r\n\r\n### 思った事\r\nsetprecision()を使う問題が出てきて嬉しかった。\r\n\r\nサイコロの状態管理に面食らってしまい、すこし実装に時間がかかってしまった。"
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    vector<vector<int>> A(3, vector<int>(3, 0));\n\n    for (int i = 0; i < 3; i++) {\n        for (int j = 0; j < 6; j++) {\n            int a;\n            cin >> a;\n            if (a >= 4 && a <= 6) {\n                A.at(i).at(a - 4)++;\n            }\n        }\n    }\n\n    int d[6][3] = {\n        {4, 5, 6},\n        {4, 6, 5},\n        {5, 4, 6},\n        {5, 6, 4},\n        {6, 4, 5},\n        {6, 5, 4}\n    };\n\n    long long ans = 0;\n    for (int i = 0; i < 6; i++) {\n        ans += (long long)A.at(0).at(d[i][0] - 4) * A.at(1).at(d[i][1] - 4) * A.at(2).at(d[i][2] - 4);\n    }\n\n    cout << fixed << setprecision(10) << (double)ans / pow(6, 3) << endl;\n}",
+        "content": "AC\n\n### 思った事\nsetprecision()を使う問題が出てきて嬉しかった。\n\nサイコロの状態管理に面食らってしまい、すこし実装に時間がかかってしまった。"
       },
       {
         "id": "C",
         "title": "C問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nconst int MOD = 998244353;\r\n\r\nvoid add(long long &a, long long b) {\r\n    a += b;\r\n    if (a >= MOD) a -= MOD;\r\n}\r\n\r\nint main() {\r\n    string S;\r\n    cin >> S;\r\n    int n = S.size();\r\n\r\n    vector<long long> dp(n);\r\n    dp.at(0) = 1;\r\n    long long ans = 1;\r\n\r\n    for (int i = 1; i < n; i++) {\r\n        if (S.at(i) != S.at(i - 1)) {\r\n            dp.at(i) = (dp.at(i - 1) + 1) % MOD;\r\n        } else {\r\n            dp.at(i) = 1;\r\n        }\r\n        ans = (ans + dp.at(i)) % MOD;\r\n    }\r\n\r\n    cout << ans << endl;\r\n}",
-        "content": "AC\r\n\r\n### 思った事\r\n部分文字列！？DPやんけ！ということでDPを使って実装しました。\r\n\r\n部分列と見事に勘違いしてしまい、Qiita見ながらやったのでadd()関数が残っています。"
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std; \n\nconst int MOD = 998244353;\n\nvoid add(long long &a, long long b) {\n    a += b;\n    if (a >= MOD) a -= MOD;\n}\n\nint main() {\n    string S;\n    cin >> S;\n    int n = S.size();\n\n    vector<long long> dp(n);\n    dp.at(0) = 1;\n    long long ans = 1;\n\n    for (int i = 1; i < n; i++) {\n        if (S.at(i) != S.at(i - 1)) {\n            dp.at(i) = (dp.at(i - 1) + 1) % MOD;\n        } else {\n            dp.at(i) = 1;\n        }\n        ans = (ans + dp.at(i)) % MOD;\n    }\n\n    cout << ans << endl;\n}",
+        "content": "AC\n\n### 思った事\n部分文字列！？DPやんけ！ということでDPを使って実装しました。\n\n部分列と見事に勘違いしてしまい、Qiita見ながらやったのでadd()関数が残っています。"
       },
       {
         "id": "D",
         "title": "D問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nconst int MOD = 998244353;\r\n\r\nvector<vector<int>> calc_next(const string &S) {\r\n    int n = S.size();\r\n    vector<vector<int>> res(n + 1, vector<int>(26, n));\r\n    for (int i = n - 1; i >= 0; i--) {\r\n        res[i] = res[i + 1];\r\n        res[i][S[i] - 'a'] = i;\r\n    }\r\n    return res;\r\n}\r\n\r\nvoid add(long long &a, long long b) {\r\n    a += b;\r\n    if (a >= MOD) a -= MOD;\r\n}\r\n\r\nint main() {\r\n    string S;\r\n    cin >> S;\r\n    int n = S.size();\r\n\r\n    vector<vector<int>> next = calc_next(S);\r\n    vector<long long> dp(n + 1, 0);\r\n    dp.at(0) = 1;\r\n\r\n    for (int i = 0; i < n; i++) {\r\n        for (int j = 0; j <26; j++) { \r\n            int target = next.at(i).at(j);\r\n            if (target < n) add(dp.at(target + 1), dp.at(i));\r\n        }\r\n    }\r\n\r\n    long long res = 0;\r\n    for (int i = 1; i <= n; i++) add(res, dp.at(i));\r\n    cout << res << endl;\r\n}",
-        "content": "AC\r\n\r\n### 思った事\r\n実はC問題でこっちを実装していたため、同時にクリアという感じ。\r\n\r\n部分列はDPで、部分文字列はもっと簡単に引っ張ってこれたらしい。\r\n\r\n悔しさ、もあるけど、うれしさも同時に"
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std; \n\nconst int MOD = 998244353;\n\nvector<vector<int>> calc_next(const string &S) {\n    int n = S.size();\n    vector<vector<int>> res(n + 1, vector<int>(26, n));\n    for (int i = n - 1; i >= 0; i--) {\n        res[i] = res[i + 1];\n        res[i][S[i] - 'a'] = i;\n    }\n    return res;\n}\n\nvoid add(long long &a, long long b) {\n    a += b;\n    if (a >= MOD) a -= MOD;\n}\n\nint main() {\n    string S;\n    cin >> S;\n    int n = S.size();\n\n    vector<vector<int>> next = calc_next(S);\n    vector<long long> dp(n + 1, 0);\n    dp.at(0) = 1;\n\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j <26; j++) { \n            int target = next.at(i).at(j);\n            if (target < n) add(dp.at(target + 1), dp.at(i));\n        }\n    }\n\n    long long res = 0;\n    for (int i = 1; i <= n; i++) add(res, dp.at(i));\n    cout << res << endl;\n}",
+        "content": "AC\n\n### 思った事\n実はC問題でこっちを実装していたため、同時にクリアという感じ。\n\n部分列はDPで、部分文字列はもっと簡単に引っ張ってこれたらしい。\n\n悔しさ、もあるけど、うれしさも同時に"
       }
     ]
   },
   {
     "abc": "ABC455",
-    "summary": "悔いの残る一戦。\r\n\r\n夜ご飯を食べすぎてしまったため、眠気との勝負だった。",
+    "summary": "悔いの残る一戦。\n\n夜ご飯を食べすぎてしまったため、眠気との勝負だった。",
     "problems": [
       {
         "id": "A",
         "title": "A問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int A, B, C;\r\n    cin >> A>> B >> C;\r\n    if (A != B && B == C) {\r\n        cout << \"Yes\" << endl;\r\n    } else {\r\n        cout << \"No\" << endl;\r\n    }\r\n}",
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    int A, B, C;\n    cin >> A>> B >> C;\n    if (A != B && B == C) {\n        cout << \"Yes\" << endl;\n    } else {\n        cout << \"No\" << endl;\n    }\n}",
         "content": "AC"
       },
       {
         "id": "B",
         "title": "B問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int H, W;\r\n    cin >> H >> W;\r\n    vector<string> S(H);\r\n    for (int i = 0; i < H; i++) {\r\n        cin >> S.at(i);\r\n    }\r\n    \r\n    int count = 0;\r\n\r\n    for (int h1 = 0; h1 < H; h1++) {\r\n        for (int h2 = h1; h2 < H; h2++) {\r\n            for (int w1 = 0; w1 < W; w1++) {\r\n                for (int w2 = w1; w2 < W; w2++) {\r\n\r\n                    bool ans = true;\r\n                    for (int i = h1; i <= h2; i++) {\r\n                        for (int j = w1; j <= w2; j++) {\r\n                            int ni = h1 + h2 - i;\r\n                            int nj = w1 + w2 - j;\r\n                            if (S.at(i).at(j) != S.at(ni).at(nj)) {\r\n                                ans = false;\r\n                                break;\r\n                            }\r\n                        }\r\n                        if (!ans) break;\r\n                    }\r\n                    if (ans) {\r\n                        count++;\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n    cout << count << endl;\r\n}",
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    int H, W;\n    cin >> H >> W;\n    vector<string> S(H);\n    for (int i = 0; i < H; i++) {\n        cin >> S.at(i);\n    }\n    \n    int count = 0;\n\n    for (int h1 = 0; h1 < H; h1++) {\n        for (int h2 = h1; h2 < H; h2++) {\n            for (int w1 = 0; w1 < W; w1++) {\n                for (int w2 = w1; w2 < W; w2++) {\n\n                    bool ans = true;\n                    for (int i = h1; i <= h2; i++) {\n                        for (int j = w1; j <= w2; j++) {\n                            int ni = h1 + h2 - i;\n                            int nj = w1 + w2 - j;\n                            if (S.at(i).at(j) != S.at(ni).at(nj)) {\n                                ans = false;\n                                break;\n                            }\n                        }\n                        if (!ans) break;\n                    }\n                    if (ans) {\n                        count++;\n                    }\n                }\n            }\n        }\n    }\n    cout << count << endl;\n}",
         "content": "AC"
       },
       {
         "id": "C",
         "title": "C問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std;\r\nusing ll = long long;\r\n\r\nint main() {\r\n    int N, K;\r\n    cin >> N >> K;\r\n    map<ll, ll> A;\r\n    \r\n    for (int i = 0; i < N; i++) {\r\n        ll a;\r\n        cin >> a;\r\n        A[a]++;\r\n    }\r\n\r\n    vector<ll> sum;\r\n    for (auto [f, s] : A) sum.push_back(f * s);\r\n    sort(sum.begin(), sum.end());\r\n    for(int i = 0; i < K; i++) if (!sum.empty()) sum.pop_back();\r\n    ll ans = reduce(sum.begin(), sum.end());\r\n    cout << ans << endl;\r\n}",
-        "content": "解説AC\r\n### 思った事\r\nlong longをllにするやつ、大事だなと思いました。\r\n\r\nreduce()って知らない関数だった。dorループで足していた俺って、、、。\r\n\r\nたとえばフィボナッチ数列NEOがあったとして、reduce(dp.at(i - 2), dp.at(i))みたいな事が出来るってわけだ。"
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nusing ll = long long;\n\nint main() {\n    int N, K;\n    cin >> N >> K;\n    map<ll, ll> A;\n    \n    for (int i = 0; i < N; i++) {\n        ll a;\n        cin >> a;\n        A[a]++;\n    }\n\n    vector<ll> sum;\n    for (auto [f, s] : A) sum.push_back(f * s);\n    sort(sum.begin(), sum.end());\n    for(int i = 0; i < K; i++) if (!sum.empty()) sum.pop_back();\n    ll ans = reduce(sum.begin(), sum.end());\n    cout << ans << endl;\n}",
+        "content": "解説AC\n\n### 思った事\n\nlong longをllにするやつ、大事だなと思いました。\n\nreduce()って知らない関数だった。dorループで足していた俺って、、、。\n\nたとえばフィボナッチ数列NEOがあったとして、reduce(dp.at(i - 2), dp.at(i))みたいな事が出来るってわけだ。"
+      },
+      {
+        "id": "D",
+        "title": "D問題",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i,n) for (int i=0; i<(n); i++)\nusing namespace std;\n\nint main() {\n    int N, Q;\n    cin >> N >> Q;\n    \n    vector<int> up(2 * N, -1), down(2 * N, -1);\n    \n    rep (i, N) {\n        up.at(N + i) = i;\n        down.at(i) = N + i;\n    }\n\n    while (Q--) {\n        int c, p;\n        cin >> c >> p;\n        c--; p--;\n        \n        int d = down.at(c);\n        \n        down.at(c) = p;\n        up.at(p) = c;\n        \n        up.at(d) = -1;\n    }\n\n    rep (i, N) {\n        int x = N + i; \n        int ans = 0;\n        while (up.at(x) != -1) {\n            x = up.at(x);\n            ans++;\n        }\n        cout << ans << (i == N - 1 ? \"\" : \" \");\n    }\n    cout << endl;\n}\n",
+        "content": "解説AC\n\n### 思った事\n\n連結リストを知らなかった。"
       }
     ]
   },
@@ -90,14 +240,38 @@
       {
         "id": "A",
         "title": "A問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\nusing ll = long long;\r\n#define rep(i, n) for (int i = 0; i < (int)(n); i++)\r\n#define all(x) (x).begin(), (x).end()\r\n\r\nint main() {\r\n    int N;\r\n    string S;\r\n    cin >> N >> S;\r\n    bool flag = false;\r\n    if (S.at(0) == 'o') {\r\n        flag = true;\r\n    }\r\n        for (int i = 0; i < N; i++) {\r\n            if (S.at(i) == 'o' && flag == true) {\r\n                // Do nothing\r\n            } else {\r\n                flag = false;\r\n                cout << S.at(i);\r\n        }\r\n    }\r\n    cout << endl;\r\n    return 0;\r\n}",
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std; \nusing ll = long long;\n#define rep(i, n) for (int i = 0; i < (int)(n); i++)\n#define all(x) (x).begin(), (x).end()\n\nint main() {\n    int N;\n    string S;\n    cin >> N >> S;\n    bool flag = false;\n    if (S.at(0) == 'o') {\n        flag = true;\n    }\n        for (int i = 0; i < N; i++) {\n            if (S.at(i) == 'o' && flag == true) {\n                // Do nothing\n            } else {\n                flag = false;\n                cout << S.at(i);\n        }\n    }\n    cout << endl;\n    return 0;\n}",
         "content": "AC"
       },
       {
         "id": "B",
         "title": "B問題",
-        "cpp": "#include <bits/stdc++.h>\r\nusing namespace std; \r\n\r\nint main() {\r\n    int T, X;\r\n    cin >> T >> X;\r\n    vector<int> A(T + 1);\r\n    for (int i = 0; i <= T; i++) cin >> A.at(i);\r\n\r\n    int record = A.at(0);\r\n    cout << 0 << ' ' << A.at(0) << endl;\r\n\r\n    for (int i = 1; i <= T; i++) {\r\n        if (abs(record - A.at(i)) >= X) {\r\n            cout << i << ' ' << A.at(i) << endl;\r\n            record = A.at(i);\r\n        }\r\n    } \r\n}",
-        "content": "解説AC\r\n\r\n\r\n### 思った事"
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    int T, X;\n    cin >> T >> X;\n    vector<int> A(T + 1);\n    for (int i = 0; i <= T; i++) cin >> A.at(i);\n\n    int record = A.at(0);\n    cout << 0 << ' ' << A.at(0) << endl;\n\n    for (int i = 1; i <= T; i++) {\n        if (abs(record - A.at(i)) >= X) {\n            cout << i << ' ' << A.at(i) << endl;\n            record = A.at(i);\n        }\n    } \n}",
+        "content": "解説AC\n\n\n### 思った事"
+      }
+    ]
+  },
+  {
+    "abc": "典型",
+    "summary": "典型90問などの典型問題をまとめたセクションです。",
+    "problems": [
+      {
+        "id": "002",
+        "title": "典型 002",
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool isvalid(const string &S) {\n    int score = 0;\n    for (auto c : S) {\n        if (c == '(') score++;\n        else if (c == ')') score--;\n\n        if (score < 0) return false;\n    }\n\n    return (score == 0); //かっこいい\n}\n\n\nint main() {\n    int N;\n    cin >> N;\n\n    if (N % 2 != 0) return 0; //かっこが作れないので返す\n\n    for (int bit = 0; bit < (1<<N); bit++) {\n        string S = \"\";\n\n        for (int i = N - 1; i >= 0; i--) {\n            if (!(bit & (1<<i))) S += \"(\";\n            else S += \")\";\n        }\n\n        if (isvalid(S)) cout << S << endl;\n    }\n}\n",
+        "content": "典型90問の解法メモです。"
+      },
+      {
+        "id": "004",
+        "title": "典型 004",
+        "cpp": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int H, W;\n    cin >> H >> W;\n    vector<vector<int>> A(H, vector<int>(W));\n    rep(i, H) rep(j, W) cin >> A[i][j];\n    vector<int> row_sum(H), col_sum(W);\n    rep(i, H) rep(j, W) {\n        row_sum[i] += A[i][j];\n        col_sum[j] += A[i][j];\n    }\n\n    rep(i, H) {\n        rep(j, W) {\n            cout << row_sum[i] + col_sum[j] - A[i][j];\n            if (j < W - 1) cout << \" \";\n        }\n        cout << endl;\n    }\n}\n",
+        "content": "典型90問の解法メモです。"
+      },
+      {
+        "id": "007",
+        "title": "典型 007",
+        "cpp": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    vector<int> A(N);\n    for (int i = 0; i < N; i++) cin >> A.at(i);\n    int Q;\n    cin >> Q;\n\n    sort(A.begin(), A.end());\n\n    while(Q--) {\n        int B;\n        cin >> B;\n        \n        auto it = lower_bound(A.begin(), A.end(), B);\n\n        long long ans = 2e18;\n\n        if (it != A.end()) {\n            ans = min(ans, (long long)abs(*it - B));\n        }\n\n        if (it != A.begin()) {\n            ans = min(ans, (long long)abs(*prev(it) - B));\n        }\n        \n        cout << ans << endl;\n    }\n}\n",
+        "content": "典型90問の解法メモです。"
       }
     ]
   }

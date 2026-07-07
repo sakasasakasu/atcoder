@@ -10,9 +10,13 @@ export default function Home() {
     <SidebarProvider>
       <AppSidebar />
       <main className="flex-1 space-y-6 p-6">
-        <h1 className="mb-4 text-2xl font-bold">コンテストの一覧</h1>
+        <div className="space-y-2">
+          <h1 className="text-2xl font-bold">コンテスト・典型問題の一覧</h1>
+          <p className="text-muted-foreground text-sm">
+            ABCの解説と、典型90問などの典型問題をまとめて確認できます。
+          </p>
+        </div>
         <div className="grid gap-6">
-          {/* 全てのコンテストをリスト表示 */}
           {contests.map((contest, index) => (
             <ContestCard key={index} contest={contest} />
           ))}
