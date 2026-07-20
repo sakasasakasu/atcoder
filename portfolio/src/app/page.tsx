@@ -11,10 +11,8 @@ export default function Home() {
       <AppSidebar />
       <main className="flex-1 space-y-6 p-6">
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold">コンテスト・典型問題の一覧</h1>
-          <p className="text-muted-foreground text-sm">
-            ABCの解説と、典型90問などの典型問題をまとめて確認できます。
-          </p>
+          <h1 className="text-2xl font-bold">問題一覧</h1>
+          <p className="text-muted-foreground text-sm">解いた問題を見る事が出来る♪</p>
         </div>
         <div className="grid gap-6">
           {contests.map((contest, index) => (

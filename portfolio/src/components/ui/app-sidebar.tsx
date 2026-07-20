@@ -25,7 +25,7 @@ export function AppSidebar() {
           {contests.map((contest) => (
             <div key={contest.abc} className="px-4 py-2">
               <h2 className="text-md py-2 font-semibold">
-                {contest.abc === "典型" ? "典型セクション" : contest.abc}
+                {contest.abc === "典型" ? "典型" : contest.abc}
               </h2>
               <ul>
                 {contest.problems.map((problem) => (
