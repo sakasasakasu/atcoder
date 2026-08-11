@@ -3,7 +3,13 @@
 using namespace std;
 
 int main() {
-    int H, W;
-    cin >> H >> W;
-    cout << (W * 10000 >= 25 * H * H ? "Yes" : "No") << endl;
+    int N;
+    cin >> N;
+    rep(i, N) { 
+        if ((i + 1) % 3 == 0) {
+            cout << "Fizz" << endl;
+        } else {
+            cout << i + 1 << endl;
+        }
+    }
 }
