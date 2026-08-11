@@ -1,56 +1,54 @@
-import { Separator } from "@/components/ui/separator"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-} from "@/components/ui/sidebar"
+"use client"
 
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { getLibrary } from "@/lib/data"
+import * as React from "react"
+import { SidebarInput } from "@/components/ui/sidebar"
+import { SidebarShell, SidebarLinkSection } from "@/components/ui/sidebar-shell"
+import { LibraryCategory } from "@/types/library"
 
-export function LibrarySidebar() {
-  const categories = getLibrary()
+export function LibrarySidebar({ categories }: { categories: LibraryCategory[] }) {
+  const [query, setQuery] = React.useState("")
+  const keyword = query.trim().toLowerCase()
+
+  const filteredCategories = categories
+    .map((category) => ({
+      ...category,
+      items: keyword
+        ? category.items.filter((item) =>
+            `${category.category} ${item.id} ${item.title}`.toLowerCase().includes(keyword),
+          )
+        : category.items,
+    }))
+    .filter((category) => category.items.length > 0)
 
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <h1 className="px-4 py-2 text-lg font-bold">ライブラリ</h1>
-      </SidebarHeader>
-      <Separator />
-      <SidebarContent>
-        <SidebarGroup />
-        <ScrollArea>
-          {categories.map((category) => (
-            <div key={category.category} className="px-4 py-2">
-              <h2 className="text-md py-2 font-semibold">{category.category}</h2>
-              <ul>
-                {category.items.map((item) => (
-                  <div key={item.id}>
-                    <li className="px-4 py-2 text-sm">
-                      <a
-                        className="text-blue-500 hover:underline"
-                        href={`#${category.category}-${item.id}`}
-                      >
-                        {item.title}
-                      </a>
-                    </li>
-                    <Separator className="my-2" />
-                  </div>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </ScrollArea>
-        <SidebarGroup />
-      </SidebarContent>
-      <Separator />
-      <SidebarFooter>
-        <p className="text-muted-foreground px-4 py-2 text-xs">
-          アルゴリズム・データ構造の実装メモ。
-        </p>
-      </SidebarFooter>
-    </Sidebar>
+    <SidebarShell
+      title="ライブラリ"
+      footerText="アルゴリズム・データ構造の実装メモ。"
+      toolbar={
+        <div className="px-2 py-2">
+          <SidebarInput
+            type="search"
+            placeholder="ライブラリを検索"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </div>
+      }
+    >
+      {filteredCategories.length === 0 ? (
+        <p className="text-muted-foreground px-4 py-2 text-sm">見つかりません。</p>
+      ) : (
+        filteredCategories.map((category) => (
+          <SidebarLinkSection
+            key={category.category}
+            title={category.category}
+            items={category.items.map((item) => ({
+              anchor: `${category.category}-${item.id}`,
+              label: item.title,
+            }))}
+          />
+        ))
+      )}
+    </SidebarShell>
   )
 }

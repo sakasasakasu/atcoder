@@ -1,12 +1,5 @@
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism"
+import { CodeAccordion } from "@/components/ui/code-accordion"
 import { Contest } from "@/types/contest"
 
 import ReactMarkdown from "react-markdown"
@@ -34,36 +27,7 @@ export function ContestCard({ contest }: { contest: Contest }) {
               </div>
 
               {/* C++コード（あれば） */}
-              <Accordion type="single" collapsible>
-                <AccordionItem value="cpp">
-                  <AccordionTrigger>コードを見る</AccordionTrigger>
-                  <AccordionContent>
-                    {problem.cpp && (
-                      <div className="mt-auto">
-                        <div className="overflow-hidden rounded-md text-xs">
-                          <SyntaxHighlighter
-                            language="cpp"
-                            style={oneDark}
-                            showLineNumbers={true}
-                            customStyle={{
-                              margin: 0,
-                              padding: "12px",
-                              maxHeight: "12rem",
-                            }}
-                            codeTagProps={{
-                              style: {
-                                fontFamily: "var(--font-mono)",
-                              },
-                            }}
-                          >
-                            {problem.cpp}
-                          </SyntaxHighlighter>
-                        </div>
-                      </div>
-                    )}
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+              {problem.cpp && <CodeAccordion code={problem.cpp} />}
             </div>
           ))}
         </div>

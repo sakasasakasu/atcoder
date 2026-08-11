@@ -1,56 +1,54 @@
-import { Separator } from "@/components/ui/separator"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarHeader,
-} from "@/components/ui/sidebar"
+"use client"
 
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { getContests } from "@/lib/data"
+import * as React from "react"
+import { SidebarInput } from "@/components/ui/sidebar"
+import { SidebarShell, SidebarLinkSection } from "@/components/ui/sidebar-shell"
+import { Contest } from "@/types/contest"
 
-export function AppSidebar() {
-  const contests = getContests()
+export function AppSidebar({ contests }: { contests: Contest[] }) {
+  const [query, setQuery] = React.useState("")
+  const keyword = query.trim().toLowerCase()
+
+  const filteredContests = contests
+    .map((contest) => ({
+      ...contest,
+      problems: keyword
+        ? contest.problems.filter((problem) =>
+            `${contest.abc} ${problem.id} ${problem.title}`.toLowerCase().includes(keyword),
+          )
+        : contest.problems,
+    }))
+    .filter((contest) => contest.problems.length > 0)
 
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <h1 className="px-4 py-2 text-lg font-bold">AtCoder精進</h1>
-      </SidebarHeader>
-      <Separator />
-      <SidebarContent>
-        <SidebarGroup />
-        <ScrollArea>
-          {contests.map((contest) => (
-            <div key={contest.abc} className="px-4 py-2">
-              <h2 className="text-md py-2 font-semibold">
-                {contest.abc === "典型" ? "典型" : contest.abc}
-              </h2>
-              <ul>
-                {contest.problems.map((problem) => (
-                  <div key={problem.id}>
-                    <li className="px-4 py-2 text-sm">
-                      <a
-                        className="text-blue-500 hover:underline"
-                        href={`#${contest.abc}-${problem.id}`}
-                      >
-                        {problem.title}
-                      </a>
-                    </li>
-                    <Separator className="my-2" />
-                  </div>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </ScrollArea>
-        <SidebarGroup />
-      </SidebarContent>
-      <Separator />
-      <SidebarFooter>
-        <p className="text-muted-foreground px-4 py-2 text-xs">なんかカッコいい文章を書く。</p>
-      </SidebarFooter>
-    </Sidebar>
+    <SidebarShell
+      title="AtCoder精進"
+      footerText="なんかカッコいい文章を書く。"
+      toolbar={
+        <div className="px-2 py-2">
+          <SidebarInput
+            type="search"
+            placeholder="問題を検索"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </div>
+      }
+    >
+      {filteredContests.length === 0 ? (
+        <p className="text-muted-foreground px-4 py-2 text-sm">見つかりません。</p>
+      ) : (
+        filteredContests.map((contest) => (
+          <SidebarLinkSection
+            key={contest.abc}
+            title={contest.abc}
+            items={contest.problems.map((problem) => ({
+              anchor: `${contest.abc}-${problem.id}`,
+              label: problem.title,
+            }))}
+          />
+        ))
+      )}
+    </SidebarShell>
   )
 }

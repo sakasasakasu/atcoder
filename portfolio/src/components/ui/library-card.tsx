@@ -1,12 +1,5 @@
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism"
+import { CodeAccordion } from "@/components/ui/code-accordion"
 import { LibraryCategory } from "@/types/library"
 
 import ReactMarkdown from "react-markdown"
@@ -33,36 +26,7 @@ export function LibraryCard({ category }: { category: LibraryCategory }) {
               </div>
 
               {/* 実装コード（あれば） */}
-              {item.cpp && (
-                <Accordion type="single" collapsible>
-                  <AccordionItem value="cpp">
-                    <AccordionTrigger>コードを見る</AccordionTrigger>
-                    <AccordionContent>
-                      <div className="mt-auto">
-                        <div className="overflow-hidden rounded-md text-xs">
-                          <SyntaxHighlighter
-                            language="cpp"
-                            style={oneDark}
-                            showLineNumbers={true}
-                            customStyle={{
-                              margin: 0,
-                              padding: "12px",
-                              maxHeight: "12rem",
-                            }}
-                            codeTagProps={{
-                              style: {
-                                fontFamily: "var(--font-mono)",
-                              },
-                            }}
-                          >
-                            {item.cpp}
-                          </SyntaxHighlighter>
-                        </div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              )}
+              {item.cpp && <CodeAccordion code={item.cpp} />}
             </div>
           ))}
         </div>

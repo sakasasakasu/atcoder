@@ -9,7 +9,7 @@ export default function Home() {
 
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar contests={contests} />
       <main className="flex-1 space-y-6 p-6">
         <SiteHeader />
         <div className="space-y-2">

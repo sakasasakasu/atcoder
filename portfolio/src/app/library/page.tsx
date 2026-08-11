@@ -9,7 +9,7 @@ export default function LibraryPage() {
 
   return (
     <SidebarProvider>
-      <LibrarySidebar />
+      <LibrarySidebar categories={categories} />
       <main className="flex-1 space-y-6 p-6">
         <SiteHeader />
         <div className="space-y-2">
