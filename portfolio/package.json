@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "generate:problems": "node scripts/main.js",
+    "generate:library": "node scripts/library.js",
     "new:abc": "node scripts/new-problem.js",
     "test": "node --test scripts/",
-    "predev": "npm run generate:problems",
+    "predev": "npm run generate:problems && npm run generate:library",
     "dev": "next dev",
-    "prebuild": "npm run generate:problems",
+    "prebuild": "npm run generate:problems && npm run generate:library",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
