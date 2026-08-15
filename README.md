@@ -42,6 +42,9 @@ npm run new:abc -- 471 --summary "今回は2完"
 
 # 解答コードの雛形も生成（デフォルトでは生成しない）
 npm run new:abc -- 471 --cpp
+
+# 俺が本当に使うもの
+npm run new:abc -- 471 --cpp --problems ABCD
 ```
 
 ### 生成されるファイル
