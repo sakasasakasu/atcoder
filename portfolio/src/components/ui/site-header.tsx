@@ -16,6 +16,12 @@ export function SiteHeader() {
         >
           ライブラリ
         </Link>
+        <Link
+          href="/solution"
+          className="text-muted-foreground hover:text-foreground hover:underline"
+        >
+          解法
+        </Link>
       </nav>
     </header>
   )

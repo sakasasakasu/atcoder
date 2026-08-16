@@ -28,7 +28,7 @@ jobs:
         working-directory: ./portfolio
 
       - name: Generate JSON Data
-        run: node scripts/main.js
+        run: node scripts/generate.js
         working-directory: ./portfolio
 
       - name: Build Next.js

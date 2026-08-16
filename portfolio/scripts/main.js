@@ -1,3 +1,5 @@
+// 既存の scripts/*.js と同様に CommonJS で実装するため require() を使用する
+/* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require("fs")
 const path = require("path")
 
@@ -15,8 +17,10 @@ const PROBLEM_SECTION_SPLIT = /(?=## [A-G]問題)/
  * @typedef {Object} Problem
  * @property {string} id
  * @property {string} title
- * @property {string} cpp
+ * @property {import("./common").CodeFile[]} codes
  * @property {string} content
+ * @property {import("./mentions").MentionRef[]} mentions
+ * @property {import("./mentions").MentionRef[]} referencedBy
  */
 
 /**
@@ -62,6 +66,29 @@ function listTypicalCppFiles(dir) {
 }
 
 /**
+ * ある問題（例: A）に紐づくコードファイル一覧を読み込む。
+ * `A.cpp`, `A1.cpp`, `A2.cpp` のような「問題ID で始まる .cpp」を全て拾う。
+ * @param {string} dir
+ * @param {string} problemId
+ * @returns {import("./common").CodeFile[]}
+ */
+function listProblemCodeFiles(dir, problemId) {
+  return fs
+    .readdirSync(dir)
+    .filter(
+      (file) =>
+        file.endsWith(CPP_FILE_EXTENSION) &&
+        file !== "main.cpp" &&
+        file.startsWith(problemId),
+    )
+    .sort()
+    .map((fileName) => ({
+      name: fileName.replace(CPP_FILE_EXTENSION_PATTERN, ""),
+      code: readTextFile(path.join(dir, fileName)),
+    }))
+}
+
+/**
  * ABC コンテストディレクトリ名を降順にソートする（既存仕様を維持）
  * @param {string[]} names
  * @returns {string[]}
@@ -86,16 +113,6 @@ function sortTypicalFilesAsc(names) {
  */
 function readTextFile(filePath) {
   return fs.readFileSync(filePath, "utf-8")
-}
-
-/**
- * ファイルが存在すれば読み込み、存在しなければ空文字を返す
- * @param {string} filePath
- * @returns {string}
- */
-function readTextFileIfExists(filePath) {
-  if (!fs.existsSync(filePath)) return ""
-  return readTextFile(filePath)
 }
 
 /**
@@ -139,8 +156,10 @@ function collectAbcContest(abcBaseDir, dirName) {
   const problems = parsed.sections.map((section) => ({
     id: section.id,
     title: `${section.id}問題`,
-    cpp: readTextFileIfExists(path.join(dirPath, `${section.id}${CPP_FILE_EXTENSION}`)),
+    codes: listProblemCodeFiles(dirPath, section.id),
     content: section.content,
+    mentions: [],
+    referencedBy: [],
   }))
 
   return {
@@ -162,8 +181,10 @@ function collectTypicalContest(typicalBaseDir) {
     return {
       id,
       title: `典型 ${id}`,
-      cpp: readTextFile(path.join(typicalBaseDir, fileName)),
+      codes: [{ name: id, code: readTextFile(path.join(typicalBaseDir, fileName)) }],
       content: "典型90問の解法メモです。",
+      mentions: [],
+      referencedBy: [],
     }
   })
 
@@ -218,9 +239,11 @@ if (require.main === module) {
 
 module.exports = {
   collectProblemsData,
+  listProblemCodeFiles,
   listSubdirectories,
   listTypicalCppFiles,
   parseReadme,
   sortAbcDirsDesc,
   sortTypicalFilesAsc,
+  writeProblemsJson,
 }

@@ -1,3 +1,5 @@
+// 既存の scripts/*.js と同様に CommonJS で実装するため require() を使用する
+/* eslint-disable @typescript-eslint/no-require-imports */
 const test = require("node:test")
 const assert = require("node:assert/strict")
 const fs = require("fs")
@@ -5,6 +7,7 @@ const os = require("os")
 const path = require("path")
 const {
   collectProblemsData,
+  listProblemCodeFiles,
   listSubdirectories,
   listTypicalCppFiles,
   parseReadme,
@@ -71,7 +74,14 @@ test("互換性: fixture の全体出力が既存 JSON 形式と一致する", (
       abc: "ABC003",
       summary: "2完",
       problems: [
-        { id: "A", title: "A問題", cpp: "int main() {}\n", content: "AC\n\n### 思った事" },
+        {
+          id: "A",
+          title: "A問題",
+          codes: [{ name: "A", code: "int main() {}\n" }],
+          content: "AC\n\n### 思った事",
+          mentions: [],
+          referencedBy: [],
+        },
       ],
     },
     {
@@ -83,8 +93,22 @@ test("互換性: fixture の全体出力が既存 JSON 形式と一致する", (
       abc: "典型",
       summary: "典型90問などの典型問題をまとめたセクションです。",
       problems: [
-        { id: "002", title: "典型 002", cpp: "code2\n", content: "典型90問の解法メモです。" },
-        { id: "010", title: "典型 010", cpp: "code10\n", content: "典型90問の解法メモです。" },
+        {
+          id: "002",
+          title: "典型 002",
+          codes: [{ name: "002", code: "code2\n" }],
+          content: "典型90問の解法メモです。",
+          mentions: [],
+          referencedBy: [],
+        },
+        {
+          id: "010",
+          title: "典型 010",
+          codes: [{ name: "010", code: "code10\n" }],
+          content: "典型90問の解法メモです。",
+          mentions: [],
+          referencedBy: [],
+        },
       ],
     },
   ]
@@ -127,12 +151,40 @@ test("README.md はあるがセクションがない場合は problems: [] の c
   assert.deepEqual(results[0].problems, [])
 })
 
-test("cpp ファイルがない問題は cpp が空文字になる", (t) => {
+test("cpp ファイルがない問題は codes が空配列になる", (t) => {
   const fixture = makeFixtureDir(t)
   writeProblemFile(fixture, "ABC001", "README.md", "# ABC001\n\n## A問題\n\nAC\n")
 
   const results = collectProblemsData(fixture)
-  assert.equal(results[0].problems[0].cpp, "")
+  assert.deepEqual(results[0].problems[0].codes, [])
+})
+
+test("1 問題に複数のコードがある場合は全て codes に含まれる", (t) => {
+  const fixture = makeFixtureDir(t)
+  writeProblemFile(fixture, "ABC001", "README.md", "# ABC001\n\n## A問題\n\nAC\n")
+  writeProblemFile(fixture, "ABC001", "A.cpp", "codeA\n")
+  writeProblemFile(fixture, "ABC001", "A1.cpp", "codeA1\n")
+  // 別問題のコード（B）は A には紐づかない
+  writeProblemFile(fixture, "ABC001", "B.cpp", "codeB\n")
+
+  const results = collectProblemsData(fixture)
+  assert.deepEqual(results[0].problems[0].codes, [
+    { name: "A", code: "codeA\n" },
+    { name: "A1", code: "codeA1\n" },
+  ])
+})
+
+test("listProblemCodeFiles: 問題ID で始まる .cpp を名前昇順で返す", (t) => {
+  const fixture = makeFixtureDir(t)
+  fs.writeFileSync(path.join(fixture, "A1.cpp"), "codeA1\n")
+  fs.writeFileSync(path.join(fixture, "A.cpp"), "codeA\n")
+  fs.writeFileSync(path.join(fixture, "B.cpp"), "codeB\n")
+  fs.writeFileSync(path.join(fixture, "main.cpp"), "scratch\n")
+
+  assert.deepEqual(listProblemCodeFiles(fixture, "A"), [
+    { name: "A", code: "codeA\n" },
+    { name: "A1", code: "codeA1\n" },
+  ])
 })
 
 test("典型問題は数値昇順で main.cpp とディレクトリを除外する", (t) => {

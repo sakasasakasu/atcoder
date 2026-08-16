@@ -3,13 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "generate": "node scripts/generate.js",
     "generate:problems": "node scripts/main.js",
     "generate:library": "node scripts/library.js",
+    "generate:solutions": "node scripts/solutions.js",
     "new:abc": "node scripts/new-problem.js",
-    "test": "node --test scripts/",
-    "predev": "npm run generate:problems && npm run generate:library",
+    "test": "node --test scripts/*.test.js",
+    "predev": "npm run generate",
     "dev": "next dev",
-    "prebuild": "npm run generate:problems && npm run generate:library",
+    "prebuild": "npm run generate",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

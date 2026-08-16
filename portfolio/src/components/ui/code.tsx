@@ -13,12 +13,11 @@ interface CodeProps extends React.ComponentPropsWithoutRef<"div"> {
 
 function Code({ code, language = "text", className, ...props }: CodeProps) {
   return (
-    <div className={cn("rounded-sm bg-stone-950", className)} {...props}>
+    <div className={cn("rounded-sm bg-stone-950 w-max min-w-full", className)} {...props}>
       <SyntaxHighlighter
         language={language}
         style={vscDarkPlus}
         showLineNumbers
-        wrapLongLines
         customStyle={{ margin: 0, padding: "1rem", background: "transparent" }}
         lineNumberStyle={{ fontSize: "0.78rem", minWidth: "2rem", paddingRight: "0.75rem" }}
       >

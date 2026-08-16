@@ -2,6 +2,7 @@ import fs from "fs"
 import path from "path"
 import { Contest } from "@/types/contest"
 import { LibraryCategory } from "@/types/library"
+import { Solution } from "@/types/solution"
 
 export function getContests(): Contest[] {
   const jsonPath = path.join(process.cwd(), "public", "problems.json")
@@ -17,4 +18,12 @@ export function getLibrary(): LibraryCategory[] {
     return []
   }
   return JSON.parse(fs.readFileSync(jsonPath, "utf8")) as LibraryCategory[]
+}
+
+export function getSolutions(): Solution[] {
+  const jsonPath = path.join(process.cwd(), "public", "solutions.json")
+  if (!fs.existsSync(jsonPath)) {
+    return []
+  }
+  return JSON.parse(fs.readFileSync(jsonPath, "utf8")) as Solution[]
 }

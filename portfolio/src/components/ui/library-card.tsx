@@ -1,5 +1,5 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
-import { CodeAccordion } from "@/components/ui/code-accordion"
+import { CodeDialog } from "@/components/ui/code-dialog"
 import { LibraryCategory } from "@/types/library"
 
 import ReactMarkdown from "react-markdown"
@@ -26,7 +26,7 @@ export function LibraryCard({ category }: { category: LibraryCategory }) {
               </div>
 
               {/* 実装コード（あれば） */}
-              {item.cpp && <CodeAccordion code={item.cpp} />}
+              {item.cpp && <CodeDialog code={item.cpp} label={item.id} />}
             </div>
           ))}
         </div>

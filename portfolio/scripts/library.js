@@ -119,4 +119,5 @@ module.exports = {
   listMarkdownFiles,
   listSubdirectories,
   sortNamesAsc,
+  writeLibraryJson,
 }

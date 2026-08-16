@@ -293,8 +293,8 @@ test("互換性: 生成した README が collectProblemsData でパースでき�
     contest.problems.map((problem) => problem.id),
     ["A", "B"],
   )
-  assert.equal(
-    contest.problems[0].cpp,
-    fs.readFileSync(path.join(baseRoot, "ABC", "ABC471", "A.cpp"), "utf8"),
+  assert.deepEqual(
+    contest.problems[0].codes,
+    [{ name: "A", code: fs.readFileSync(path.join(baseRoot, "ABC", "ABC471", "A.cpp"), "utf8") }],
   )
 })
