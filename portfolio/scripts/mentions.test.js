@@ -17,6 +17,7 @@ function makeProblems() {
     {
       abc: "ABC471",
       summary: "2完",
+      flat: false,
       problems: [
         {
           id: "A",
@@ -39,6 +40,7 @@ function makeProblems() {
     {
       abc: "典型",
       summary: "",
+      flat: true,
       problems: [
         {
           id: "002",
@@ -56,20 +58,25 @@ function makeProblems() {
 function makeSolutions() {
   return [
     {
-      id: "ダイクストラ法",
-      title: "ダイクストラ法",
-      content: "[[ABC471-A]] で使った",
-      codes: [],
-      mentions: [],
-      referencedBy: [],
-    },
-    {
-      id: "しゃくとり法",
-      title: "しゃくとり法",
-      content: "区間の伸縮",
-      codes: [],
-      mentions: [],
-      referencedBy: [],
+      category: "典型テクニック",
+      items: [
+        {
+          id: "ダイクストラ法",
+          title: "ダイクストラ法",
+          content: "[[ABC471-A]] で使った",
+          codes: [],
+          mentions: [],
+          referencedBy: [],
+        },
+        {
+          id: "しゃくとり法",
+          title: "しゃくとり法",
+          content: "区間の伸縮",
+          codes: [],
+          mentions: [],
+          referencedBy: [],
+        },
+      ],
     },
   ]
 }
@@ -162,7 +169,7 @@ test("applyCrossReferences: 前方リンクとバックリンクが相互に付�
   ])
 
   // 解法側: ABC471-A への言及が解法ページ基準のリンクになる
-  const dijkstra = result.solutions[0]
+  const dijkstra = result.solutions[0].items[0]
   assert.ok(dijkstra.content.includes("[ABC471 A問題](/atcoder/#ABC471-A)"))
   assert.deepEqual(dijkstra.mentions, [
     { id: "ABC471-A", label: "ABC471 A問題", href: "/atcoder/#ABC471-A" },
@@ -178,8 +185,8 @@ test("applyCrossReferences: 前方リンクとバックリンクが相互に付�
 
   // 言及していない側は空のまま
   assert.deepEqual(result.contests[0].problems[1].referencedBy, [])
-  assert.deepEqual(result.solutions[1].referencedBy, [])
-  assert.deepEqual(result.solutions[1].mentions, [])
+  assert.deepEqual(result.solutions[0].items[1].referencedBy, [])
+  assert.deepEqual(result.solutions[0].items[1].mentions, [])
 })
 
 test("applyCrossReferences: 未解決の言及を unresolved で報告し、リンク化しない", () => {

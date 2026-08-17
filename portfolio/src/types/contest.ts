@@ -14,5 +14,7 @@ export interface Problem {
 export interface Contest {
   abc: string
   summary: string
+  /** 典型形式（直下の .cpp = 1 問題）なら true */
+  flat: boolean
   problems: Problem[]
 }

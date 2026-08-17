@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Noto_Sans_JP, Noto_Sans_Mono } from "next/font/google"
 import "./globals.css"
+import "katex/dist/katex.min.css"
 
 const notoSansJP = Noto_Sans_JP({
   variable: "--font-sans",

@@ -3,8 +3,6 @@
 const fs = require("fs")
 const path = require("path")
 
-const ABC_DIR_NAME = "ABC"
-const TYPICAL_DIR_NAME = "典型"
 const README_FILE_NAME = "README.md"
 const CPP_FILE_EXTENSION = ".cpp"
 const CPP_FILE_EXTENSION_PATTERN = /\.cpp$/
@@ -27,6 +25,7 @@ const PROBLEM_SECTION_SPLIT = /(?=## [A-G]問題)/
  * @typedef {Object} Contest
  * @property {string} abc
  * @property {string} summary
+ * @property {boolean} flat 典型形式（直下の .cpp = 1 問題）なら true
  * @property {Problem[]} problems
  */
 
@@ -89,11 +88,20 @@ function listProblemCodeFiles(dir, problemId) {
 }
 
 /**
- * ABC コンテストディレクトリ名を降順にソートする（既存仕様を維持）
+ * 文字列を日本語ロケールの昇順にソートする
  * @param {string[]} names
  * @returns {string[]}
  */
-function sortAbcDirsDesc(names) {
+function sortNamesAsc(names) {
+  return [...names].sort((a, b) => a.localeCompare(b, "ja"))
+}
+
+/**
+ * コンテストディレクトリ名を降順にソートする（例: ABC471 → ABC470）
+ * @param {string[]} names
+ * @returns {string[]}
+ */
+function sortContestDirsDesc(names) {
   return [...names].sort((a, b) => (a > b ? -1 : 1))
 }
 
@@ -141,14 +149,15 @@ function parseReadme(readmeContent) {
 }
 
 /**
- * ABC コンテスト 1 件分のデータを読み込む。
+ * コンテスト 1 件分のデータを読み込む。
+ * セクション直下のサブディレクトリ（例: ABC471）の README.md をパースする。
  * README.md がない場合は null を返す（既存仕様: 静かにスキップ）
- * @param {string} abcBaseDir
+ * @param {string} sectionDir
  * @param {string} dirName
  * @returns {Contest | null}
  */
-function collectAbcContest(abcBaseDir, dirName) {
-  const dirPath = path.join(abcBaseDir, dirName)
+function collectContest(sectionDir, dirName) {
+  const dirPath = path.join(sectionDir, dirName)
   const readmePath = path.join(dirPath, README_FILE_NAME)
   if (!fs.existsSync(readmePath)) return null
 
@@ -165,55 +174,68 @@ function collectAbcContest(abcBaseDir, dirName) {
   return {
     abc: dirName,
     summary: parsed.summary,
+    flat: false,
     problems,
   }
 }
 
 /**
- * 典型問題 1 セクション分のデータを読み込む
- * @param {string} typicalBaseDir
+ * 典型形式セクション 1 件分のデータを読み込む。
+ * セクション直下の .cpp ファイルを 1 ファイル = 1 問題として扱う。
+ * @param {string} sectionDir
+ * @param {string} sectionName
  * @returns {Contest}
  */
-function collectTypicalContest(typicalBaseDir) {
-  const cppFiles = sortTypicalFilesAsc(listTypicalCppFiles(typicalBaseDir))
+function collectFlatSection(sectionDir, sectionName) {
+  const cppFiles = sortTypicalFilesAsc(listTypicalCppFiles(sectionDir))
   const problems = cppFiles.map((fileName) => {
     const id = fileName.replace(CPP_FILE_EXTENSION_PATTERN, "")
     return {
       id,
-      title: `典型 ${id}`,
-      codes: [{ name: id, code: readTextFile(path.join(typicalBaseDir, fileName)) }],
-      content: "典型90問の解法メモです。",
+      title: `${sectionName} ${id}`,
+      codes: [{ name: id, code: readTextFile(path.join(sectionDir, fileName)) }],
+      content: `${sectionName}の問題メモです。`,
       mentions: [],
       referencedBy: [],
     }
   })
 
   return {
-    abc: TYPICAL_DIR_NAME,
-    summary: "典型90問などの典型問題をまとめたセクションです。",
+    abc: sectionName,
+    summary: `${sectionName}の問題をまとめたセクションです。`,
+    flat: true,
     problems,
   }
 }
 
 /**
- * problems/ 直下のディレクトリを一覧表示用の JSON データに変換する
+ * problems/ 直下のセクションを一覧表示用の JSON データに変換する。
+ * - サブディレクトリがあるセクション → コンテスト形式（各サブディレクトリ = 1 コンテスト）
+ * - 直下に .cpp があるセクション → 典型形式（1 ファイル = 1 問題）
  * @param {string} [baseRoot]
  * @returns {Contest[]}
  */
 function collectProblemsData(baseRoot = path.join(__dirname, "..", "..", "problems")) {
   const results = []
 
-  const abcBaseDir = path.join(baseRoot, ABC_DIR_NAME)
-  if (fs.existsSync(abcBaseDir)) {
-    for (const dirName of sortAbcDirsDesc(listSubdirectories(abcBaseDir))) {
-      const contest = collectAbcContest(abcBaseDir, dirName)
-      if (contest) results.push(contest)
-    }
-  }
+  for (const sectionName of sortNamesAsc(listSubdirectories(baseRoot))) {
+    const sectionDir = path.join(baseRoot, sectionName)
+    // README.md を持つサブディレクトリだけをコンテストと判定する
+    // （典型形式のセクション内に無関係なサブディレクトリがあっても壊れないように）
+    const contestDirs = listSubdirectories(sectionDir).filter((dirName) =>
+      fs.existsSync(path.join(sectionDir, dirName, README_FILE_NAME)),
+    )
 
-  const typicalBaseDir = path.join(baseRoot, TYPICAL_DIR_NAME)
-  if (fs.existsSync(typicalBaseDir)) {
-    results.push(collectTypicalContest(typicalBaseDir))
+    if (contestDirs.length > 0) {
+      // コンテスト形式
+      for (const contestName of sortContestDirsDesc(contestDirs)) {
+        const contest = collectContest(sectionDir, contestName)
+        if (contest) results.push(contest)
+      }
+    } else if (listTypicalCppFiles(sectionDir).length > 0) {
+      // 典型形式
+      results.push(collectFlatSection(sectionDir, sectionName))
+    }
   }
 
   return results
@@ -238,12 +260,15 @@ if (require.main === module) {
 }
 
 module.exports = {
+  collectContest,
+  collectFlatSection,
   collectProblemsData,
   listProblemCodeFiles,
   listSubdirectories,
   listTypicalCppFiles,
   parseReadme,
-  sortAbcDirsDesc,
+  sortContestDirsDesc,
+  sortNamesAsc,
   sortTypicalFilesAsc,
   writeProblemsJson,
 }

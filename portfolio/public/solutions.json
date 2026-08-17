@@ -1,16 +1,26 @@
 [
   {
-    "id": "しゃくとり法",
-    "title": "しゃくとり法（サンプル）",
-    "content": "区間の伸縮で計算量を落とす典型テクニック。\n\n例: [ABC471 A問題](/atcoder/#ABC471-A) のように書くと、この部分が問題へのリンクになり、ABC471 の A問題カードに「解法: しゃくとり法」タグが自動で付きます（このファイルは動作確認用のサンプルです。不要なら削除してください）。",
-    "codes": [],
-    "mentions": [
+    "category": "典型テクニック",
+    "items": [
       {
-        "id": "ABC471-A",
-        "label": "ABC471 A問題",
-        "href": "/atcoder/#ABC471-A"
+        "id": "辞書順列挙（配列の並び替え）",
+        "title": "辞書順列挙（配列の並び替え）",
+        "content": "配列を並び替えることで取りうる全ての配列を**辞書順で**列挙する\n\nそのためにはdo-while文内で`next_permutation()`を用いる。\n\nコンテストでは[ABC468 C問題](/atcoder/#ABC468-C)で用いられた。",
+        "codes": [
+          {
+            "name": "辞書順列挙（配列の並び替え）",
+            "code": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n  vector<int> v = {1, 2, 3};\n\n  do {\n    for (int i : v) {\n      cout << i << \" \";\n    }\n    cout << endl;\n\n  } while (std::next_permutation(v.begin(), v.end()));\n}\n\n/*【出力】\n1 2 3\n1 3 2\n2 1 3\n2 3 1\n3 1 2\n3 2 1\n*/\n"
+          }
+        ],
+        "mentions": [
+          {
+            "id": "ABC468-C",
+            "label": "ABC468 C問題",
+            "href": "/atcoder/#ABC468-C"
+          }
+        ],
+        "referencedBy": []
       }
-    ],
-    "referencedBy": []
+    ]
   }
 ]

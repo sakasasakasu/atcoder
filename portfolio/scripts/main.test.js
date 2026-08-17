@@ -11,7 +11,8 @@ const {
   listSubdirectories,
   listTypicalCppFiles,
   parseReadme,
-  sortAbcDirsDesc,
+  sortContestDirsDesc,
+  sortNamesAsc,
   sortTypicalFilesAsc,
 } = require("./main")
 
@@ -73,6 +74,7 @@ test("互換性: fixture の全体出力が既存 JSON 形式と一致する", (
     {
       abc: "ABC003",
       summary: "2完",
+      flat: false,
       problems: [
         {
           id: "A",
@@ -87,17 +89,19 @@ test("互換性: fixture の全体出力が既存 JSON 形式と一致する", (
     {
       abc: "ABC002",
       summary: "感想のみ",
+      flat: false,
       problems: [],
     },
     {
       abc: "典型",
-      summary: "典型90問などの典型問題をまとめたセクションです。",
+      summary: "典型の問題をまとめたセクションです。",
+      flat: true,
       problems: [
         {
           id: "002",
           title: "典型 002",
           codes: [{ name: "002", code: "code2\n" }],
-          content: "典型90問の解法メモです。",
+          content: "典型の問題メモです。",
           mentions: [],
           referencedBy: [],
         },
@@ -105,7 +109,7 @@ test("互換性: fixture の全体出力が既存 JSON 形式と一致する", (
           id: "010",
           title: "典型 010",
           codes: [{ name: "010", code: "code10\n" }],
-          content: "典型90問の解法メモです。",
+          content: "典型の問題メモです。",
           mentions: [],
           referencedBy: [],
         },
@@ -204,6 +208,58 @@ test("典型問題は数値昇順で main.cpp とディレクトリを除外す�
   )
 })
 
+test("コンテスト形式: ABC 以外のセクションも自動で拾う", (t) => {
+  const fixture = makeFixtureDir(t)
+  const arcDir = path.join(fixture, "ARC", "ARC180")
+  fs.mkdirSync(arcDir, { recursive: true })
+  fs.writeFileSync(path.join(arcDir, "README.md"), "# ARC180\n\n1完\n\n## A問題\n\nAC\n", "utf8")
+  fs.writeFileSync(path.join(arcDir, "A.cpp"), "int main() {}\n", "utf8")
+
+  const results = collectProblemsData(fixture)
+  assert.equal(results.length, 1)
+  const contest = results[0]
+  assert.equal(contest.abc, "ARC180")
+  assert.equal(contest.flat, false)
+  assert.equal(contest.problems[0].id, "A")
+  assert.equal(contest.problems[0].title, "A問題")
+})
+
+test("典型形式: 任意のセクション名でも .cpp を 1 ファイル = 1 問題で拾う", (t) => {
+  const fixture = makeFixtureDir(t)
+  const dpDir = path.join(fixture, "DP")
+  fs.mkdirSync(dpDir, { recursive: true })
+  fs.writeFileSync(path.join(dpDir, "001.cpp"), "code1\n", "utf8")
+  fs.writeFileSync(path.join(dpDir, "010.cpp"), "code10\n", "utf8")
+
+  const results = collectProblemsData(fixture)
+  assert.equal(results.length, 1)
+  const contest = results[0]
+  assert.equal(contest.abc, "DP")
+  assert.equal(contest.flat, true)
+  assert.deepEqual(
+    contest.problems.map((problem) => problem.title),
+    ["DP 001", "DP 010"],
+  )
+})
+
+test("典型形式: README のないサブディレクトリがあっても flat として拾う", (t) => {
+  const fixture = makeFixtureDir(t)
+  const typicalDir = path.join(fixture, "典型")
+  fs.mkdirSync(typicalDir, { recursive: true })
+  fs.writeFileSync(path.join(typicalDir, "002.cpp"), "code2\n", "utf8")
+  // README のないサブディレクトリはコンテストとは見なされない
+  fs.mkdirSync(path.join(typicalDir, "作業メモ"), { recursive: true })
+
+  const results = collectProblemsData(fixture)
+  assert.equal(results.length, 1)
+  assert.equal(results[0].abc, "典型")
+  assert.equal(results[0].flat, true)
+  assert.deepEqual(
+    results[0].problems.map((problem) => problem.id),
+    ["002"],
+  )
+})
+
 test("空の problems/ ルートでは空配列を返す", (t) => {
   const fixture = makeFixtureDir(t)
   assert.deepEqual(collectProblemsData(fixture), [])
@@ -242,12 +298,22 @@ test("parseReadme: 問題セクションの body から見出しが除去され�
   assert.deepEqual(parsed.sections, [{ id: "A", content: "AC\n\n### 思った事" }])
 })
 
-test("sortAbcDirsDesc: 降順にソートし入力配列を破壊しない", () => {
-  assert.deepEqual(sortAbcDirsDesc(["ABC100", "ABC900", "ABC050"]), ["ABC900", "ABC100", "ABC050"])
-  assert.deepEqual(sortAbcDirsDesc(["ABC000", "ABC999"]), ["ABC999", "ABC000"])
+test("sortContestDirsDesc: 降順にソートし入力配列を破壊しない", () => {
+  assert.deepEqual(sortContestDirsDesc(["ABC100", "ABC900", "ABC050"]), [
+    "ABC900",
+    "ABC100",
+    "ABC050",
+  ])
+  assert.deepEqual(sortContestDirsDesc(["ABC000", "ABC999"]), ["ABC999", "ABC000"])
   const input = ["ABC100", "ABC900"]
-  sortAbcDirsDesc(input)
+  sortContestDirsDesc(input)
   assert.deepEqual(input, ["ABC100", "ABC900"])
+})
+
+test("sortNamesAsc: 日本語ロケールの昇順にソートする", () => {
+  assert.deepEqual(sortNamesAsc(["う", "あ", "い"]), ["あ", "い", "う"])
+  // ラテン文字（ABC など）は日本語より先に来る
+  assert.deepEqual(sortNamesAsc(["典型", "ABC", "ARC"]), ["ABC", "ARC", "典型"])
 })
 
 test("sortTypicalFilesAsc: 数値昇順にソートする", () => {

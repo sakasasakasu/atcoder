@@ -3,9 +3,9 @@
 import * as React from "react"
 import { SidebarInput } from "@/components/ui/sidebar"
 import { SidebarShell, SidebarLinkSection } from "@/components/ui/sidebar-shell"
-import { SolutionCategory } from "@/types/solution"
+import { TipCategory } from "@/types/tip"
 
-export function SolutionSidebar({ categories }: { categories: SolutionCategory[] }) {
+export function TipsSidebar({ categories }: { categories: TipCategory[] }) {
   const [query, setQuery] = React.useState("")
   const keyword = query.trim().toLowerCase()
 
@@ -13,10 +13,8 @@ export function SolutionSidebar({ categories }: { categories: SolutionCategory[]
     .map((category) => ({
       ...category,
       items: keyword
-        ? category.items.filter((solution) =>
-            `${category.category} ${solution.id} ${solution.title}`
-              .toLowerCase()
-              .includes(keyword),
+        ? category.items.filter((tip) =>
+            `${category.category} ${tip.id} ${tip.title}`.toLowerCase().includes(keyword),
           )
         : category.items,
     }))
@@ -24,13 +22,13 @@ export function SolutionSidebar({ categories }: { categories: SolutionCategory[]
 
   return (
     <SidebarShell
-      title="解法"
-      footerText="問題の解法メモ。"
+      title="Tips"
+      footerText="小ネタ・コツ集。"
       toolbar={
         <div className="px-2 py-2">
           <SidebarInput
             type="search"
-            placeholder="解法を検索"
+            placeholder="Tips を検索"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
@@ -44,9 +42,9 @@ export function SolutionSidebar({ categories }: { categories: SolutionCategory[]
           <SidebarLinkSection
             key={category.category}
             title={category.category}
-            items={category.items.map((solution) => ({
-              anchor: solution.id,
-              label: solution.title,
+            items={category.items.map((tip) => ({
+              anchor: tip.id,
+              label: tip.title,
             }))}
           />
         ))
@@ -54,4 +52,3 @@ export function SolutionSidebar({ categories }: { categories: SolutionCategory[]
     </SidebarShell>
   )
 }
-

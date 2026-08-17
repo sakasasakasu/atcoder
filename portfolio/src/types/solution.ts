@@ -10,3 +10,9 @@ export interface Solution {
   /** この解法を言及している問題（バックリンク＝タグ） */
   referencedBy: MentionRef[]
 }
+
+export interface SolutionCategory {
+  category: string
+  items: Solution[]
+}
+

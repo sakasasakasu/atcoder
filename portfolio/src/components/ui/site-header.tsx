@@ -22,6 +22,12 @@ export function SiteHeader() {
         >
           解法
         </Link>
+        <Link
+          href="/tips"
+          className="text-muted-foreground hover:text-foreground hover:underline"
+        >
+          Tips
+        </Link>
       </nav>
     </header>
   )

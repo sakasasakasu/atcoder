@@ -1,8 +1,7 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { CodeDialog } from "@/components/ui/code-dialog"
+import { Markdown } from "@/components/ui/markdown"
 import { LibraryCategory } from "@/types/library"
-
-import ReactMarkdown from "react-markdown"
 
 export function LibraryCard({ category }: { category: LibraryCategory }) {
   return (
@@ -22,7 +21,7 @@ export function LibraryCard({ category }: { category: LibraryCategory }) {
 
               {/* 説明（markdown） */}
               <div className="prose text-muted-foreground h-[200px] overflow-y-auto text-sm">
-                <ReactMarkdown>{item.content}</ReactMarkdown>
+                <Markdown>{item.content}</Markdown>
               </div>
 
               {/* 実装コード（あれば） */}

@@ -8,8 +8,6 @@
  * 未解決の言及はそのまま残し、`unresolved` として報告する。
  */
 
-const TYPICAL_DIR_NAME = "典型"
-
 // next.config.ts の basePath と一致させること。
 // 相対リンクだと http://localhost:3000/atcoder（末尾スラッシュなし）からの解決がずれるため、
 // ページをまたぐ言及リンクは basePath 込みの絶対パスにする。
@@ -70,8 +68,8 @@ function buildProblemIndex(contests) {
   for (const contest of contests) {
     for (const problem of contest.problems) {
       const id = `${contest.abc}-${problem.id}`
-      const label =
-        contest.abc === TYPICAL_DIR_NAME ? problem.title : `${contest.abc} ${problem.title}`
+      // 典型形式（flat）は title にセクション名が含まれるため title をそのまま使う
+      const label = contest.flat ? problem.title : `${contest.abc} ${problem.title}`
       map.set(id, { label, anchor: id })
     }
   }
@@ -79,14 +77,17 @@ function buildProblemIndex(contests) {
 }
 
 /**
- * 解法一覧から「解法ID → 表示情報」のマップを構築する
- * @param {import("./solutions").Solution[]} solutions
+ * 解法一覧（カテゴリ配下）から「解法ID → 表示情報」のマップを構築する。
+ * 解法 ID はファイル名で、カテゴリをまたいで一意である前提
+ * @param {import("./solutions").SolutionCategory[]} categories
  * @returns {Map<string, { label: string; anchor: string }>}
  */
-function buildSolutionIndex(solutions) {
+function buildSolutionIndex(categories) {
   const map = new Map()
-  for (const solution of solutions) {
-    map.set(solution.id, { label: solution.title, anchor: solution.id })
+  for (const category of categories) {
+    for (const solution of category.items) {
+      map.set(solution.id, { label: solution.title, anchor: solution.id })
+    }
   }
   return map
 }
@@ -162,7 +163,7 @@ function resolveMentionsInContent(content, index, sourceKind) {
  * 全言及（問題→対象 / 解法→対象）から、対象 ID ごとの参照一覧（バックリンク）を集計する。
  * バックリンクは表示先ページ（sourceKind）基準で、言及元へのリンクとして再解決する。
  * @param {import("./main").Contest[]} contests
- * @param {import("./solutions").Solution[]} solutions
+ * @param {import("./solutions").SolutionCategory[]} solutions
  * @param {{ problems: Map, solutions: Map }} index
  * @param {"problem" | "solution"} sourceKind
  * @returns {Map<string, { id: string; label: string; href: string }[]>}
@@ -176,11 +177,13 @@ function collectBacklinks(contests, solutions, index, sourceKind) {
   }
 
   // 解法が言及している対象 → 対象側に「この解法が言及している」タグ
-  for (const solution of solutions) {
-    const sourceRef = resolveMention(solution.id, index, sourceKind)
-    if (!sourceRef) continue
-    for (const mention of solution.mentions) {
-      addBacklink(mention.id, sourceRef)
+  for (const category of solutions) {
+    for (const solution of category.items) {
+      const sourceRef = resolveMention(solution.id, index, sourceKind)
+      if (!sourceRef) continue
+      for (const mention of solution.mentions) {
+        addBacklink(mention.id, sourceRef)
+      }
     }
   }
 
@@ -202,8 +205,8 @@ function collectBacklinks(contests, solutions, index, sourceKind) {
  * 問題と解法の相互参照（前方リンク + バックリンクタグ）を計算し、各オブジェクトを書き換える。
  * `.md` は編集せず、返り値の content だけをリンク済みに変換する。
  * @param {import("./main").Contest[]} contests
- * @param {import("./solutions").Solution[]} solutions
- * @returns {{ contests: import("./main").Contest[], solutions: import("./solutions").Solution[], unresolved: string[] }}
+ * @param {import("./solutions").SolutionCategory[]} solutions
+ * @returns {{ contests: import("./main").Contest[], solutions: import("./solutions").SolutionCategory[], unresolved: string[] }}
  */
 function applyCrossReferences(contests, solutions) {
   const index = {
@@ -223,11 +226,13 @@ function applyCrossReferences(contests, solutions) {
   }
 
   // 解法側: content の [[...]] を解決（解法ページ表示）
-  for (const solution of solutions) {
-    const result = resolveMentionsInContent(solution.content, index, "solution")
-    solution.content = result.content
-    solution.mentions = result.mentions
-    unresolved.push(...result.unresolved)
+  for (const category of solutions) {
+    for (const solution of category.items) {
+      const result = resolveMentionsInContent(solution.content, index, "solution")
+      solution.content = result.content
+      solution.mentions = result.mentions
+      unresolved.push(...result.unresolved)
+    }
   }
 
   // バックリンク（タグ）を計算
@@ -241,8 +246,10 @@ function applyCrossReferences(contests, solutions) {
       problem.referencedBy = problemBacklinks.get(`${contest.abc}-${problem.id}`) || []
     }
   }
-  for (const solution of solutions) {
-    solution.referencedBy = solutionBacklinks.get(solution.id) || []
+  for (const category of solutions) {
+    for (const solution of category.items) {
+      solution.referencedBy = solutionBacklinks.get(solution.id) || []
+    }
   }
 
   return { contests, solutions, unresolved }

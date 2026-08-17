@@ -2,6 +2,7 @@
   {
     "abc": "ABC471",
     "summary": "わるくない、まずまずといった感じ。",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -14,13 +15,7 @@
         ],
         "content": "AC\n\n### 思った事\n\n移項がよくわからず、1WAしてしまった。",
         "mentions": [],
-        "referencedBy": [
-          {
-            "id": "しゃくとり法",
-            "label": "しゃくとり法（サンプル）",
-            "href": "/atcoder/solution#しゃくとり法"
-          }
-        ]
+        "referencedBy": []
       },
       {
         "id": "B",
@@ -57,6 +52,7 @@
   {
     "abc": "ABC470",
     "summary": "2完",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -115,6 +111,7 @@
   {
     "abc": "ABC469",
     "summary": "本当に下ぶれた\n\nパソコンが壊れていつもの開発環境が用意できず、ブラウザのCPPエディタで何とかしたので。",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -134,6 +131,7 @@
   {
     "abc": "ABC468",
     "summary": "辞書順のやつ、おもしろい。",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -172,13 +170,20 @@
         ],
         "content": "AC\n\n### 思った事\n\n辞書順の列挙がなぁと。\n\ndo while文を人生で初めて使ったし（おそらく）よい勉強になった。\n\nnext_permutationという関数の存在を知らなかったので、検索の有用性を再認識した。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [
+          {
+            "id": "辞書順列挙（配列の並び替え）",
+            "label": "辞書順列挙（配列の並び替え）",
+            "href": "/atcoder/solution#辞書順列挙（配列の並び替え）"
+          }
+        ]
       }
     ]
   },
   {
     "abc": "ABC467",
     "summary": "数学辞めて欲しい。",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -232,6 +237,7 @@
   {
     "abc": "ABC466",
     "summary": "インタラクティブって、なんだ。",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -277,6 +283,7 @@
   {
     "abc": "ABC464",
     "summary": "精進不足が目立ってきた。\n\nあと、違うゲームにドはまりしてしまったため。こう。",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -317,6 +324,7 @@
   {
     "abc": "ABC463",
     "summary": "A問題2WA最悪",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -362,6 +370,7 @@
   {
     "abc": "ABC462",
     "summary": "わるくない。",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -407,6 +416,7 @@
   {
     "abc": "ABC461",
     "summary": "C問題意味が分からない。",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -452,6 +462,7 @@
   {
     "abc": "ABC460",
     "summary": "覚えていない。",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -484,6 +495,7 @@
   {
     "abc": "ABC458",
     "summary": "D問題の実装に手こずった",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -542,6 +554,7 @@
   {
     "abc": "ABC457",
     "summary": "上振れでした。",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -600,6 +613,7 @@
   {
     "abc": "ABC456",
     "summary": "上振れでした。",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -658,6 +672,7 @@
   {
     "abc": "ABC455",
     "summary": "悔いの残る一戦。\n\n夜ご飯を食べすぎてしまったため、眠気との勝負だった。",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -716,6 +731,7 @@
   {
     "abc": "ABC454",
     "summary": "0-indexと1-indexが混ざってしまいA問題しか解けなかった。",
+    "flat": false,
     "problems": [
       {
         "id": "A",
@@ -747,7 +763,8 @@
   },
   {
     "abc": "典型",
-    "summary": "典型90問などの典型問題をまとめたセクションです。",
+    "summary": "典型の問題をまとめたセクションです。",
+    "flat": true,
     "problems": [
       {
         "id": "002",
@@ -758,7 +775,7 @@
             "code": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool isvalid(const string &S) {\n    int score = 0;\n    for (auto c : S) {\n        if (c == '(') score++;\n        else if (c == ')') score--;\n\n        if (score < 0) return false;\n    }\n\n    return (score == 0); //かっこいい\n}\n\n\nint main() {\n    int N;\n    cin >> N;\n\n    if (N % 2 != 0) return 0; //かっこが作れないので返す\n\n    for (int bit = 0; bit < (1<<N); bit++) {\n        string S = \"\";\n\n        for (int i = N - 1; i >= 0; i--) {\n            if (!(bit & (1<<i))) S += \"(\";\n            else S += \")\";\n        }\n\n        if (isvalid(S)) cout << S << endl;\n    }\n}\n"
           }
         ],
-        "content": "典型90問の解法メモです。",
+        "content": "典型の問題メモです。",
         "mentions": [],
         "referencedBy": []
       },
@@ -771,7 +788,7 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int H, W;\n    cin >> H >> W;\n    vector<vector<int>> A(H, vector<int>(W));\n    rep(i, H) rep(j, W) cin >> A[i][j];\n    vector<int> row_sum(H), col_sum(W);\n    rep(i, H) rep(j, W) {\n        row_sum[i] += A[i][j];\n        col_sum[j] += A[i][j];\n    }\n\n    rep(i, H) {\n        rep(j, W) {\n            cout << row_sum[i] + col_sum[j] - A[i][j];\n            if (j < W - 1) cout << \" \";\n        }\n        cout << endl;\n    }\n}\n"
           }
         ],
-        "content": "典型90問の解法メモです。",
+        "content": "典型の問題メモです。",
         "mentions": [],
         "referencedBy": []
       },
@@ -784,7 +801,7 @@
             "code": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    vector<int> A(N);\n    for (int i = 0; i < N; i++) cin >> A.at(i);\n    int Q;\n    cin >> Q;\n\n    sort(A.begin(), A.end());\n\n    while(Q--) {\n        int B;\n        cin >> B;\n        \n        auto it = lower_bound(A.begin(), A.end(), B);\n\n        long long ans = 2e18;\n\n        if (it != A.end()) {\n            ans = min(ans, (long long)abs(*it - B));\n        }\n\n        if (it != A.begin()) {\n            ans = min(ans, (long long)abs(*prev(it) - B));\n        }\n        \n        cout << ans << endl;\n    }\n}\n"
           }
         ],
-        "content": "典型90問の解法メモです。",
+        "content": "典型の問題メモです。",
         "mentions": [],
         "referencedBy": []
       }

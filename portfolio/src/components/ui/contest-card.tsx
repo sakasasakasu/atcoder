@@ -1,9 +1,8 @@
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { CodeDialog } from "@/components/ui/code-dialog"
 import { MentionTags } from "@/components/ui/mention-tags"
+import { Markdown } from "@/components/ui/markdown"
 import { Contest } from "@/types/contest"
-
-import ReactMarkdown from "react-markdown"
 
 export function ContestCard({ contest }: { contest: Contest }) {
   return (
@@ -24,7 +23,7 @@ export function ContestCard({ contest }: { contest: Contest }) {
 
               {/* レビュー */}
               <div className="prose text-muted-foreground h-[200px] overflow-y-auto text-sm">
-                <ReactMarkdown>{problem.content}</ReactMarkdown>
+                <Markdown>{problem.content}</Markdown>
               </div>
 
               {/* C++コード（あれば） */}
