@@ -40,11 +40,15 @@
         "title": "C問題",
         "codes": [
           {
+            "name": "C-set",
+            "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing ll = long long;\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    set<int> s;\n    rep(i, N) {\n        int ai;\n        cin >> ai;\n        s.insert(ai);\n    }\n\n    ll ans = 0;\n    int pos = 0;\n    rep(i, N) {\n        auto it = s.lower_bound(pos);\n        int next;\n        if (it == s.begin()) {\n            next = *it;\n        } else if (it == s.end()) {\n            next = *--it;\n        } else {\n            int cand1 = *it;\n            int cand2 = *--it;\n            if (abs(cand1 - pos) < abs(cand2 - pos)) {\n                next = cand1;\n            } else {\n                next = cand2;\n            }\n        }\n        ans += abs(next - pos);\n        s.erase(next);\n        pos = next;\n    }\n    cout << ans << endl;\n    return 0;\n}\n"
+          },
+          {
             "name": "C",
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n  int N;\n  cin >> N;\n  vector<long long> negative, positive;\n  rep(i, N) {\n    long long a;\n    cin >> a;\n    if (a < 0) {\n      negative.push_back(a);\n    } else {\n      positive.push_back(a);\n    }\n  }\n  sort(positive.begin(), positive.end());\n  sort(negative.begin(), negative.end(), greater<long long>());\n\n  long long ans = 0;\n  long long current = 0;\n  int p_idx = 0, n_idx = 0;\n\n  while (p_idx < positive.size() || n_idx < negative.size()) {\n    if (p_idx < positive.size() && n_idx < negative.size()) {\n      if (abs(positive.at(p_idx) - current) <\n          abs(negative.at(n_idx) - current)) {\n        ans += abs(positive.at(p_idx) - current);\n        current = positive.at(p_idx);\n        p_idx++;\n      } else {\n        ans += abs(negative.at(n_idx) - current);\n        current = negative.at(n_idx);\n        n_idx++;\n      }\n    } else if (p_idx < positive.size()) {\n      ans += abs(positive.at(p_idx) - current);\n      current = positive.at(p_idx);\n      p_idx++;\n    } else {\n      ans += abs(negative.at(n_idx) - current);\n      current = negative.at(n_idx);\n      n_idx++;\n    }\n  }\n\n  cout << ans << endl;\n\n  return 0;\n}\n"
           }
         ],
-        "content": "AC\n\n### 思った事\n\n本を整理する問題を思い出してマイナスとプラスで配列を作り、ソートして内側から読んでいく感じにした。\n\n解説を読むと、もっといい方法があったみたいで。",
+        "content": "AC\n\n### 思った事\n\n本を整理する問題を思い出してマイナスとプラスで配列を作り、ソートして内側から読んでいく感じにした。\n\n解説を読むと、もっといい方法があったみたいで。\n\nというか同じ計算を同じレイヤーでやるなら全て変数に切り分けたほうがいい気がした。",
         "mentions": [],
         "referencedBy": []
       }
