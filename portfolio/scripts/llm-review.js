@@ -51,8 +51,8 @@ const REQUEST_INTERVAL_MS = 4100
 // 200 RPD を遵守するため、1回の実行あたりの最大 API 呼び出し回数
 const MAX_REQUESTS_PER_RUN = 60
 
-const MODEL_NAME = "gemini-2.5-flash"
-const FALLBACK_MODEL_NAME = "gemini-2.0-flash"
+const MODEL_NAME = "gemini-3.5-flash-lite"
+const FALLBACK_MODEL_NAME = "gemini-3.1-flash-lite"
 const CACHE_SCHEMA_VERSION = "v2"
 
 // responseSchema の定義
