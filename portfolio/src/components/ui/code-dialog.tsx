@@ -21,7 +21,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+import { cn } from "@/lib/utils"
 import { AiReview } from "@/types/common"
 import { formatComplexityToTex } from "@/components/ui/contest-card"
 
@@ -151,7 +151,14 @@ function AiInspectorPanel({ aiReview }: { aiReview: AiReview }) {
 
                   {/* Before / After スニペット */}
                   {(aiReview.improvement.beforeSnippet || aiReview.improvement.afterSnippet) && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-1">
+                    <div
+                      className={cn(
+                        "grid gap-2 pt-1",
+                        aiReview.improvement.beforeSnippet && aiReview.improvement.afterSnippet
+                          ? "grid-cols-1 md:grid-cols-2"
+                          : "grid-cols-1"
+                      )}
+                    >
                       {aiReview.improvement.beforeSnippet && (
                         <div className="space-y-1 min-w-0">
                           <span className="text-[10px] font-semibold text-red-500 dark:text-red-400 flex items-center gap-1">

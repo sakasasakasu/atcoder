@@ -51,8 +51,8 @@ const REQUEST_INTERVAL_MS = 4100
 // 200 RPD を遵守するため、1回の実行あたりの最大 API 呼び出し回数
 const MAX_REQUESTS_PER_RUN = 60
 
-const MODEL_NAME = "gemini-3.5-flash-lite"
-const FALLBACK_MODEL_NAME = "gemini-1.5-flash"
+const MODEL_NAME = "gemini-2.5-flash"
+const FALLBACK_MODEL_NAME = "gemini-2.0-flash"
 const CACHE_SCHEMA_VERSION = "v2"
 
 // responseSchema の定義
@@ -86,22 +86,22 @@ const RESPONSE_SCHEMA = {
         },
         bottleneck: {
           type: "STRING",
-          description: "非効率なボトルネック箇所の簡潔な説明（1〜2文）。hasImprovementがfalseの場合は空文字。",
+          description: "非効率なボトルネック箇所の簡潔な説明（1〜2文・60文字以内）。hasImprovementがfalseの場合は空文字 \"\"。",
         },
         suggestion: {
           type: "STRING",
-          description: "改善方針の簡潔な説明（1〜2文）。hasImprovementがfalseの場合は空文字。",
+          description: "改善方針の簡潔な説明（1〜2文・60文字以内）。hasImprovementがfalseの場合は空文字 \"\"。",
         },
         beforeSnippet: {
           type: "STRING",
-          description: "改善対象となる問題箇所のコード抜粋（2〜5行程度）。マークダウン記号（```など）は含めない生テキスト。hasImprovementがfalseの場合は空文字。",
+          description: "改善対象となる問題箇所のコード抜粋（2〜5行程度）。マークダウン記号（```など）は含めない生テキスト。hasImprovementがfalseの場合は空文字 \"\"。",
         },
         afterSnippet: {
           type: "STRING",
-          description: "改善後の推奨ロジックのコード抜粋（2〜5行程度）。マークダウン記号（```など）は含めない生テキスト。hasImprovementがfalseの場合は空文字。",
+          description: "改善後の推奨ロジックのコード抜粋（2〜5行程度）。マークダウン記号（```など）は含めない生テキスト。hasImprovementがfalseの場合は空文字 \"\"。",
         },
       },
-      required: ["hasImprovement"],
+      required: ["hasImprovement", "bottleneck", "suggestion", "beforeSnippet", "afterSnippet"],
     },
   },
   required: ["complexity", "rating", "summary", "tags", "improvement"],
@@ -149,6 +149,19 @@ function saveCache(cacheItems) {
 }
 
 /**
+ * テキストから連続する無限ループの繰り返し（例: "べきですべきです..."）を除去
+ * @param {any} str
+ * @returns {string}
+ */
+function cleanText(str) {
+  if (typeof str !== "string") return ""
+  let text = str.trim()
+  // 連続する同一フレーズの暴走ループ（3回以上の連続反復）を1回に圧縮
+  text = text.replace(/(.{2,20}?)\1{3,}/g, "$1")
+  return text
+}
+
+/**
  * LLM の出力揺らぎを吸収し、確実に型安全なオブジェクトに正規化します
  * @param {any} raw
  * @returns {{ complexity: string, rating: string, summary: string, tags: string[], improvement: { hasImprovement: boolean, bottleneck?: string, suggestion?: string, beforeSnippet?: string, afterSnippet?: string } }}
@@ -180,7 +193,7 @@ function sanitizeReviewResult(raw) {
   }
 
   // 3. summary の正規化
-  const summary = typeof raw.summary === "string" ? raw.summary.trim() : ""
+  const summary = cleanText(raw.summary)
 
   // 4. tags の正規化 (1〜4個の非空文字列配列、#除去)
   let tags = []
@@ -204,13 +217,13 @@ function sanitizeReviewResult(raw) {
       .trim()
   }
 
-  const bottleneck = typeof rawImp.bottleneck === "string" ? rawImp.bottleneck.trim() : ""
-  const suggestion = typeof rawImp.suggestion === "string" ? rawImp.suggestion.trim() : ""
+  const bottleneck = cleanText(rawImp.bottleneck)
+  const suggestion = cleanText(rawImp.suggestion)
   const beforeSnippet = cleanSnippet(rawImp.beforeSnippet)
   const afterSnippet = cleanSnippet(rawImp.afterSnippet)
 
-  // 改善余地が true でも実質的なアドバイス情報が何もない場合は安全のため false に補正
-  if (hasImprovement && !bottleneck && !suggestion && !beforeSnippet) {
+  // 改善余地が true でも、ボトルネック・提案・Before・After のいずれかが欠落している場合は安全のため false に補正
+  if (hasImprovement && (!bottleneck || !suggestion || !beforeSnippet || !afterSnippet)) {
     hasImprovement = false
   }
 
@@ -219,10 +232,10 @@ function sanitizeReviewResult(raw) {
   }
 
   if (hasImprovement) {
-    if (bottleneck) improvement.bottleneck = bottleneck
-    if (suggestion) improvement.suggestion = suggestion
-    if (beforeSnippet) improvement.beforeSnippet = beforeSnippet
-    if (afterSnippet) improvement.afterSnippet = afterSnippet
+    improvement.bottleneck = bottleneck
+    improvement.suggestion = suggestion
+    improvement.beforeSnippet = beforeSnippet
+    improvement.afterSnippet = afterSnippet
   }
 
   return {
@@ -250,6 +263,7 @@ async function callGeminiApi(apiKey, promptText, retries = 3) {
         responseMimeType: "application/json",
         responseSchema: RESPONSE_SCHEMA,
         temperature: 0.1,
+        maxOutputTokens: 2048,
       },
     }
 
@@ -339,12 +353,12 @@ ${codeFile.code}
    - 単なる cin.tie や std::endl 改行の変更、変数名変更などの些細なスタイル・I/O 高速化は改善対象外とし、hasImprovement: false としてください。
    - すでに十分最適・定数倍レベルの差しかない場合は hasImprovement: false としてください。
    - hasImprovement が true の場合:
-     - bottleneck: どこがなぜ非効率かを 1〜2 文で説明。
-     - suggestion: どう改善すべきかを 1〜2 文で説明。
+     - bottleneck: どこがなぜ非効率かを 1〜2 文（60文字以内）で説明。同一語句の反復は禁止。
+     - suggestion: どう改善すべきかを 1〜2 文（60文字以内）で説明。同一語句の反復は禁止。
      - beforeSnippet: 改善対象の該当コード（ロジック部分の 2〜5 行）。※ \`\`\` 等のマークダウン記号は含めず生コードのみ。
-     - afterSnippet: 改善後の推奨コード（2〜5 行）。※ \`\`\` 等のマークダウン記号は含めず生コードのみ。
+     - afterSnippet: 改善後の推奨コード（2〜5 行）。※ \`\`\` 等のマークダウン記号は含めず生コードのみ。必ず beforeSnippet と afterSnippet の両方を出力してください。
    - hasImprovement が false の場合:
-     - bottleneck, suggestion, beforeSnippet, afterSnippet は空文字列 "" としてください。`
+     - bottleneck, suggestion, beforeSnippet, afterSnippet はすべて空文字列 "" としてください。`
 }
 
 /**
@@ -410,6 +424,7 @@ module.exports = {
   computeHash,
   enrichContestsWithLlmReviews,
   loadDotEnv,
+  cleanText,
   sanitizeReviewResult,
   RESPONSE_SCHEMA,
   buildPrompt,

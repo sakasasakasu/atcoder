@@ -5,6 +5,7 @@ const {
   computeHash,
   enrichContestsWithLlmReviews,
   callGeminiApi,
+  cleanText,
   sanitizeReviewResult,
   RESPONSE_SCHEMA,
 } = require("./llm-review")
@@ -22,8 +23,21 @@ test("computeHash: コードファイル単位で確定的な SHA-256 ハッシ�
   assert.notEqual(hash1, hashDiffCode)
 })
 
-test("RESPONSE_SCHEMA: rating に S, A, B, C の enum 制約が含まれている", () => {
+test("RESPONSE_SCHEMA: rating に enum 制約、improvement に 5 項目の required 制約が含まれている", () => {
   assert.deepEqual(RESPONSE_SCHEMA.properties.rating.enum, ["S", "A", "B", "C"])
+  assert.deepEqual(RESPONSE_SCHEMA.properties.improvement.required, [
+    "hasImprovement",
+    "bottleneck",
+    "suggestion",
+    "beforeSnippet",
+    "afterSnippet",
+  ])
+})
+
+test("cleanText: 暴走した無限ループの同一フレーズ反復を除去する", () => {
+  const looped = "リスクを回避しますべきですべきですべきですべきですべきですべきですべきです"
+  const cleaned = cleanText(looped)
+  assert.equal(cleaned, "リスクを回避しますべきです")
 })
 
 test("sanitizeReviewResult: 揺らぎのある rating / complexity / tags / スニペットを正規化する", () => {
@@ -63,6 +77,8 @@ test("sanitizeReviewResult: hasImprovement が false の場合は余計なフィ
       hasImprovement: false,
       bottleneck: "",
       suggestion: "",
+      beforeSnippet: "",
+      afterSnippet: "",
     },
   }
 
@@ -71,18 +87,18 @@ test("sanitizeReviewResult: hasImprovement が false の場合は余計なフィ
   assert.equal(result.improvement.bottleneck, undefined)
 })
 
-test("sanitizeReviewResult: hasImprovement が true でも中身が空なら安全に false にフォールバックする", () => {
+test("sanitizeReviewResult: afterSnippet または beforeSnippet が欠落している場合は false にフォールバックする", () => {
   const raw = {
-    complexity: "O(1)",
+    complexity: "O(N^2)",
     rating: "B",
     summary: "テスト",
-    tags: [],
+    tags: ["全探索"],
     improvement: {
       hasImprovement: true,
-      bottleneck: "",
-      suggestion: "",
-      beforeSnippet: "",
-      afterSnippet: "",
+      bottleneck: "二重ループです",
+      suggestion: "map を使います",
+      beforeSnippet: "for(int i=0;i<n;i++) {}",
+      afterSnippet: "", // After が空
     },
   }
 
@@ -119,6 +135,10 @@ test("callGeminiApi: 429 一時エラー後はリトライして成功する", a
                     tags: ["テスト"],
                     improvement: {
                       hasImprovement: false,
+                      bottleneck: "",
+                      suggestion: "",
+                      beforeSnippet: "",
+                      afterSnippet: "",
                     },
                   }),
                 },
