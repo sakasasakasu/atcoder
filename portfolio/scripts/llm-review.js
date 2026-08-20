@@ -6,12 +6,53 @@ const crypto = require("crypto")
 const CACHE_DIR = path.join(__dirname, ".cache")
 const CACHE_FILE = path.join(CACHE_DIR, "llm-reviews.json")
 
+/**
+ * Node.js 実行時に .env ファイルが存在すれば自動読み込みして process.env に適用
+ */
+function loadDotEnv() {
+  const envPaths = [
+    path.join(__dirname, "..", ".env"),
+    path.join(__dirname, "..", "..", ".env"),
+  ]
+  for (const envPath of envPaths) {
+    if (fs.existsSync(envPath)) {
+      try {
+        const content = fs.readFileSync(envPath, "utf-8")
+        for (const line of content.split(/\r?\n/)) {
+          const trimmed = line.trim()
+          if (!trimmed || trimmed.startsWith("#")) continue
+          const eqIdx = trimmed.indexOf("=")
+          if (eqIdx > 0) {
+            const key = trimmed.slice(0, eqIdx).trim()
+            let val = trimmed.slice(eqIdx + 1).trim()
+            if (
+              (val.startsWith('"') && val.endsWith('"')) ||
+              (val.startsWith("'") && val.endsWith("'"))
+            ) {
+              val = val.slice(1, -1)
+            }
+            if (!process.env[key]) {
+              process.env[key] = val
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("Failed to load .env file:", e.message)
+      }
+    }
+  }
+}
+
+// スクリプト読み込み時に .env を適用
+loadDotEnv()
+
 // 15 RPM を遵守するためのウェイト時間 (4.1秒)
 const REQUEST_INTERVAL_MS = 4100
 // 200 RPD を遵守するため、1回の実行あたりの最大 API 呼び出し回数
 const MAX_REQUESTS_PER_RUN = 50
 
-const MODEL_NAME = "gemini-2.5-flash-lite"
+const MODEL_NAME = "gemini-3.5-flash-lite"
+const FALLBACK_MODEL_NAME = "gemini-1.5-flash"
 const CACHE_SCHEMA_VERSION = "v2"
 
 // responseSchema の定義
@@ -81,50 +122,64 @@ function saveCache(cacheItems) {
 }
 
 async function callGeminiApi(apiKey, promptText, retries = 3) {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`
+  const models = [MODEL_NAME, FALLBACK_MODEL_NAME]
+  let lastErr = null
 
-  const requestBody = {
-    contents: [
-      {
-        parts: [{ text: promptText }],
+  for (const model of models) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`
+    const requestBody = {
+      contents: [
+        {
+          parts: [{ text: promptText }],
+        },
+      ],
+      generationConfig: {
+        responseMimeType: "application/json",
+        responseSchema: RESPONSE_SCHEMA,
+        temperature: 0.2,
       },
-    ],
-    generationConfig: {
-      responseMimeType: "application/json",
-      responseSchema: RESPONSE_SCHEMA,
-      temperature: 0.2,
-    },
-  }
-
-  for (let attempt = 1; attempt <= retries; attempt++) {
-    let res
-    try {
-      res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(requestBody),
-      })
-    } catch (err) {
-      if (attempt === retries) throw err
-      await sleep(2000)
-      continue
     }
 
-    if (!res.ok) {
-      const errText = await res.text()
-      if ((res.status === 429 || res.status >= 500) && attempt < retries) {
-        console.warn(`[LLM Review] 一時的なAPIエラー (${res.status}) のため 2 秒後にリトライします (${attempt}/${retries})`)
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      let res
+      try {
+        res = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(requestBody),
+        })
+      } catch (err) {
+        if (attempt === retries) {
+          lastErr = err
+          break
+        }
         await sleep(2000)
         continue
       }
-      throw new Error(`API response error ${res.status}: ${errText}`)
-    }
 
-    const data = await res.json()
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text
-    if (!text) throw new Error("API returned empty content")
-    return JSON.parse(text)
+      if (!res.ok) {
+        const errText = await res.text()
+        if (res.status === 404) {
+          // モデルが見つからない場合はフォールバックモデルを試す
+          lastErr = new Error(`API response error ${res.status}: ${errText}`)
+          break
+        }
+        if ((res.status === 429 || res.status >= 500) && attempt < retries) {
+          console.warn(`[LLM Review] 一時的なAPIエラー (${res.status}) のため 2 秒後にリトライします (${attempt}/${retries})`)
+          await sleep(2000)
+          continue
+        }
+        throw new Error(`API response error ${res.status}: ${errText}`)
+      }
+
+      const data = await res.json()
+      const text = data.candidates?.[0]?.content?.parts?.[0]?.text
+      if (!text) throw new Error("API returned empty content")
+      return JSON.parse(text)
+    }
   }
+
+  throw lastErr || new Error("Gemini API の呼び出しに失敗しました")
 }
 
 function buildPrompt(contestId, problem, codeFile) {
@@ -152,6 +207,7 @@ ${codeFile.code}
  * @param {import("./main").Contest[]} contests 
  */
 async function enrichContestsWithLlmReviews(contests) {
+  loadDotEnv()
   const apiKey = process.env.GEMINI_API_KEY
   const cacheItems = loadCache()
 
@@ -165,7 +221,6 @@ async function enrichContestsWithLlmReviews(contests) {
   for (const contest of contests) {
     const contestId = contest.abc
     for (const problem of contest.problems) {
-      // コード未添付の問題はスキップ
       if (!problem.codes || problem.codes.length === 0) continue
 
       for (const codeFile of problem.codes) {
@@ -209,4 +264,5 @@ module.exports = {
   callGeminiApi,
   computeHash,
   enrichContestsWithLlmReviews,
+  loadDotEnv,
 }
