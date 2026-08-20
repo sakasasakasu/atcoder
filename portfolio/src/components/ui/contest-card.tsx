@@ -1,11 +1,13 @@
 "use client"
 
+import * as React from "react"
 import { ExternalLink, Cpu } from "lucide-react"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { CodeDialog } from "@/components/ui/code-dialog"
 import { MentionTags } from "@/components/ui/mention-tags"
 import { Markdown } from "@/components/ui/markdown"
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
+import { Separator } from "@/components/ui/separator"
 import { Contest } from "@/types/contest"
 
 /**
@@ -74,7 +76,7 @@ export function ContestCard({ contest }: { contest: Contest }) {
                   id={`${contest.abc}-${problem.id}`}
                   className="bg-card flex w-[350px] shrink-0 flex-col space-y-3 rounded-xl border border-border/60 p-4 whitespace-normal scroll-mt-28 shadow-2xs transition-all hover:border-border hover:shadow-xs"
                 >
-                  {/* 問題タイトル + 難易度サークル (左側・大きめ・水深表現) + 外部リンク */}
+                  {/* 問題タイトル + 難易度サークル (左側・水深表現) + 外部リンク */}
                   <div className="flex items-center justify-between border-b border-border/50 pb-2.5">
                     <div className="flex items-center gap-2.5">
                       <Tooltip>
@@ -111,43 +113,43 @@ export function ContestCard({ contest }: { contest: Contest }) {
                     <Markdown>{problem.content}</Markdown>
                   </div>
 
-                  {/* C++コード枠：計算量・技術タグ + モーダル表示ボタン (案 B 仕様: 超スッキリ) */}
+                  {/* C++コード枠：shadcn/ui Separator でスマートに区切る構造 */}
                   {problem.codes.length > 0 && (
                     <div className="flex flex-col gap-2 pt-1 border-t border-border/40">
-                      {problem.codes.map((codeFile) => {
+                      {problem.codes.map((codeFile, idx) => {
                         const review = codeFile.aiReview
                         return (
-                          <div
-                            key={codeFile.name}
-                            className="flex flex-col gap-2 rounded-lg border border-border/40 bg-muted/15 p-2.5"
-                          >
-                            {/* 計算量 + #タグ 1 #タグ 2 ... の行 */}
-                            {review && (review.complexity || (review.tags && review.tags.length > 0)) && (
-                              <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
-                                {review.complexity && (
-                                  <span className="inline-flex items-center gap-1 rounded bg-background px-1.5 py-0.5 font-mono text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shadow-2xs">
-                                    <Cpu className="h-3 w-3" />
-                                    {review.complexity}
-                                  </span>
-                                )}
-                                {review.tags?.map((tag) => (
-                                  <span
-                                    key={tag}
-                                    className="inline-flex items-center rounded border border-border/40 bg-background/80 px-1.5 py-0.5 text-[10px] text-muted-foreground"
-                                  >
-                                    #{tag}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
+                          <React.Fragment key={codeFile.name}>
+                            {idx > 0 && <Separator className="my-1 bg-border/40" />}
+                            <div className="flex flex-col gap-1.5 py-0.5">
+                              {/* 計算量 + #タグ 1 #タグ 2 ... の行 */}
+                              {review && (review.complexity || (review.tags && review.tags.length > 0)) && (
+                                <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
+                                  {review.complexity && (
+                                    <span className="inline-flex items-center gap-1 rounded bg-background px-1.5 py-0.5 font-mono text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shadow-2xs">
+                                      <Cpu className="h-3 w-3" />
+                                      {review.complexity}
+                                    </span>
+                                  )}
+                                  {review.tags?.map((tag) => (
+                                    <span
+                                      key={tag}
+                                      className="inline-flex items-center rounded border border-border/40 bg-background/80 px-1.5 py-0.5 text-[10px] text-muted-foreground"
+                                    >
+                                      #{tag}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
 
-                            {/* ＜＞ コードを見る（A） ボタン（AI解説本文はモーダルの中で閲覧） */}
-                            <CodeDialog
-                              code={codeFile.code}
-                              label={codeFile.name}
-                              aiReview={review}
-                            />
-                          </div>
+                              {/* ＜＞ コードを見る（A） ボタン */}
+                              <CodeDialog
+                                code={codeFile.code}
+                                label={codeFile.name}
+                                aiReview={review}
+                              />
+                            </div>
+                          </React.Fragment>
                         )
                       })}
                     </div>
