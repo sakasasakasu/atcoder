@@ -364,11 +364,16 @@ ${codeFile.code}
 /**
  * Contests データに対し、Gemini API を使って各 CodeFile 単位で LLM レビューを追加します。
  * @param {import("./main").Contest[]} contests 
+ * @param {{ forceLlm?: boolean, refreshContest?: string, refreshProblem?: string }} [options]
  */
-async function enrichContestsWithLlmReviews(contests) {
+async function enrichContestsWithLlmReviews(contests, options = {}) {
   loadDotEnv()
   const apiKey = process.env.GEMINI_API_KEY
   const cacheItems = loadCache()
+
+  const forceAll = Boolean(options.forceLlm)
+  const targetContest = options.refreshContest ? options.refreshContest.trim().toUpperCase() : null
+  const targetProblem = options.refreshProblem ? options.refreshProblem.trim().toUpperCase() : null
 
   let apiCallCount = 0
   let isCacheUpdated = false
@@ -379,18 +384,34 @@ async function enrichContestsWithLlmReviews(contests) {
 
   for (const contest of contests) {
     const contestId = contest.abc
+    const isContestMatch = targetContest && contestId.toUpperCase() === targetContest
+
     for (const problem of contest.problems) {
       if (!problem.codes || problem.codes.length === 0) continue
+
+      const problemKey = `${contestId}-${problem.id}`.toUpperCase()
+      const isProblemMatch =
+        targetProblem &&
+        (problemKey === targetProblem ||
+          problem.id.toUpperCase() === targetProblem ||
+          `${contestId}_${problem.id}`.toUpperCase() === targetProblem)
+
+      const shouldForceRegenerate = forceAll || isContestMatch || isProblemMatch
 
       for (const codeFile of problem.codes) {
         const hash = computeHash(problem, codeFile, contestId)
 
-        if (cacheItems[hash]) {
+        // 再生成フラグがない場合は既存キャッシュを優先
+        if (!shouldForceRegenerate && cacheItems[hash]) {
           codeFile.aiReview = cacheItems[hash]
           continue
         }
 
         if (!apiKey || apiCallCount >= MAX_REQUESTS_PER_RUN) {
+          // API呼び出し不可または上限時は既存キャッシュがあれば適用
+          if (cacheItems[hash]) {
+            codeFile.aiReview = cacheItems[hash]
+          }
           continue
         }
 
@@ -408,6 +429,9 @@ async function enrichContestsWithLlmReviews(contests) {
           await sleep(REQUEST_INTERVAL_MS)
         } catch (err) {
           console.warn(`[LLM Review Warning] ${contestId} ${problem.title} (${codeFile.name}) の生成に失敗しました:`, err.message)
+          if (cacheItems[hash]) {
+            codeFile.aiReview = cacheItems[hash]
+          }
         }
       }
     }
@@ -415,7 +439,7 @@ async function enrichContestsWithLlmReviews(contests) {
 
   if (isCacheUpdated) {
     saveCache(cacheItems)
-    console.log(`[LLM Review] ${apiCallCount} 件のコード単位新規レビューを完了し、キャッシュを保存しました。`)
+    console.log(`[LLM Review] ${apiCallCount} 件のコード単位レビューを完了し、キャッシュを保存しました。`)
   }
 }
 

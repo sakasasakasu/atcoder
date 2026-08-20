@@ -4,6 +4,19 @@ on:
   push:
     branches: ["main"] # mainブランチにpushされたら起動
   workflow_dispatch: # 手動実行
+    inputs:
+      force_llm:
+        description: 'Force regenerate AI reviews for all problems'
+        type: boolean
+        default: false
+      target_contest:
+        description: 'Target contest to regenerate (e.g. ABC471, leave empty for none)'
+        type: string
+        default: ''
+      target_problem:
+        description: 'Target problem to regenerate (e.g. ABC471-B, leave empty for none)'
+        type: string
+        default: ''
   schedule:
     - cron: "0 15 * * *" # 毎日 日本時間 0:00 (15:00 UTC) に自動実行して Diff 確定や未処理 AI レビューを更新
 
@@ -32,9 +45,9 @@ jobs:
         with:
           path: portfolio/scripts/.cache
           # 保存側は「キャッシュ内容のハッシュ」をキーに付与するため、復元はプレフィックスで最新を取得する
-          key: llm-cache-v3-${{ runner.os }}
+          key: llm-cache-v4-${{ runner.os }}
           restore-keys: |
-            llm-cache-v3-${{ runner.os }}-
+            llm-cache-v4-${{ runner.os }}-
 
       - name: Install dependencies
         run: npm install
@@ -43,7 +56,16 @@ jobs:
       - name: Generate JSON Data
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: node scripts/generate.js
+        run: |
+          ARGS=""
+          if [ "${{ github.event.inputs.force_llm }}" = "true" ]; then
+            ARGS="--force-llm"
+          elif [ -n "${{ github.event.inputs.target_contest }}" ]; then
+            ARGS="--refresh-contest ${{ github.event.inputs.target_contest }}"
+          elif [ -n "${{ github.event.inputs.target_problem }}" ]; then
+            ARGS="--refresh-problem ${{ github.event.inputs.target_problem }}"
+          fi
+          node scripts/generate.js $ARGS
         working-directory: ./portfolio
 
       - name: Compute cache content hash
@@ -57,11 +79,11 @@ jobs:
 
       # 内容が変わった場合のみ新キーで保存する（同じ内容なら保存せずキャッシュの肥大化を防ぐ）
       - name: Save LLM and AtCoder API Cache
-        if: steps.llm-cache-restore.outputs.cache-matched-key != format('llm-cache-v3-{0}-{1}', runner.os, steps.llm-cache-hash.outputs.hash)
+        if: steps.llm-cache-restore.outputs.cache-matched-key != format('llm-cache-v4-{0}-{1}', runner.os, steps.llm-cache-hash.outputs.hash)
         uses: actions/cache/save@v4
         with:
           path: portfolio/scripts/.cache
-          key: llm-cache-v3-${{ runner.os }}-${{ steps.llm-cache-hash.outputs.hash }}
+          key: llm-cache-v4-${{ runner.os }}-${{ steps.llm-cache-hash.outputs.hash }}
 
       # generate は既に上のステップで実行済みのため、prebuild の再生成をスキップする
       - name: Build Next.js

@@ -217,3 +217,17 @@ test("enrichContestsWithLlmReviews: APIキーが無い場合はクラッシュ�
     if (oldApiKey) process.env.GEMINI_API_KEY = oldApiKey
   }
 })
+
+test("parseArgs: CLI 引数（--force-llm, --refresh-contest, --refresh-problem）を正しく解析する", () => {
+  const { parseArgs } = require("./generate")
+
+  const res1 = parseArgs(["--force-llm"])
+  assert.equal(res1.forceLlm, true)
+  assert.equal(res1.refreshContest, null)
+
+  const res2 = parseArgs(["-c", "ABC471", "-p", "ABC471-B"])
+  assert.equal(res2.forceLlm, false)
+  assert.equal(res2.refreshContest, "ABC471")
+  assert.equal(res2.refreshProblem, "ABC471-B")
+})
+

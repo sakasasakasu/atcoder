@@ -16,10 +16,34 @@ const TIPS_ROOT = path.join(__dirname, "..", "..", "tips")
 const OUTPUT_DIR = path.join(__dirname, "..", "public")
 
 /**
+ * コマンドライン引数を解析します
+ * @param {string[]} args
+ */
+function parseArgs(args) {
+  const options = {
+    forceLlm: false,
+    refreshContest: null,
+    refreshProblem: null,
+  }
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i]
+    if (arg === "--force-llm" || arg === "-f") {
+      options.forceLlm = true
+    } else if (arg === "--refresh-contest" || arg === "-c") {
+      options.refreshContest = args[++i] || null
+    } else if (arg === "--refresh-problem" || arg === "-p") {
+      options.refreshProblem = args[++i] || null
+    }
+  }
+  return options
+}
+
+/**
  * problems / solutions / library を収集し、AtCoder Diff / LLM Review / 言及リンクを付与して JSON に出力する
+ * @param {{ forceLlm?: boolean, refreshContest?: string, refreshProblem?: string }} [options]
  * @returns {Promise<{ contests: import("./main").Contest[], solutions: import("./solutions").SolutionCategory[] }>}
  */
-async function generate() {
+async function generate(options = {}) {
   const contests = collectProblemsData(PROBLEMS_ROOT)
   const solutions = collectSolutionsData(SOLUTIONS_ROOT)
 
@@ -31,9 +55,9 @@ async function generate() {
     console.warn("AtCoder Problems データ統合時に警告:", err.message)
   }
 
-  // 2. Gemini 2.5 Flash Lite で LLM レビュー & タグを統合 (Gemini API / キャッシュ)
+  // 2. Gemini で LLM レビュー & タグを統合 (Gemini API / キャッシュ)
   try {
-    await enrichContestsWithLlmReviews(contests)
+    await enrichContestsWithLlmReviews(contests, options)
   } catch (err) {
     console.warn("LLM レビュー統合時に警告:", err.message)
   }
@@ -55,11 +79,11 @@ async function generate() {
 }
 
 if (require.main === module) {
-  generate().catch((err) => {
+  const cliOptions = parseArgs(process.argv.slice(2))
+  generate(cliOptions).catch((err) => {
     console.error("生成処理中にエラーが発生しました:", err)
     process.exit(1)
   })
 }
 
-module.exports = { generate }
-
+module.exports = { generate, parseArgs }

@@ -8,6 +8,7 @@
     "generate:library": "node scripts/library.js",
     "generate:solutions": "node scripts/solutions.js",
     "generate:tips": "node scripts/tips.js",
+    "generate:force-llm": "node scripts/generate.js --force-llm",
     "test": "node --test scripts/*.test.js",
     "predev": "npm run generate",
     "dev": "next dev",
