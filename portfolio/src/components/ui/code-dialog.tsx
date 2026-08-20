@@ -9,6 +9,8 @@ import {
   Award,
   ChevronDown,
   ChevronUp,
+  Lightbulb,
+  CheckCircle2,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Code } from "@/components/ui/code"
@@ -88,15 +90,17 @@ function AiInspectorPanel({ aiReview }: { aiReview: AiReview }) {
       </div>
 
       {isOpen && (
-        <div className="border-t border-indigo-500/10 px-3.5 py-3 space-y-2.5 text-xs">
+        <div className="border-t border-indigo-500/10 px-3.5 py-3 space-y-3 text-xs">
+          {/* レビューサマリー解説 */}
           {aiReview.summary && (
             <p className="text-muted-foreground leading-relaxed">
               {aiReview.summary}
             </p>
           )}
 
+          {/* AI タグ */}
           {aiReview.tags && aiReview.tags.length > 0 && (
-            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+            <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
               <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">
                 Tags:
               </span>
@@ -108,6 +112,83 @@ function AiInspectorPanel({ aiReview }: { aiReview: AiReview }) {
                   #{tag}
                 </span>
               ))}
+            </div>
+          )}
+
+          {/* アルゴリズム・ロジック改善アドバイス */}
+          {aiReview.improvement && (
+            <div className="pt-2 border-t border-indigo-500/10">
+              {aiReview.improvement.hasImprovement ? (
+                <div className="rounded-lg border border-amber-500/30 bg-amber-500/5 p-3 space-y-2.5">
+                  <div className="flex items-center gap-1.5 font-semibold text-amber-600 dark:text-amber-400 text-xs">
+                    <Lightbulb className="h-4 w-4" />
+                    <span>アルゴリズム改善アドバイス</span>
+                  </div>
+
+                  {/* ボトルネック */}
+                  {aiReview.improvement.bottleneck && (
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1">
+                        <span className="text-red-400">⚠️</span> ボトルネック
+                      </span>
+                      <p className="text-xs text-foreground/90 leading-relaxed bg-background/60 p-2 rounded border border-border/40">
+                        {aiReview.improvement.bottleneck}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* 改善方針 */}
+                  {aiReview.improvement.suggestion && (
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1">
+                        <span className="text-emerald-400">🚀</span> 改善方針
+                      </span>
+                      <p className="text-xs text-foreground/90 leading-relaxed bg-background/60 p-2 rounded border border-border/40">
+                        {aiReview.improvement.suggestion}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Before / After スニペット */}
+                  {(aiReview.improvement.beforeSnippet || aiReview.improvement.afterSnippet) && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-1">
+                      {aiReview.improvement.beforeSnippet && (
+                        <div className="space-y-1">
+                          <span className="text-[10px] font-semibold text-red-500 dark:text-red-400 flex items-center gap-1">
+                            <span>❌</span> 現状のロジック (Before)
+                          </span>
+                          <div className="rounded-md border border-red-500/30 bg-stone-950 overflow-hidden">
+                            <Code
+                              code={aiReview.improvement.beforeSnippet}
+                              language="cpp"
+                              className="p-2 text-[11px]"
+                            />
+                          </div>
+                        </div>
+                      )}
+                      {aiReview.improvement.afterSnippet && (
+                        <div className="space-y-1">
+                          <span className="text-[10px] font-semibold text-emerald-500 dark:text-emerald-400 flex items-center gap-1">
+                            <span>⭕️</span> 推奨ロジック (After)
+                          </span>
+                          <div className="rounded-md border border-emerald-500/30 bg-stone-950 overflow-hidden">
+                            <Code
+                              code={aiReview.improvement.afterSnippet}
+                              language="cpp"
+                              className="p-2 text-[11px]"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 px-3 py-2 text-xs text-emerald-600 dark:text-emerald-400">
+                  <CheckCircle2 className="h-4 w-4 shrink-0" />
+                  <span>すでに計算量・ロジックともに最適なアルゴリズムで実装されています！</span>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -149,7 +230,7 @@ export function CodeDialog({
           {buttonLabel}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-3xl">
+      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-base font-semibold">
             {label ? `コード解析: ${label}` : "コード解析"}
@@ -158,6 +239,7 @@ export function CodeDialog({
 
         {aiReview && <AiInspectorPanel aiReview={aiReview} />}
 
+        {/* 解答コード表示エリア */}
         <div className="relative min-w-0">
           <div className="max-h-[65vh] overflow-auto rounded-lg border border-border/50">
             <Code code={code} language={language} />

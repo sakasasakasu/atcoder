@@ -1,9 +1,25 @@
+/** アルゴリズム・ロジックの改善アドバイス */
+export interface AlgorithmImprovement {
+  /** 改善の余地があるかどうか（false の場合は「すでに最適」） */
+  hasImprovement: boolean
+  /** ボトルネックの簡潔な説明 */
+  bottleneck?: string
+  /** 改善方針・解説 */
+  suggestion?: string
+  /** 改善前のコード該当箇所（数行のスニペット） */
+  beforeSnippet?: string
+  /** 改善後の推奨コード（数行のスニペット） */
+  afterSnippet?: string
+}
+
 /** LLM (Gemini) による自動コードレビュー・タグ評価 */
 export interface AiReview {
   complexity: string
   rating: string
   summary: string
   tags: string[]
+  /** アルゴリズム・ロジックの改善アドバイス */
+  improvement?: AlgorithmImprovement
 }
 
 /** 1 つのコードファイル（例: A.cpp / A1.cpp） */

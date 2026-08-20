@@ -76,8 +76,34 @@ const RESPONSE_SCHEMA = {
       items: { type: "STRING" },
       description: "アルゴリズム・データ構造・手法に関する技術タグ（1〜4項目）。例: ['二分探索', '動的計画法', '優先度付きキュー']",
     },
+    improvement: {
+      type: "OBJECT",
+      properties: {
+        hasImprovement: {
+          type: "BOOLEAN",
+          description: "アルゴリズムやデータ構造の観点で明確な計算量削減やロジック効率化の余地がある場合は true、すでに最適解の場合は false。",
+        },
+        bottleneck: {
+          type: "STRING",
+          description: "非効率なボトルネック箇所の簡潔な説明（1〜2文）。例: '二重ループで全ペアを探索しているため O(N^2) かかっています'。hasImprovementがfalseの場合は空文字または省略。",
+        },
+        suggestion: {
+          type: "STRING",
+          description: "改善方針の簡潔な説明（1〜2文）。例: 'std::map を用いて一度の走査で出現頻度を集計すると O(N log N) に短縮できます'。hasImprovementがfalseの場合は空文字または省略。",
+        },
+        beforeSnippet: {
+          type: "STRING",
+          description: "改善対象となる問題箇所のコード抜粋（2〜5行程度）。I/Oではなくロジック部分のみ。マークダウンなしのプレーンテキスト。hasImprovementがfalseの場合は空文字または省略。",
+        },
+        afterSnippet: {
+          type: "STRING",
+          description: "改善後の推奨ロジックのコード抜粋（2〜5行程度）。マークダウンなしのプレーンテキスト。hasImprovementがfalseの場合は空文字または省略。",
+        },
+      },
+      required: ["hasImprovement"],
+    },
   },
-  required: ["complexity", "rating", "summary", "tags"],
+  required: ["complexity", "rating", "summary", "tags", "improvement"],
 }
 
 function sleep(ms) {
@@ -100,7 +126,7 @@ function loadCache() {
   if (fs.existsSync(CACHE_FILE)) {
     try {
       const data = JSON.parse(fs.readFileSync(CACHE_FILE, "utf-8"))
-      if (data && data.version === CACHE_SCHEMA_VERSION && data.items) {
+      if (data && data.items) {
         return data.items
       }
     } catch (e) {
@@ -198,7 +224,13 @@ ${codeFile.code}
 1. complexity: コードから時間計算量を推定し、計算量表記で出力してください。
 2. rating: 可読性・変数命名・構造の簡潔さから品質評価を行ってください（S: 極めて綺麗, A: 実用的で良好, B: 標準的・改善余地あり, C: 複雑）。
 3. summary: 初心者にも分かりやすく、解法の核心やコードの工夫点を100文字程度でポジティブに説明してください。
-4. tags: 使用されている具体的なアルゴリズム・データ構造・解法テクニックのタグを1〜4個指定してください。`
+4. tags: 使用されている具体的なアルゴリズム・データ構造・解法テクニックのタグを1〜4個指定してください。
+5. improvement: アルゴリズムや計算量の観点でのピンポイント改善アドバイス。
+   ※ 注意事項:
+   - cin.tie(nullptr) や '\\n' などの I/O 形式の些細な高速化は無視してください。
+   - ループ構造の削減、不要な全探索の排除、適切なデータ構造（map, set, 優先度付きキュー, 二分探索, 累積和等）の活用など、アルゴリズム・ロジックの本質的な改善に特化してください。
+   - 改善の余地がない（すでに最適解・十分な計算量である）場合は hasImprovement: false としてください。
+   - 改善余地がある場合、コード全体ではなく「問題の 2〜5 行」を beforeSnippet、改善版を afterSnippet としてピンポイントで出力してください（マークダウン記号は含めないでください）。`
 }
 
 /**

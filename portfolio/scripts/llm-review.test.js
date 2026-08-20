@@ -43,6 +43,9 @@ test("callGeminiApi: 429 一時エラー後はリトライして成功する", a
                     rating: "A",
                     summary: "テスト",
                     tags: ["テスト"],
+                    improvement: {
+                      hasImprovement: false,
+                    },
                   }),
                 },
               ],

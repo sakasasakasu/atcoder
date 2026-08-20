@@ -9,7 +9,10 @@
         "条件分岐",
         "全探索",
         "算術演算"
-      ]
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
     },
     "c28c2ff27306b3ac511b289989abfddb4c0271edbc4fc47a3d93896b5e76bb98": {
       "complexity": "O(N^2 * |S|)",
@@ -19,7 +22,14 @@
         "全探索",
         "文字列処理",
         "STL"
-      ]
+      ],
+      "improvement": {
+        "hasImprovement": true,
+        "bottleneck": "二重ループで全ペアの文字列一致判定を行っているため、時間計算量が O(N² × |S|) かかっています。",
+        "suggestion": "std::map を用いて出現頻度を一度のループで集計すると、O(N log N × |S|) に大幅に高速化できます。",
+        "beforeSnippet": "vector<int> ans(N, 0);\nrep(i, N) {\n    rep(j, N) {\n        if (S.at(i) == S.at(j)) ans.at(i)++;\n    }\n}",
+        "afterSnippet": "map<string, int> count;\nint max_freq = 0;\nfor (const string &s : S) {\n    count[s]++;\n    max_freq = max(max_freq, count[s]);\n}"
+      }
     },
     "e5ff3ac91447bec381bc7e5b9cc696b4c255bf54f1ea815e5ac403f34f4b4140": {
       "complexity": "O(N log N)",
