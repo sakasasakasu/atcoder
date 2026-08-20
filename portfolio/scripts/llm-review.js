@@ -160,7 +160,6 @@ async function callGeminiApi(apiKey, promptText, retries = 3) {
       if (!res.ok) {
         const errText = await res.text()
         if (res.status === 404) {
-          // モデルが見つからない場合はフォールバックモデルを試す
           lastErr = new Error(`API response error ${res.status}: ${errText}`)
           break
         }

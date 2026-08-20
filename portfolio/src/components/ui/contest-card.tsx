@@ -1,4 +1,6 @@
-import { ExternalLink, Cpu, Sparkles } from "lucide-react"
+"use client"
+
+import { ExternalLink, Cpu } from "lucide-react"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { CodeDialog } from "@/components/ui/code-dialog"
 import { MentionTags } from "@/components/ui/mention-tags"
@@ -8,7 +10,6 @@ import { Contest } from "@/types/contest"
 
 /**
  * Diff の値から「下から上に水のように色が満ちていく」円のスタイルを生成します
- * 例: Diff 1000 (緑帯の中間) -> 枠線緑 + 下半分(50%)が緑塗りで上半分透明
  */
 function getDiffCircleStyle(difficulty?: number) {
   if (difficulty === undefined || difficulty === null) {
@@ -73,10 +74,9 @@ export function ContestCard({ contest }: { contest: Contest }) {
                   id={`${contest.abc}-${problem.id}`}
                   className="bg-card flex w-[350px] shrink-0 flex-col space-y-3 rounded-xl border border-border/60 p-4 whitespace-normal scroll-mt-28 shadow-2xs transition-all hover:border-border hover:shadow-xs"
                 >
-                  {/* 問題タイトル + 難易度サークル (左側・大きめ・下から水のように埋まる) + 外部リンク */}
+                  {/* 問題タイトル + 難易度サークル (左側・大きめ・水深表現) + 外部リンク */}
                   <div className="flex items-center justify-between border-b border-border/50 pb-2.5">
                     <div className="flex items-center gap-2.5">
-                      {/* タイトルの左側に、下から水位が満ちる円 */}
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <span
@@ -111,15 +111,15 @@ export function ContestCard({ contest }: { contest: Contest }) {
                     <Markdown>{problem.content}</Markdown>
                   </div>
 
-                  {/* C++コードおよびコードごとの AI メタデータ & AI サマリー */}
+                  {/* C++コード枠：計算量・技術タグ + モーダル表示ボタン (案 B 仕様: 超スッキリ) */}
                   {problem.codes.length > 0 && (
-                    <div className="flex flex-col gap-3.5 pt-1 border-t border-border/40">
+                    <div className="flex flex-col gap-2 pt-1 border-t border-border/40">
                       {problem.codes.map((codeFile) => {
                         const review = codeFile.aiReview
                         return (
                           <div
                             key={codeFile.name}
-                            className="flex flex-col gap-2 rounded-lg border border-indigo-500/15 bg-indigo-500/5 p-2.5"
+                            className="flex flex-col gap-2 rounded-lg border border-border/40 bg-muted/15 p-2.5"
                           >
                             {/* 計算量 + #タグ 1 #タグ 2 ... の行 */}
                             {review && (review.complexity || (review.tags && review.tags.length > 0)) && (
@@ -141,15 +141,7 @@ export function ContestCard({ contest }: { contest: Contest }) {
                               </div>
                             )}
 
-                            {/* AI サマリー解説文 (カード上に表示) */}
-                            {review?.summary && (
-                              <div className="flex items-start gap-1.5 text-xs text-muted-foreground leading-relaxed bg-background/50 p-2 rounded border border-indigo-500/10">
-                                <Sparkles className="h-3.5 w-3.5 shrink-0 text-indigo-500 mt-0.5" />
-                                <span>{review.summary}</span>
-                              </div>
-                            )}
-
-                            {/* ＜＞ コードを見る（A） ボタン */}
+                            {/* ＜＞ コードを見る（A） ボタン（AI解説本文はモーダルの中で閲覧） */}
                             <CodeDialog
                               code={codeFile.code}
                               label={codeFile.name}
