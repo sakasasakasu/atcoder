@@ -1,1 +1,619 @@
-{"version":"v2","items":{}}
+{
+  "version": "v2",
+  "items": {
+    "e163f670b6014007e83bf7c7d58292173a2665f16403c39a023a6a865267d96d": {
+      "complexity": "O(1)",
+      "summary": "2つの整数 A, B に対して四則演算のいずれかで結果が9になるかを条件分岐で判定しています。除算を A == 9 * B と乗算の形で判定することで、ゼロ除算や小数の誤差を避けて簡潔に実装しています。",
+      "tags": [
+        "条件分岐",
+        "算術演算"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "c28c2ff27306b3ac511b289989abfddb4c0271edbc4fc47a3d93896b5e76bb98": {
+      "complexity": "O(N^2)",
+      "summary": "各文字列を大文字に統一した後、2重ループで各文字列と等しいものの個数を全探索して最大出現数を求めています。正しく動作しますが、頻度カウントに連想配列を用いることで計算量を削減できます。",
+      "tags": [
+        "全探索",
+        "文字列処理"
+      ],
+      "improvement": {
+        "hasImprovement": true,
+        "bottleneck": "2重ループを用いて全ペアを比較しているため、文字列の頻度カウントに O(N^2) の時間がかかっています。",
+        "suggestion": "std::map や std::unordered_map を用いることで、O(N log N) または O(N) で出現頻度を集計できます。",
+        "beforeSnippet": "vector<int> ans(N, 0);\nrep(i, N) {\n    rep(j, N) {\n        if (S.at(i) == S.at(j)) {\n            ans.at(i)++;\n        }\n    }\n}",
+        "afterSnippet": "map<string, int> count;\nrep(i, N) count[S.at(i)]++;\nint ans = 0;\nfor (auto [k, v] : count) ans = max(ans, v);"
+      }
+    },
+    "e5ff3ac91447bec381bc7e5b9cc696b4c255bf54f1ea815e5ac403f34f4b4140": {
+      "complexity": "O(N log N)",
+      "summary": "std::set に座標を格納し、現在位置から lower_bound を用いて最も近い点を貪欲に選択・移動する解法です。イテレータの境界処理を丁寧に行い、移動距離の合計を O(N log N) で効率良く求めています。",
+      "tags": [
+        "貪欲法",
+        "std::set",
+        "二分探索"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "7fbf9bb3a1b33f8a33ad4f70285d11717121e4fe761783a3ef29f123909d5273": {
+      "complexity": "O(N log N)",
+      "summary": "正負の座標に分類してそれぞれソートし、2ポインタを用いて原点から近い順に貪欲に移動距離を加算しています。条件分岐が多くやや冗長ですが、ソート後は O(N) の線形走査で効率良く処理されています。",
+      "tags": [
+        "ソート",
+        "貪欲法",
+        "2ポインタ"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "96abb219c56948d8f83430294d9e5cb29d23f9fce42189613f0aa8a515450303": {
+      "complexity": "O(N)",
+      "summary": "1からNまでの整数を順に走査し、3の倍数であるかを剰余演算で判定してFizzまたは数値を適切に出力しています。無駄な処理がなく極めて明瞭で標準的なFizzBuzzの実装です。",
+      "tags": [
+        "全探索",
+        "算術演算"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "429f5257437de2bd2450f8b37355bbb7fd142e0851c92c56e6610bfbbfd7a079": {
+      "complexity": "O(N)",
+      "summary": "バケット配列を用いて各要素の出現頻度をカウントし、最大出現回数を全体数Nから引くことで最小変更回数を求めています。O(N)の最適計算量で簡潔かつ無駄のない実装です。",
+      "tags": [
+        "バケット",
+        "貪欲法"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "d60c90ac103126661643f16f3b65e3e1e4df53be149cc5e42bd43805051d151e": {
+      "complexity": "O(Q * N)",
+      "summary": "クエリごとにXOR和の差分更新を行い、値が正の要素をstd::setで管理して減算クエリに対応しています。タイプ2で全要素を線形走査しているため、クエリ内容によっては計算量が悪化する余地があります。",
+      "tags": [
+        "ビット演算",
+        "std::set",
+        "差分更新"
+      ],
+      "improvement": {
+        "hasImprovement": true,
+        "bottleneck": "タイプ2のクエリで active な全要素をループ処理しているため、最悪時に 1 クエリあたり O(N) かかってしまいます。",
+        "suggestion": "全体に対する一括減算・オフセット管理の変数を導入し、遅延評価を行うことで各クエリを高速化できます。",
+        "beforeSnippet": "for (int idx : active) {\n    update(idx, A.at(idx) - 1);\n    if (A.at(idx) == 0) {\n        to_remove.push_back(idx);\n    }\n}",
+        "afterSnippet": "offset++;\n// 0 に達した要素のみを優先度付きキュー等から取り出して差分更新\nwhile (!pq.empty() && pq.top().first <= offset) { ... }"
+      }
+    },
+    "06d0af4b70ebf9907e93879f90170ae0800397d604cdcdf4402a0294dad16f9b": {
+      "complexity": "O(N + Q)",
+      "summary": "順列Pとその逆置換Qを双方向で保持し、スワップ操作および逆置換への反転操作をそれぞれO(1)で処理しています。データ構造の同期をシンプルに保ち、全体でO(N + Q)を達成した極めて洗練された実装です。",
+      "tags": [
+        "順列",
+        "シミュレーション"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "c99cff3cb2c1964a88b4d3d17fbe0682e43fbcbdc78e164b7c51a2ad29e7a6c6": {
+      "complexity": "O(1)",
+      "summary": "N個の連続した要素から長さKの区間を取り出す場合の数を、N - K + 1 の計算式によりO(1)で直接求めています。簡潔明瞭で無駄がなく最適な実装です。",
+      "tags": [
+        "算術演算"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "d07e5d770c67fe6ee86d5b081f75b77c7f414b475c5e30f00631b638ae7e92b9": {
+      "complexity": "O(N)",
+      "summary": "配列の各要素について、両隣の要素より大きい（極大値である）かを1重ループで判定してカウントしています。境界条件にも適切に配慮されており、O(N)で無駄のない実装です。",
+      "tags": [
+        "全探索",
+        "配列"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "5363b86457fe66652397bf6ae3b8eee75a3759da87711ea1b9b4059241a1b412": {
+      "complexity": "O(M * D)",
+      "summary": "各位置iを中心とする前後Dの範囲に文字 'G' が存在するかを愚直に探索して判定しています。制約下で十分高速に動作し、境界チェックを含め直感的で分かりやすい実装です。",
+      "tags": [
+        "全探索",
+        "シミュレーション"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "5b612e57f2846d96e1f02363df39eecf4d7e992c8fe62e6a72e722228443635f": {
+      "complexity": "O(N * N!)",
+      "summary": "std::next_permutationを用いて順列を辞書順に全列挙し、順列PからQまでの間にある順列の個数をシミュレーションで数えています。小規模なNに対する標準的で簡潔な解法です。",
+      "tags": [
+        "順列",
+        "全探索"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "a7ffdd9e12e9b48813ee542984611a78e9a3d173803cd5c8dfe34b6b3e9c8bb2": {
+      "complexity": "O(1)",
+      "summary": "条件式を変形し、浮動小数点数の割り算を避けて整数同士の掛け算で比較判定を行っています。計算誤差の発生を防止し、O(1)で極めて簡潔に記述された優れた実装です。",
+      "tags": [
+        "条件分岐",
+        "算術演算"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "b781259b8dcf5c14fb6986acdfd90408e45f468cb9be820ab03daec8164a6b01": {
+      "complexity": "O(N)",
+      "summary": "各入力に対して文字列Sが \"keep\" である場合のみ差分 B - A を累積加算して答えを求めています。ループ内で入力を受け取りながらその場で集計する無駄のないO(N)の実装です。",
+      "tags": [
+        "シミュレーション",
+        "条件分岐"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "dd0efb46a23f0bd387e09bb86bee069a3439e8088d7b45743353b3c989a72e6c": {
+      "complexity": "O(N)",
+      "summary": "先頭要素の偶奇操作（0回または1回）を全探索し、左端から順に隣接和のパリティがBと一致するよう貪欲に次要素を調整しています。状態決定の依存関係を活かしたO(N)の明瞭な解法です。",
+      "tags": [
+        "貪欲法",
+        "全探索",
+        "パリティ"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "b77a9db41b463ce9857ee6a5d99791dcc08b33aabb7ffcafa5d28ff01a1cd862": {
+      "complexity": "O(N)",
+      "summary": "N個の整数を順に読み込み、0以上の値が存在するかをフラグ変数で判定しています。すべての要素が負であるかという全称命題を1重ループで効率的に判定する標準的な実装です。",
+      "tags": [
+        "全探索",
+        "条件分岐"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "f19f69ba5814e2b8775cf5cd8e880c211f920dc2879288802eda77b7fbd7a2f4": {
+      "complexity": "O(N + M)",
+      "summary": "サイズM+1の配列を用意し、各カテゴリCに対するスコアSの最大値をO(1)で順次更新しています。配列の直接参照を活用し、無駄なくO(N + M)で解けています。",
+      "tags": [
+        "配列",
+        "シミュレーション"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "df857c0d216cc6389098022746b2113c1db6766d464421b6e10b8b3f9b3e8c0b": {
+      "complexity": "O(N)",
+      "summary": "インタラクティブ形式の問題に対し、2つのポインタを用いてクエリを行いながら条件を満たす区間の個数を計上しています。各ステップでポインタを前進させ、最大2N回のクエリで効率よく解いています。",
+      "tags": [
+        "インタラクティブ",
+        "2ポインタ",
+        "しゃくとり法"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "156b2c614b5c611fa95ec6c58c55e339a1cde36f1fb4941bf462e99d882a9ba1": {
+      "complexity": "O(|S|)",
+      "summary": "与えられた文字列の各文字を走査して'E'と'W'の出現回数をカウントし、多数派を出力する明快な解法です。1文字ずつの条件分岐によりシンプルに集計できています。",
+      "tags": [
+        "全探索",
+        "文字列操作"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "419d1a1f937a5230eda44567d6aa815051927d5c5d50cb58cb790647eea82f88": {
+      "complexity": "O(H * W)",
+      "summary": "グリッド全体を走査して'#'が存在する最小・最大の行と列を特定し、囲まれた矩形領域のみを出力する無駄のない美しい実装です。計算量も最小限に抑えられています。",
+      "tags": [
+        "グリッド",
+        "全探索"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "8bbc2875403f4363d23f0b889b5f8d6a43486fcd7d7ee9ffae87f6530b8fad4c": {
+      "complexity": "O(1)",
+      "summary": "浮動小数点数の割り算を避け、クロス乗算による整数演算（9 * X == 16 * Y）で等値判定を行っており、丸め誤差の心配がないスマートで最適な実装です。",
+      "tags": [
+        "数学"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "627fc8eb63adf88460fb0be5870564c6694c1884a32ff9953735cfbb69712aa3": {
+      "complexity": "O(N^2)",
+      "summary": "指定された列に'o'が存在するかを行ごとに探索する解法です。内側のループで列番号の一致を判定していますが、直接インデックス参照することでより効率化できます。",
+      "tags": [
+        "全探索",
+        "文字列操作"
+      ],
+      "improvement": {
+        "hasImprovement": true,
+        "bottleneck": "固定の列位置（X - 'A'）を特定するために内側で不要なループを回しており、O(N^2)の無駄な計算が発生しています。",
+        "suggestion": "内側のループを削除し、S[i][X - 'A'] へ直接アクセスすることで O(N) に改善できます。",
+        "beforeSnippet": "rep(i, N) {\n    rep(j, N) {\n        if (j == X - 'A' && S.at(i).at(j) == 'o') {\n            ans = true;\n        }\n    }\n}",
+        "afterSnippet": "int col = X - 'A';\nrep(i, N) {\n    if (S.at(i).at(col) == 'o') {\n        ans = true;\n        break;\n    }\n}"
+      }
+    },
+    "d53f3f68a3ebfac570cc51fa021a8f0f7f478ef82193066e7b5cf04fbb08543f": {
+      "complexity": "O(Q * N)",
+      "summary": "各クエリに対して線形探索を行っており、QとNが大きい場合に計算量が膨大になります。ソートと累積最大値、二分探索を組み合わせることで大幅な高速化が可能です。",
+      "tags": [
+        "二分探索",
+        "累積和",
+        "全探索"
+      ],
+      "improvement": {
+        "hasImprovement": true,
+        "bottleneck": "クエリごとに配列を先頭から線形探索しているため、全体の時間計算量が O(Q * N) となり非効率です。",
+        "suggestion": "条件 L_i <= T を満たす範囲を二分探索し、事前に計算した累積最大値配列を参照することで O(Q log N) に削減できます。",
+        "beforeSnippet": "while(Q--) {\n    long long T;\n    cin >> T;\n    long long ans = 0;\n    rep(i, N) {\n        if(HL.at(i).second > T) {\n            break;\n        }\n        if(HL.at(i).first > ans) {\n            ans = HL.at(i).first;\n        }\n    }\n    cout << ans << endl;\n}",
+        "afterSnippet": "// HL を second でソートし、累積最大値 pref を作成した上で\nwhile (Q--) {\n    long long T;\n    cin >> T;\n    int idx = upper_bound(L.begin(), L.end(), T) - L.begin();\n    cout << (idx > 0 ? pref[idx - 1] : 0) << endl;\n}"
+      }
+    },
+    "ac8c825cd0eec7a8927c0783b797111c56c309980dd11bf9a9227cf456b97664": {
+      "complexity": "O(|S|)",
+      "summary": "文字列の先頭から各文字を走査し、文字コード判定によって数字文字（'0'〜'9'）のみを順次抽出して出力する明快な実装です。計算量も文字列の長さに比例して最適です。",
+      "tags": [
+        "文字列操作",
+        "全探索"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "600d28f462625ad6ea6e1b82886c755068ccdb94fde9715fd51508c2f94fe026": {
+      "complexity": "O(N * K)",
+      "summary": "各行の入力要素を受け取りながら、対象のインデックス値と一致する要素を走査して出力する素直な解法です。問題の条件をそのままコードに落とし込めています。",
+      "tags": [
+        "全探索",
+        "シミュレーション"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "5c9656168bb42eeafdf9da06db0b21eb9fa51223a0e42d9610246821cbae19d4": {
+      "complexity": "O(N)",
+      "summary": "x座標を添字にした配列にy座標を格納し、xの昇順に走査しながらyの最小値を更新するごとにカウントする解法です。O(N)で無駄なく美しく解かれています。",
+      "tags": [
+        "全探索",
+        "貪欲法"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "85d379302bff2f1cab9742661fce731c41dc80885051d3662830fa37f6e2288b": {
+      "complexity": "O(1)",
+      "summary": "2つの整数の大小関係を三項演算子で比較し、条件に応じた結果を出力する無駄のない明快な実装です。余分な変数や処理がなく計算量も O(1) で最適です。",
+      "tags": [
+        "シミュレーション"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "7987e4d6f9b559909eae06c0399983b64ff77bffdabc3f8681277342d8b97426": {
+      "complexity": "O(N)",
+      "summary": "順列Aの各要素で配列Bを参照し、逆順列の関係が全要素で成り立っているかを単一ループで判定しています。1回の走査でO(N)で判定するスマートな実装です。",
+      "tags": [
+        "全探索",
+        "シミュレーション"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "0196a8a02293650c2bd12315c747c05f8fcfd1efda80299ff8c5ed4324abbbd0": {
+      "complexity": "O(N log N)",
+      "summary": "価値の高い順に貪欲に選択しつつ色数を管理する方針ですが、色数を満たすための最適な選択組み合わせを保証できずWAとなっています。優先度付きキュー等による適切な貪欲法の構築が必要です。",
+      "tags": [
+        "貪欲法",
+        "優先度付きキュー"
+      ],
+      "improvement": {
+        "hasImprovement": true,
+        "bottleneck": "各色から最大値を優先確保する処理を行わずに上から順に貪欲選択しているため、色数の条件を満たす最適な解が得られません。",
+        "suggestion": "各色の最大値を1つずつ確保して優先度付きキューで管理し、残りの枠を未選択要素の大きい順で埋める貪欲法に修正する必要があります。",
+        "beforeSnippet": "for (int i = 0; i < N; i++) {\n    if (amountCount == K) {\n        break;\n    } else if (colorCount >= M || amountCount <= K - M) {\n        ans += CV.at(i).first;",
+        "afterSnippet": "// 各色の最大値を優先してM個確保し、残りを未選択の中で大きい順に貪欲に選ぶ\nfor (auto [val, col] : best_of_each_color) pq.push(val);\nwhile (chosen < M) { ans += pq.top(); pq.pop(); chosen++; }"
+      }
+    },
+    "88e83b3d79f943a59ba18243f7d0eaf5ab5b93b6d29c66e704b5e5f1b1f23b94": {
+      "complexity": "O(1)",
+      "summary": "剰余算の計算結果を変数に代入し、値が0になるまでのステップ数をシミュレーションにより直接カウントしています。余計な処理のない非常に簡潔な実装です。",
+      "tags": [
+        "シミュレーション",
+        "数学"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "5b2dc3e7242c20f5eff6ed258619e2d680b7c7951324d0321bfc90b627a2d9c4": {
+      "complexity": "O(T)",
+      "summary": "2つの円の位置関係を判定する幾何問題です。しかしcinのカンマ演算子による未初期化変数や、半径の2乗比較の欠落など、構文および判定ロジックに重大な誤りを含んでいます。",
+      "tags": [
+        "シミュレーション",
+        "数学"
+      ],
+      "improvement": {
+        "hasImprovement": true,
+        "bottleneck": "cinの入力でカンマ演算子を使っており変数が正しく読み込まれず、中心間距離の2乗に対する半径の判定式も2乗されていません。",
+        "suggestion": "cin >> X1 >> Y1 >> R1 >> X2 >> Y2 >> R2; と正しく連鎖させ、判定式を (R1-R2)^2 <= c <= (R1+R2)^2 に修正します。",
+        "beforeSnippet": "cin >> X1, Y1, R1, X2, Y2, R2;\n\nint a = pow(X1 - X2, 2);\nint b = pow(Y1 - Y2, 2);\nint c = a + b;\n\nbool ans = R1 - R2 <= c && c <= R1 + R2;",
+        "afterSnippet": "cin >> X1 >> Y1 >> R1 >> X2 >> Y2 >> R2;\nlong long c = 1LL * (X1 - X2) * (X1 - X2) + 1LL * (Y1 - Y2) * (Y1 - Y2);\nlong long diff = 1LL * (R1 - R2) * (R1 - R2);\nlong long sum = 1LL * (R1 + R2) * (R1 + R2);\nbool ans = (diff <= c && c <= sum);"
+      }
+    },
+    "8a697138752bcc6ffed8a7bd841cca19585fbe470734bec50e12128839400b2c": {
+      "complexity": "O(|S|)",
+      "summary": "文字列のインデックスを走査し、先頭と末尾のN文字を除外した範囲のみを出力する解法です。substr関数を用いるとさらに簡潔に記述できますが、計算量はO(|S|)で十分高速です。",
+      "tags": [
+        "文字列操作",
+        "全探索"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "c87a171d1c6d78681cbdd05857fa07a0087d508d68761a479d15b1bc2d924617": {
+      "complexity": "O(H * W)",
+      "summary": "グリッドの各セルについて隣接マスの数を四隅・端・中央で場合分けして出力する実装です。条件分岐がやや冗長ですが、H=1やW=1のコーナーケースを確実に網羅できています。",
+      "tags": [
+        "グリッド",
+        "シミュレーション"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "e03f79546e8d1d381c6424c8e945750bcee7be6fec49865ee5ce6523d705f859": {
+      "complexity": "O(|S|)",
+      "summary": "文字'C'の各位置から両端までの最短距離を算出して合計する解法です。幾何的対称性に着目し、min関数を活用してO(|S|)で極めて明快に解けています。",
+      "tags": [
+        "数学",
+        "文字列操作"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "1dbe57eed4f368b6d799c5635625b3f93b60b548d30ab6e2d7ed0f4b6fc8f17b": {
+      "complexity": "O(Q log Q)",
+      "summary": "2つの優先度付きキュー（最大ヒープと最小ヒープ）を組み合わせて中央値を動的に維持管理する典型解法です。各クエリO(log Q)で高速にバランス調整できており非常に美しい実装です。",
+      "tags": [
+        "優先度付きキュー",
+        "中央値管理"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "f5d4f431b7fc3367f016dfff4b04be052496df592775f0abf6d7e814d20c1e59": {
+      "complexity": "O(N)",
+      "summary": "配列にN個の要素を格納し、指定された1始まりのインデックスXに対応する要素A[X-1]をO(1)で直接参照して出力するシンプルで過不足のない実装です。",
+      "tags": [
+        "シミュレーション"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "892da969c9a56c8edd6e383e50785fe9748ce5c2a825a4745f6959d0a320523f": {
+      "complexity": "O(\\sum L)",
+      "summary": "可変長二次元配列（vectorのvector）を用いて各数列の要素を動的に格納し、クエリで与えられた座標を0-indexedに補正してO(1)で取得・出力する簡潔で無駄のない実装です。",
+      "tags": [
+        "多次元配列",
+        "実装",
+        "vector"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "4d84c0c6a13611df9f1db07fef141355ed28462556702bfef7062ea07d6e9e5d": {
+      "complexity": "O(Q log Q)",
+      "summary": "2つの優先度付きキュー（最大ヒープと最小ヒープ）を併用して中央値を動的に管理・更新するアプローチですが、変数の宣言や入力処理が不足しているためコード全体の確認が必要です。",
+      "tags": [
+        "優先度付きキュー",
+        "中央値"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "5e0b67653450c85e81598988bc727763d50b1135cbfcbf4f929855977dae9804": {
+      "complexity": "O(N log K)",
+      "summary": "答えの値を二分探索（二値判定）する典型アプローチです。判定関数isokにて中央値midを達成するための必要操作回数をO(N)で計算し、効率的に最適解を求めています。",
+      "tags": [
+        "二分探索",
+        "めぐる式二分探索",
+        "貪欲法"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "3a546f0a98273623f09f190559afc93fe1aa4fdace9da1b03d03ba110980e987": {
+      "complexity": "O(1)",
+      "summary": "入力された整数Xが3以上18以下の範囲に含まれるかを単一の条件分岐で判定し、Yes/Noを出力するO(1)の極めて簡潔で無駄のない実装です。余計な処理がなく最適な構造です。",
+      "tags": [
+        "条件分岐",
+        "実装"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "277317800224aa27ffbb13c79bb2eabc6c751081cdd846278d4a694aca4d2aaa": {
+      "complexity": "O(1)",
+      "summary": "各サイコロで4〜6の目が出る回数を集計し、4, 5, 6が1回ずつ出る全順列6パターンについて積の総和を求めて確率を計算する、正確で無駄のないO(1)実装です。",
+      "tags": [
+        "確率",
+        "全探索",
+        "実装"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "05ceb3da62f634b269d06a040c7d8f527fc25022570ca8c8efad4df4e3026032": {
+      "complexity": "O(N)",
+      "summary": "隣接する文字の異同によって直前の有効長に+1するかリセットするかを判定し、末尾位置ごとに条件を満たす連続部分文字列数をO(N)で積算していく明快な動的計画法による解法です。",
+      "tags": [
+        "動的計画法",
+        "文字列"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "39a755452921ec522a4f80affc45bf492cefa08b4916ba3dd137dd244b7dee98": {
+      "complexity": "O(N)",
+      "summary": "次に各文字が登場する位置を前計算したnextテーブルを構築し、部分列の重複を排除しながらDP遷移を行うことで異なる部分列数をO(26N)で高速に数え上げている効率的な実装です。",
+      "tags": [
+        "動的計画法",
+        "部分列DP",
+        "文字列"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "393e94cd482c2d06c188086509624e35df18a2a9de4eccf8ed757ab371632c90": {
+      "complexity": "O(1)",
+      "summary": "入力された3つの整数A, B, Cの条件（A≠B かつ B＝C）を単一のif文で直接判定してYes/Noを出力する、O(1)の極めて簡潔で無駄のない美しい実装です。",
+      "tags": [
+        "条件分岐",
+        "実装"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "2f307f824724a41a3f3557380ed654b967642e9edbc8ba3e9d1a3b3f35ecb5e0": {
+      "complexity": "O(H^3 W^3)",
+      "summary": "すべての部分長方形（始点・終点）を全探索し、各部分領域が点対称（180度回転で一致）であるかを愚直に判定して数え上げる、直感的で分かりやすい全探索解法です。",
+      "tags": [
+        "全探索",
+        "グリッド",
+        "実装"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "6999ba164bc06f3f3f2a15f305c051e6b1feab4262804a102127f0c7d22b242b": {
+      "complexity": "O(N log N)",
+      "summary": "mapで同じ数値の出現回数を集計して数値ごとの総和を求め、昇順ソート後に上位K個を取り除いて残りの総和をstd::reduceで計算する明快な貪欲解法です。",
+      "tags": [
+        "std::map",
+        "貪欲法",
+        "ソート"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "c9e0c80429fc69a06c79028088fbf9519547ddb59d26d97344f502a17ce51a58": {
+      "complexity": "O(N^2 + Q)",
+      "summary": "配列を用いた双方向ポインタ（連結リスト）で各要素の前後の接続関係をO(1)で更新し、最後に各要素の深さを親方向に辿ってカウントして出力するシミュレーション解法です。",
+      "tags": [
+        "連結リスト",
+        "シミュレーション",
+        "グラフ"
+      ],
+      "improvement": {
+        "hasImprovement": true,
+        "bottleneck": "各要素からupポインタを辿って長さをカウントする処理がメモ化されていないため、最悪ケースでO(N^2)の計算量になります。",
+        "suggestion": "各頂点から辿った結果をメモ化再帰で保持することで、全要素の深さ計算を全体でO(N)に短縮できます。",
+        "beforeSnippet": "rep (i, N) {\n    int x = N + i; \n    int ans = 0;\n    while (up.at(x) != -1) {\n        x = up.at(x);\n        ans++;\n    }\n    cout << ans << (i == N - 1 ? \"\" : \" \");\n}",
+        "afterSnippet": "vector<int> memo(2 * N, -1);\nauto get_len = [&](auto self, int x) -> int {\n    if (up.at(x) == -1) return 0;\n    if (memo.at(x) != -1) return memo.at(x);\n    return memo.at(x) = self(self, up.at(x)) + 1;\n};\nrep(i, N) cout << get_len(get_len, N + i) << (i == N - 1 ? \"\" : \" \");"
+      }
+    },
+    "3acb087b27e927752a4554f4a82304fe6ec1f8219cc6840efb22bc7a3348782d": {
+      "complexity": "O(N)",
+      "summary": "文字列の先頭から連続する'o'をフラグ管理によってスキップし、その他の文字を順次出力する1パス走査の解法です。O(N)時間で無駄なく処理できています。",
+      "tags": [
+        "文字列",
+        "フラグ管理",
+        "実装"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "54684ba72dfa856ea399e1a0a4389fd722feacfc951e1f05081fe530c000e3ec": {
+      "complexity": "O(T)",
+      "summary": "直前に記録した値との差分の絶対値がX以上になったタイミングを1重ループで判定し、条件を満たした時刻と値を逐次出力・更新する明快なO(T)実装です。",
+      "tags": [
+        "シミュレーション",
+        "貪欲法",
+        "実装"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "188103907aee12a6c0ea994cd765c5dde519da7ac6195f3e463a5d21cc201f8d": {
+      "complexity": "O(N 2^N)",
+      "summary": "長さNの全括弧列をbit全探索で辞書順に生成し、累積スコアによる整合性判定（途中で負にならず合計が0）を行うことで正しい括弧列のみを抽出する典型解法です。",
+      "tags": [
+        "bit全探索",
+        "全探索",
+        "文字列"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "55a0e57ddd86f18ec88a12b93aec35d103b53121912342b30cb12790a7f2e571": {
+      "complexity": "O(H W)",
+      "summary": "各行と各列の総和を行列走査時に事前計算しておき、各マスに対して (行和 + 列和 - 自身の値) をO(1)で計算することで全体をO(HW)で処理する典型解法です。",
+      "tags": [
+        "累積和",
+        "前計算",
+        "グリッド"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    },
+    "1c398620e5653acd9eac9fb7f64d0aeed65500730a420ad31b5ad05901f1709d": {
+      "complexity": "O((N + Q) log N)",
+      "summary": "配列Aをソートした上で各クエリ値Bに対してstd::lower_boundによる二分探索を行い、その位置と直前要素の2箇所との差分の最小値をO(log N)で求める最適解法です。",
+      "tags": [
+        "二分探索",
+        "ソート",
+        "std::lower_bound"
+      ],
+      "improvement": {
+        "hasImprovement": false
+      }
+    }
+  }
+}

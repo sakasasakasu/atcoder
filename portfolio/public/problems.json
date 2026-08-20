@@ -13,11 +13,9 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int A, B;\n    cin >> A >> B;\n    if (A+B == 9 || A-B == 9 || A*B == 9 || A == 9*B) {\n        cout << \"Nine\" << endl;\n    } else {\n        cout << \"Nein\" << endl;\n    }\n     return 0;\n}\n",
             "aiReview": {
               "complexity": "O(1)",
-              "rating": "A",
-              "summary": "四則演算の条件分岐を網羅的に記述し、問題の要求をシンプルかつ正確に解決しています。効率的な定数時間処理であり、可読性も高く良好なコードです。",
+              "summary": "2つの整数 A, B に対して四則演算のいずれかで結果が9になるかを条件分岐で判定しています。除算を A == 9 * B と乗算の形で判定することで、ゼロ除算や小数の誤差を避けて簡潔に実装しています。",
               "tags": [
                 "条件分岐",
-                "全探索",
                 "算術演算"
               ],
               "improvement": {
@@ -46,20 +44,18 @@
             "name": "B",
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    vector<string> S(N);\n    rep(i, N) {\n        string string;\n        cin >> string;\n        transform(string.begin(), string.end(), string.begin(), [](unsigned char c) {return toupper(c);});\n        S.at(i) = string;\n    }\n    vector<int> ans(N, 0);\n    rep(i, N) {\n        rep(j, N) {\n            if (S.at(i) == S.at(j)) {\n                ans.at(i)++;\n            }\n        }\n    }\n\n    cout << *max_element(ans.begin(), ans.end()) << endl;\n    return 0;\n}\n",
             "aiReview": {
-              "complexity": "O(N^2 * |S|)",
-              "rating": "B",
-              "summary": "文字列をすべて大文字に変換し、すべてのペアで一致判定を行うことで最頻値を求めています。std::transformとラムダ式を用いた文字変換の工夫が見事です。計算量の面では改善の余地があります。",
+              "complexity": "O(N^2)",
+              "summary": "各文字列を大文字に統一した後、2重ループで各文字列と等しいものの個数を全探索して最大出現数を求めています。正しく動作しますが、頻度カウントに連想配列を用いることで計算量を削減できます。",
               "tags": [
                 "全探索",
-                "文字列処理",
-                "STL"
+                "文字列処理"
               ],
               "improvement": {
                 "hasImprovement": true,
-                "bottleneck": "二重ループで全ペアの文字列一致判定を行っているため、時間計算量が O(N² × |S|) かかっています。",
-                "suggestion": "std::map を用いて出現頻度を一度のループで集計すると、O(N log N × |S|) に大幅に高速化できます。",
-                "beforeSnippet": "vector<int> ans(N, 0);\nrep(i, N) {\n    rep(j, N) {\n        if (S.at(i) == S.at(j)) ans.at(i)++;\n    }\n}",
-                "afterSnippet": "map<string, int> count;\nint max_freq = 0;\nfor (const string &s : S) {\n    count[s]++;\n    max_freq = max(max_freq, count[s]);\n}"
+                "bottleneck": "2重ループを用いて全ペアを比較しているため、文字列の頻度カウントに O(N^2) の時間がかかっています。",
+                "suggestion": "std::map や std::unordered_map を用いることで、O(N log N) または O(N) で出現頻度を集計できます。",
+                "beforeSnippet": "vector<int> ans(N, 0);\nrep(i, N) {\n    rep(j, N) {\n        if (S.at(i) == S.at(j)) {\n            ans.at(i)++;\n        }\n    }\n}",
+                "afterSnippet": "map<string, int> count;\nrep(i, N) count[S.at(i)]++;\nint ans = 0;\nfor (auto [k, v] : count) ans = max(ans, v);"
               }
             }
           }
@@ -85,13 +81,15 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing ll = long long;\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    set<int> s;\n    rep(i, N) {\n        int ai;\n        cin >> ai;\n        s.insert(ai);\n    }\n\n    ll ans = 0;\n    int pos = 0;\n    rep(i, N) {\n        auto it = s.lower_bound(pos);\n        int next;\n        if (it == s.begin()) {\n            next = *it;\n        } else if (it == s.end()) {\n            next = *--it;\n        } else {\n            int cand1 = *it;\n            int cand2 = *--it;\n            if (abs(cand1 - pos) < abs(cand2 - pos)) {\n                next = cand1;\n            } else {\n                next = cand2;\n            }\n        }\n        ans += abs(next - pos);\n        s.erase(next);\n        pos = next;\n    }\n    cout << ans << endl;\n    return 0;\n}\n",
             "aiReview": {
               "complexity": "O(N log N)",
-              "rating": "A",
-              "summary": "std::setとlower_boundを巧妙に活用し、条件に合致する要素を効率的に探索して削除するアプローチです。O(N log N)の計算量で動作し、実装も直感的で分かりやすく記述されています。",
+              "summary": "std::set に座標を格納し、現在位置から lower_bound を用いて最も近い点を貪欲に選択・移動する解法です。イテレータの境界処理を丁寧に行い、移動距離の合計を O(N log N) で効率良く求めています。",
               "tags": [
+                "貪欲法",
                 "std::set",
-                "lower_bound",
-                "貪欲法"
-              ]
+                "二分探索"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           },
           {
@@ -99,13 +97,15 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n  int N;\n  cin >> N;\n  vector<long long> negative, positive;\n  rep(i, N) {\n    long long a;\n    cin >> a;\n    if (a < 0) {\n      negative.push_back(a);\n    } else {\n      positive.push_back(a);\n    }\n  }\n  sort(positive.begin(), positive.end());\n  sort(negative.begin(), negative.end(), greater<long long>());\n\n  long long ans = 0;\n  long long current = 0;\n  int p_idx = 0, n_idx = 0;\n\n  while (p_idx < positive.size() || n_idx < negative.size()) {\n    if (p_idx < positive.size() && n_idx < negative.size()) {\n      if (abs(positive.at(p_idx) - current) <\n          abs(negative.at(n_idx) - current)) {\n        ans += abs(positive.at(p_idx) - current);\n        current = positive.at(p_idx);\n        p_idx++;\n      } else {\n        ans += abs(negative.at(n_idx) - current);\n        current = negative.at(n_idx);\n        n_idx++;\n      }\n    } else if (p_idx < positive.size()) {\n      ans += abs(positive.at(p_idx) - current);\n      current = positive.at(p_idx);\n      p_idx++;\n    } else {\n      ans += abs(negative.at(n_idx) - current);\n      current = negative.at(n_idx);\n      n_idx++;\n    }\n  }\n\n  cout << ans << endl;\n\n  return 0;\n}\n",
             "aiReview": {
               "complexity": "O(N log N)",
-              "rating": "A",
-              "summary": "正負の数を別々に分類し、ソートした上で貪欲法を用いて順次処理しています。二つの配列を効率的に走査するロジックが綺麗に実装されており、安全かつ確実なアプローチで正解を導き出しています。",
+              "summary": "正負の座標に分類してそれぞれソートし、2ポインタを用いて原点から近い順に貪欲に移動距離を加算しています。条件分岐が多くやや冗長ですが、ソート後は O(N) の線形走査で効率良く処理されています。",
               "tags": [
-                "貪欲法",
                 "ソート",
-                "実装"
-              ]
+                "貪欲法",
+                "2ポインタ"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -137,13 +137,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    rep(i, N) { \n        if ((i + 1) % 3 == 0) {\n            cout << \"Fizz\" << endl;\n        } else {\n            cout << i + 1 << endl;\n        }\n    }\n}\n",
             "aiReview": {
               "complexity": "O(N)",
-              "rating": "A",
-              "summary": "マクロを活用したシンプルで美しい実装です。ループ内で条件分岐を用いて各数値を適切に判定しており、競技プログラミングの基本がしっかりと押さえられています。",
+              "summary": "1からNまでの整数を順に走査し、3の倍数であるかを剰余演算で判定してFizzまたは数値を適切に出力しています。無駄な処理がなく極めて明瞭で標準的なFizzBuzzの実装です。",
               "tags": [
-                "実装",
-                "条件分岐",
-                "ループ"
-              ]
+                "全探索",
+                "算術演算"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -168,13 +169,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    vector<int> amount(N + 1, 0);\n    rep(i, N) {\n        int num = 0;\n        cin >> num;\n        amount.at(num)++;\n    }\n    int max = *max_element(amount.begin(), amount.end());\n    cout << N - max << endl;\n}\n",
             "aiReview": {
               "complexity": "O(N)",
-              "rating": "A",
-              "summary": "各色の出現回数を配列でカウントし、最頻値を用いて効率的に計算を行っています。at()メソッドによる安全な範囲外アクセス防止や標準ライブラリの活用により、シンプルで可読性の高いコードに仕上がっています。",
+              "summary": "バケット配列を用いて各要素の出現頻度をカウントし、最大出現回数を全体数Nから引くことで最小変更回数を求めています。O(N)の最適計算量で簡潔かつ無駄のない実装です。",
               "tags": [
-                "集計",
-                "配列",
-                "標準ライブラリ"
-              ]
+                "バケット",
+                "貪欲法"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -198,14 +200,20 @@
             "name": "C",
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N, Q;\n    cin >> N >> Q;\n    vector<int> A(N + 1, 0);\n    set<int> active;\n    int ans = 0;\n    \n    auto update = [&](int i, int new_val) {\n        ans ^= A.at(i);\n        A.at(i) = new_val;\n        ans ^= A.at(i);\n    };\n\n    while(Q--) {\n        int type;\n        cin >> type;\n        if (type == 1) {\n            int X;\n            cin >> X;\n\n            update(X, A.at(X) + 1);\n            active.insert(X);\n\n        } else if (type == 2) {\n            vector<int> to_remove;\n            for (int idx : active) {\n                update(idx, A.at(idx) - 1);\n                if (A.at(idx) == 0) {\n                    to_remove.push_back(idx);\n                }\n            }\n\n            for (int idx : to_remove) {\n                active.erase(idx);\n            }\n        }\n\n        cout << ans << endl;\n    }\n\n    return 0;\n}\n",
             "aiReview": {
-              "complexity": "O(Q + (N + Q) \\log N)",
-              "rating": "A",
-              "summary": "ビット単位の排他的論理和を活用し、変更のたびに全体を再計算せず高速に答えを更新しています。集合を用いて処理対象を絞り込む工夫が光る実装です。",
+              "complexity": "O(Q * N)",
+              "summary": "クエリごとにXOR和の差分更新を行い、値が正の要素をstd::setで管理して減算クエリに対応しています。タイプ2で全要素を線形走査しているため、クエリ内容によっては計算量が悪化する余地があります。",
               "tags": [
                 "ビット演算",
-                "シミュレーション",
-                "集合"
-              ]
+                "std::set",
+                "差分更新"
+              ],
+              "improvement": {
+                "hasImprovement": true,
+                "bottleneck": "タイプ2のクエリで active な全要素をループ処理しているため、最悪時に 1 クエリあたり O(N) かかってしまいます。",
+                "suggestion": "全体に対する一括減算・オフセット管理の変数を導入し、遅延評価を行うことで各クエリを高速化できます。",
+                "beforeSnippet": "for (int idx : active) {\n    update(idx, A.at(idx) - 1);\n    if (A.at(idx) == 0) {\n        to_remove.push_back(idx);\n    }\n}",
+                "afterSnippet": "offset++;\n// 0 に達した要素のみを優先度付きキュー等から取り出して差分更新\nwhile (!pq.empty() && pq.top().first <= offset) { ... }"
+              }
             }
           }
         ],
@@ -230,13 +238,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N, Query;\n    cin >> N >> Query;\n    vector<int> P(N), Q(N);\n    rep(i, N) {\n        cin >> P[i];\n        P.at(i)--;\n        Q.at(P.at(i)) = i;\n    }\n\n    while(Query--) {\n        int type;\n        cin >> type;\n\n        if (type == 1) {\n            int x, y;\n            cin >> x >> y;\n            x--; y--;\n            swap(P.at(x), P.at(y));\n            swap(Q.at(P.at(x)), Q.at(P.at(y)));\n        } else if (type == 2) {\n            swap(P, Q);\n        }\n    }\n    rep(i, N) cout << P.at(i) + 1 << \" \\n\"[i + 1 == N];\n}\n",
             "aiReview": {
               "complexity": "O(N + Q)",
-              "rating": "A",
-              "summary": "順列とその逆順列をペアで管理し、クエリに応じて効率的にスワップ処理を行っています。配列の要素を直接操作する愚直かつスマートな実装で、無駄な計算を一切挟まないため高速に動作します。",
+              "summary": "順列Pとその逆置換Qを双方向で保持し、スワップ操作および逆置換への反転操作をそれぞれO(1)で処理しています。データ構造の同期をシンプルに保ち、全体でO(N + Q)を達成した極めて洗練された実装です。",
               "tags": [
-                "シミュレーション",
                 "順列",
-                "逆引き配列"
-              ]
+                "シミュレーション"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -268,12 +277,13 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n  int N, K;\n  cin >> N >> K;\n  cout << N - K + 1 << endl;\n}\n",
             "aiReview": {
               "complexity": "O(1)",
-              "rating": "S",
-              "summary": "入力値を用いた基本的な四則演算のみで実装されており、余計な処理がないため非常に効率的かつ可読性が高いです。制約に対して最適な時間および空間計算量で動作する模範的な解答コードです。",
+              "summary": "N個の連続した要素から長さKの区間を取り出す場合の数を、N - K + 1 の計算式によりO(1)で直接求めています。簡潔明瞭で無駄がなく最適な実装です。",
               "tags": [
-                "実装",
                 "算術演算"
-              ]
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -305,12 +315,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n  int N;\n  cin >> N;\n  vector<int> A(N);\n  rep(i, N) cin >> A.at(i);\n  int ans = 0;\n\n  for (int i = 1; i < N - 1; i++) {\n    if (A.at(i) > A.at(i - 1) && A.at(i) > A.at(i + 1)) ans++;\n  }\n\n  cout << ans;\n}\n",
             "aiReview": {
               "complexity": "O(N)",
-              "rating": "A",
-              "summary": "配列を一度走査し、左右の要素と比較して極大値となる個数を正しくカウントしています。標準的なループと条件分岐を用いており、シンプルで非常に読みやすい実装です。",
+              "summary": "配列の各要素について、両隣の要素より大きい（極大値である）かを1重ループで判定してカウントしています。境界条件にも適切に配慮されており、O(N)で無駄のない実装です。",
               "tags": [
                 "全探索",
                 "配列"
-              ]
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -335,12 +347,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n  int M, D;\n  cin >> M >> D;\n  vector<char> S(M);\n  rep(i, M) cin >> S.at(i);\n\n  int ans = 0;\n\n  for (int i = 0; i < M; i++) {\n    bool check = false;\n    for (int j = i - D; j <= i + D; j++) {\n      if (j >= 0 && j < M && S[j] == 'G') {\n        check = true;\n        break;\n      }\n    }\n    if (!check) ans++;\n  }\n  cout << ans;\n}\n",
             "aiReview": {
               "complexity": "O(M * D)",
-              "rating": "A",
-              "summary": "全探索を用いて各要素から一定範囲内の条件を確実に判定できています。愚直なアプローチを信じて素早く実装に落とし込めた点が非常に素晴らしいです。",
+              "summary": "各位置iを中心とする前後Dの範囲に文字 'G' が存在するかを愚直に探索して判定しています。制約下で十分高速に動作し、境界チェックを含め直感的で分かりやすい実装です。",
               "tags": [
                 "全探索",
                 "シミュレーション"
-              ]
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -365,13 +379,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n  int N;\n  cin >> N;\n  vector<int> P(N), Q(N);\n  rep(i, N) cin >> P.at(i);\n  rep(i, N) cin >> Q.at(i);\n\n  vector<int> v(N);\n  rep(i, N) v.at(i) = i + 1;\n\n  bool count = false;\n  int ans = 0;\n\n  do {\n    if (v == Q) break;\n    if (count) ans++;\n    if (v == P) count = true;\n  } while (next_permutation(v.begin(), v.end()));\n\n  cout << ans;\n}\n",
             "aiReview": {
               "complexity": "O(N * N!)",
-              "rating": "B",
-              "summary": "全順列を生成するstd::next_permutationを初めて活用し、辞書順でPからQまでの順番を数え上げる直感的な解法です。do-while文の特性を上手に利用しており、実装の素晴らしい学習になっています。",
+              "summary": "std::next_permutationを用いて順列を辞書順に全列挙し、順列PからQまでの間にある順列の個数をシミュレーションで数えています。小規模なNに対する標準的で簡潔な解法です。",
               "tags": [
-                "全探索",
                 "順列",
-                "シミュレーション"
-              ]
+                "全探索"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -409,13 +424,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int H, W;\n    cin >> H >> W;\n    cout << (W * 10000 >= 25 * H * H ? \"Yes\" : \"No\") << endl;\n}\n",
             "aiReview": {
               "complexity": "O(1)",
-              "rating": "S",
-              "summary": "誤差を生みやすい浮動小数点数の割り算を避け、両辺を整数同士の掛け算に変形して判定を行っている点が非常に美しいです。シンプルで無駄のない実装により、オーバーフローにも配慮された完璧なコードです。",
+              "summary": "条件式を変形し、浮動小数点数の割り算を避けて整数同士の掛け算で比較判定を行っています。計算誤差の発生を防止し、O(1)で極めて簡潔に記述された優れた実装です。",
               "tags": [
-                "算術演算",
                 "条件分岐",
-                "整数演算"
-              ]
+                "算術演算"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -440,12 +456,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    int A, B;\n    string S;\n    int keep = 0, take = 0;\n    rep(i, N) {\n        cin >> A >> B >> S;\n        if (S == \"keep\") {\n            keep += B - A;\n        } else {\n            take += B - A;\n        }\n    }\n    cout << keep << endl;\n\n}\n",
             "aiReview": {
               "complexity": "O(N)",
-              "rating": "A",
-              "summary": "入力された文字列の条件に応じて値を適切に加算・集計するシンプルなシミュレーション解法です。マクロを活用したループ処理によりコードがすっきりと記述されており、非常に読みやすく効率的な実装となっています。",
+              "summary": "各入力に対して文字列Sが \"keep\" である場合のみ差分 B - A を累積加算して答えを求めています。ループ内で入力を受け取りながらその場で集計する無駄のないO(N)の実装です。",
               "tags": [
                 "シミュレーション",
-                "実装問題"
-              ]
+                "条件分岐"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -470,13 +488,15 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N, M;\n    cin >> N >> M;\n    vector<int> A(N), B(N - 1);\n    rep(i, N) cin >> A.at(i);\n    rep(i, N - 1) cin >> B.at(i);\n\n    int ans = 2e9;\n    int ans_neo = 0;\n\n    for (int i = 0; i < 2; i++) {\n        vector<int> A_neo = A;\n        ans_neo = 0;\n\n        if (i == 1) {\n            A_neo.at(0)++;\n            ans_neo++;\n        }\n\n        for (int j = 0; j < N - 1; j++) {\n            if ((A_neo.at(j) + A_neo.at(j + 1)) % 2 != B.at(j)) {\n                ans_neo++;\n                A_neo.at(j + 1)++;\n            }\n        }\n\n        ans = min(ans, ans_neo);\n    }\n\n    cout << ans << endl;\n}\n",
             "aiReview": {
               "complexity": "O(N)",
-              "rating": "A",
-              "summary": "先頭の要素の変更有無による2通りの状態を全探索し、貪欲法によって各位置の状態を効率的に決定しています。シンプルな実装で計算量もO(N)に抑えられており、非常に分かりやすく見事な解答です。",
+              "summary": "先頭要素の偶奇操作（0回または1回）を全探索し、左端から順に隣接和のパリティがBと一致するよう貪欲に次要素を調整しています。状態決定の依存関係を活かしたO(N)の明瞭な解法です。",
               "tags": [
-                "全探索",
                 "貪欲法",
-                "シミュレーション"
-              ]
+                "全探索",
+                "パリティ"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -524,12 +544,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    bool ans = true;\n    rep(i, N) {\n        int x;\n        cin >> x;\n        if (x >= 0) {\n            ans = false;\n        }\n    }\n    cout << (ans ? \"Yes\" : \"No\") << endl;\n}\n",
             "aiReview": {
               "complexity": "O(N)",
-              "rating": "S",
-              "summary": "入力されたすべての整数が負の数であるかを効率的に判定する美しいコードです。フラグ変数を用いた線形探索により、無駄のないシンプルな実装で正確に条件を満たしており、可読性も非常に優れています。",
+              "summary": "N個の整数を順に読み込み、0以上の値が存在するかをフラグ変数で判定しています。すべての要素が負であるかという全称命題を1重ループで効率的に判定する標準的な実装です。",
               "tags": [
                 "全探索",
-                "実装"
-              ]
+                "条件分岐"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -554,13 +576,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N, M;\n    cin >> N >> M;\n    vector<int> A(M + 1, -1);\n    rep(i, N) {\n        int C, S;\n        cin >> C >> S;\n        if (A.at(C) < S) {\n            A.at(C) = S;\n        }\n    }\n    for (int i = 1; i <= M; i++) {\n        cout << A.at(i) << endl;\n    }\n}\n",
             "aiReview": {
               "complexity": "O(N + M)",
-              "rating": "A",
-              "summary": "各要素の最大値を管理するために配列を活用した効率的な解法です。atメソッドによる安全な範囲外チェックや、シンプルで無駄のないループ構造により、可読性が高く堅牢なコードに仕上がっています。",
+              "summary": "サイズM+1の配列を用意し、各カテゴリCに対するスコアSの最大値をO(1)で順次更新しています。配列の直接参照を活用し、無駄なくO(N + M)で解けています。",
               "tags": [
                 "配列",
-                "シミュレーション",
-                "全探索"
-              ]
+                "シミュレーション"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -585,13 +608,15 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    long long ans = 0;\n    int i = 1;\n    int j = 2;\n\n    while (j <= N) {\n        cout << \"? \" << i << ' ' << j << endl;\n        string s;\n        cin >> s;\n        if (s == \"Yes\") {\n            j++;\n        } else {\n            ans += (j - 1) - i;\n            i++;\n            if (i == j) {\n                j++;\n            }\n        }\n    }\n\n    while(i <= N) {\n        ans += N - i;\n        i++;\n    }\n\n    cout << \"! \" << ans << endl;\n    return 0;\n}\n\n",
             "aiReview": {
               "complexity": "O(N)",
-              "rating": "A",
-              "summary": "インタラクティブ問題に対する効率的なクエリ処理を実現しています。二人のポインタを用いた線形探索の工夫により、最小限の質問回数で答えを導き出す優れたアプローチです。",
+              "summary": "インタラクティブ形式の問題に対し、2つのポインタを用いてクエリを行いながら条件を満たす区間の個数を計上しています。各ステップでポインタを前進させ、最大2N回のクエリで効率よく解いています。",
               "tags": [
                 "インタラクティブ",
-                "シミュレーション",
-                "二項関係"
-              ]
+                "2ポインタ",
+                "しゃくとり法"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -623,13 +648,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int E, W = 0;\n    string S;\n    cin >> S;\n    for (char c : S) {\n        if (c == 'E')\n            E++;\n        else\n            W++;\n    }\n    cout << (E > W ? \"East\" : \"West\") << endl;\n}\n",
             "aiReview": {
               "complexity": "O(|S|)",
-              "rating": "A",
-              "summary": "文字列を1文字ずつ走査して文字の種類をカウントし、条件分岐により結果を高速かつ簡潔に出力しています。標準的なライブラリとシンプルなループ構造を用いており、可読性が非常に高い綺麗なコードです。",
+              "summary": "与えられた文字列の各文字を走査して'E'と'W'の出現回数をカウントし、多数派を出力する明快な解法です。1文字ずつの条件分岐によりシンプルに集計できています。",
               "tags": [
-                "文字列",
                 "全探索",
-                "実装"
-              ]
+                "文字列操作"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -654,13 +680,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int H, W;\n    cin >> H >> W;\n    vector<vector<char>> C(H, vector<char>(W));\n    rep(i, H) rep(j, W) cin >> C.at(i).at(j);\n\n    int minH = H;\n    int minW = W;\n    int maxH = -1;\n    int maxW = -1;\n\n    rep(i, H) {\n        rep(j, W) {\n            if (C.at(i).at(j) == '#') {\n                minH = min(minH, i);\n                minW = min(minW, j);\n                maxH = max(maxH, i);\n                maxW = max(maxW, j);\n            }\n        }\n    }\n\n    for (int i = minH; i <= maxH; i++) {\n        for (int j = minW; j <= maxW; j++) {\n            cout << C.at(i).at(j);\n        }\n        cout << endl;\n    }\n}\n",
             "aiReview": {
               "complexity": "O(H * W)",
-              "rating": "A",
-              "summary": "グリッド全体走査して「#」が存在する最小と最大の行・列インデックスを効率的に特定し、対象の長方形領域のみを綺麗に切り出して出力しています。無駄のない非常にすっきりした実装です。",
+              "summary": "グリッド全体を走査して'#'が存在する最小・最大の行と列を特定し、囲まれた矩形領域のみを出力する無駄のない美しい実装です。計算量も最小限に抑えられています。",
               "tags": [
-                "全探索",
                 "グリッド",
-                "実装"
-              ]
+                "全探索"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -708,13 +735,13 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int X, Y;\n    cin >> X >> Y;\n    if(9 * X == 16 * Y) {\n        cout << \"Yes\" << endl;\n    } else {\n        cout << \"No\" << endl;\n    }\n}\n",
             "aiReview": {
               "complexity": "O(1)",
-              "rating": "A",
-              "summary": "実数型の割り算を使用せず、両辺に16をかけた整数同士の掛け算で比較を行うことで、浮動小数点数の誤差を完璧に回避している点が非常に賢く、安全で正確な実装になっています。",
+              "summary": "浮動小数点数の割り算を避け、クロス乗算による整数演算（9 * X == 16 * Y）で等値判定を行っており、丸め誤差の心配がないスマートで最適な実装です。",
               "tags": [
-                "算術演算",
-                "誤差回避",
-                "条件分岐"
-              ]
+                "数学"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -739,13 +766,18 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    char X;\n    cin >> N >> X;\n    vector<string> S(N);\n    rep(i, N) cin >> S.at(i);\n\n    bool ans = false;\n    rep(i, N) {\n        rep(j, N) {\n            if (j == X - 'A' && S.at(i).at(j) == 'o') {\n                ans = true;\n            }\n        }\n    }\n\n    cout << (ans ? \"Yes\" : \"No\") << endl;\n}\n",
             "aiReview": {
               "complexity": "O(N^2)",
-              "rating": "A",
-              "summary": "入力を適切に受け取り、二重ループを用いて条件を満たす要素が存在するか効率的に判定しています。STLの基本機能が正しく使われており、コードの可読性も高く綺麗にまとまっています。",
+              "summary": "指定された列に'o'が存在するかを行ごとに探索する解法です。内側のループで列番号の一致を判定していますが、直接インデックス参照することでより効率化できます。",
               "tags": [
                 "全探索",
-                "実装",
-                "文字列処理"
-              ]
+                "文字列操作"
+              ],
+              "improvement": {
+                "hasImprovement": true,
+                "bottleneck": "固定の列位置（X - 'A'）を特定するために内側で不要なループを回しており、O(N^2)の無駄な計算が発生しています。",
+                "suggestion": "内側のループを削除し、S[i][X - 'A'] へ直接アクセスすることで O(N) に改善できます。",
+                "beforeSnippet": "rep(i, N) {\n    rep(j, N) {\n        if (j == X - 'A' && S.at(i).at(j) == 'o') {\n            ans = true;\n        }\n    }\n}",
+                "afterSnippet": "int col = X - 'A';\nrep(i, N) {\n    if (S.at(i).at(col) == 'o') {\n        ans = true;\n        break;\n    }\n}"
+              }
             }
           }
         ],
@@ -769,14 +801,20 @@
             "name": "C",
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    vector<pair<long long, long long>> HL(N);\n    rep(i, N) cin >> HL.at(i).first >> HL.at(i).second;\n\n    vector<long long> maxH(N);\n    maxH.at(N - 1) = HL.at(N - 1).first;\n    for (int i = N - 2; i >= 0; i--) {\n        maxH.at(i) = max(HL.at(i).first, maxH.at(i + 1));\n    }\n\n    int Q;\n    cin >> Q;\n    while(Q--) {\n        long long T;\n        cin >> T;\n        long long ans = 0;\n        rep(i, N) {\n            if(HL.at(i).second > T) {\n                break;\n            }\n            if(HL.at(i).first > ans) {\n                ans = HL.at(i).first;\n            }\n        }\n        cout << ans << endl;\n    }\n}\n",
             "aiReview": {
-              "complexity": "O(N + Q \\cdot N)",
-              "rating": "B",
-              "summary": "後ろからの累積最大値の前計算を行っていますが、クエリ処理部分で線形探索を行っているため、制約次第でTLEになります。クエリに対して二分探索を適用することで、計算量を大幅に改善することが可能です。",
+              "complexity": "O(Q * N)",
+              "summary": "各クエリに対して線形探索を行っており、QとNが大きい場合に計算量が膨大になります。ソートと累積最大値、二分探索を組み合わせることで大幅な高速化が可能です。",
               "tags": [
-                "累積最大値",
-                "線形探索",
-                "前計算"
-              ]
+                "二分探索",
+                "累積和",
+                "全探索"
+              ],
+              "improvement": {
+                "hasImprovement": true,
+                "bottleneck": "クエリごとに配列を先頭から線形探索しているため、全体の時間計算量が O(Q * N) となり非効率です。",
+                "suggestion": "条件 L_i <= T を満たす範囲を二分探索し、事前に計算した累積最大値配列を参照することで O(Q log N) に削減できます。",
+                "beforeSnippet": "while(Q--) {\n    long long T;\n    cin >> T;\n    long long ans = 0;\n    rep(i, N) {\n        if(HL.at(i).second > T) {\n            break;\n        }\n        if(HL.at(i).first > ans) {\n            ans = HL.at(i).first;\n        }\n    }\n    cout << ans << endl;\n}",
+                "afterSnippet": "// HL を second でソートし、累積最大値 pref を作成した上で\nwhile (Q--) {\n    long long T;\n    cin >> T;\n    int idx = upper_bound(L.begin(), L.end(), T) - L.begin();\n    cout << (idx > 0 ? pref[idx - 1] : 0) << endl;\n}"
+              }
             }
           }
         ],
@@ -808,13 +846,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    string S;\n    cin >> S;\n    for (int i = 0; i < S.size(); i++) {\n        if (S.at(i) >= '0' && S.at(i) <= '9') {\n            cout << S.at(i); \n        }\n    }\n    cout << endl;\n}\n",
             "aiReview": {
               "complexity": "O(|S|)",
-              "rating": "A",
-              "summary": "文字列を1文字ずつ走査し、条件分岐を用いて数値文字のみを効率よく抽出して出力しています。標準的なライブラリと直感的なループ処理で構成されており、非常にシンプルで可読性の高い実装です。",
+              "summary": "文字列の先頭から各文字を走査し、文字コード判定によって数字文字（'0'〜'9'）のみを順次抽出して出力する明快な実装です。計算量も文字列の長さに比例して最適です。",
               "tags": [
-                "文字列処理",
-                "全探索",
-                "実装"
-              ]
+                "文字列操作",
+                "全探索"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -839,13 +878,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    for (int i = 0; i < N; i++) {\n        int K;\n        cin >> K;\n        vector<int> A(K);\n        rep(j, K) cin >> A.at(j);\n        for (int j = 0; j < K; j++) {\n            if (A.at(j) == i + 1) {\n                cout << A.at(j);\n            }\n        }\n        cout << endl;\n    }\n}\n",
             "aiReview": {
               "complexity": "O(N * K)",
-              "rating": "B",
-              "summary": "各テストケースに対して入力をそのまま受け取り、条件に合致する要素を探索して出力する素直なアプローチです。標準的な実装で分かりやすいですが、計算量の観点でループの構造に少し改善の余地があります。",
+              "summary": "各行の入力要素を受け取りながら、対象のインデックス値と一致する要素を走査して出力する素直な解法です。問題の条件をそのままコードに落とし込めています。",
               "tags": [
                 "全探索",
-                "シミュレーション",
-                "配列"
-              ]
+                "シミュレーション"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -870,13 +910,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n\n    /*\n        pair<int, int> points;\n        rep(i, N) {\n            int x, y;\n            cin >> x >> y;\n            points = {x, y};\n        }\n    */\n\n    vector<int> points(N + 1);\n    rep(i, N) {\n        int x, y;\n        cin >> x >> y;\n        points.at(x) = y;\n    }\n\n    int ans = 0;\n    int min_y = 1e9;\n\n    for (int i = 1; i <= N; i++) {\n        int cy = points.at(i);\n\n        if (cy < min_y) {\n            ans++;\n            min_y = cy;\n        }\n    }\n\n    cout << ans << endl;\n}\n",
             "aiReview": {
               "complexity": "O(N)",
-              "rating": "A",
-              "summary": "配列のインデックスを活用して座標と値の対応を綺麗に管理し、左から走査しながら最小値を更新することで効率よく条件を満たす要素数をカウントしています。非常にシンプルで読みやすいコードです。",
+              "summary": "x座標を添字にした配列にy座標を格納し、xの昇順に走査しながらyの最小値を更新するごとにカウントする解法です。O(N)で無駄なく美しく解かれています。",
               "tags": [
-                "配列",
-                "走査",
-                "シミュレーション"
-              ]
+                "全探索",
+                "貪欲法"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -908,12 +949,13 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i,n) for (int i=0; i<(n); i++)\nusing namespace std;\n\nint main() {\n    int A, D;\n    cin >> A >> D;\n    cout << (A <= D ? \"Yes\" : \"No\") << endl;\n}\n",
             "aiReview": {
               "complexity": "O(1)",
-              "rating": "A",
-              "summary": "入力された二つの整数を比較し、条件に応じた文字列を条件演算子を用いて簡潔に出力しています。無駄のない非常にすっきりとした実装です。",
+              "summary": "2つの整数の大小関係を三項演算子で比較し、条件に応じた結果を出力する無駄のない明快な実装です。余分な変数や処理がなく計算量も O(1) で最適です。",
               "tags": [
-                "条件分岐",
-                "実装"
-              ]
+                "シミュレーション"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -938,12 +980,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    vector<int> A(N);\n    rep(i, N) cin >> A[i];\n    vector<int> B(N);\n    rep(i, N) cin >> B[i];\n\n    bool ans = true;\n\n    for (int i = 0; i < N; i++) {\n        if (i + 1 != B.at(A.at(i) - 1)) {\n            ans = false;\n        }\n    }\n\n    cout << (ans ? \"Yes\" : \"No\") << endl;\n}\n",
             "aiReview": {
               "complexity": "O(N)",
-              "rating": "A",
-              "summary": "配列の要素同士の関係性を直接的に判定するシンプルで美しい実装です。標準入力を活用して効率的に真偽値を導出しており、問題の条件を正確にコードに落とし込んでいます。",
+              "summary": "順列Aの各要素で配列Bを参照し、逆順列の関係が全要素で成り立っているかを単一ループで判定しています。1回の走査でO(N)で判定するスマートな実装です。",
               "tags": [
-                "配列",
+                "全探索",
                 "シミュレーション"
-              ]
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -968,13 +1012,18 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int N, K, M;\n    cin >> N >> K >> M;\n    vector<pair<int, long long>> CV(N);\n    rep(i, N) cin >> CV[i].second >> CV[i].first;\n\n    sort(CV.rbegin(), CV.rend());\n\n    vector<bool> isHold(N + 1, false);\n    int colorCount = 0;\n    int amountCount = 0;\n    long long ans = 0;\n\n    for (int i = 0; i < N; i++) {\n        if (amountCount == K) {\n            break;\n        } else if (colorCount >= M || amountCount <= K - M) {\n            ans += CV.at(i).first;\n            amountCount++;\n            if (isHold.at(CV.at(i).second) == false) {\n                colorCount++;\n                isHold.at(CV.at(i).second) = true;\n            }\n        } else if (isHold.at(CV.at(i).second) == false) {\n            ans += CV.at(i).first;\n            amountCount++;\n            colorCount++;\n            isHold.at(CV.at(i).second) = true;\n        }\n    }\n\n    cout << ans << endl;\n}\n",
             "aiReview": {
               "complexity": "O(N log N)",
-              "rating": "B",
-              "summary": "値の降順ソートを用いて貪欲法的に要素を選択しています。条件分岐を工夫して色数と個数を管理していますが、複雑な分岐が多くWAの原因になりやすいです。ロジックの整理と条件の見直しが必要です。",
+              "summary": "価値の高い順に貪欲に選択しつつ色数を管理する方針ですが、色数を満たすための最適な選択組み合わせを保証できずWAとなっています。優先度付きキュー等による適切な貪欲法の構築が必要です。",
               "tags": [
-                "ソート",
                 "貪欲法",
-                "実装"
-              ]
+                "優先度付きキュー"
+              ],
+              "improvement": {
+                "hasImprovement": true,
+                "bottleneck": "各色から最大値を優先確保する処理を行わずに上から順に貪欲選択しているため、色数の条件を満たす最適な解が得られません。",
+                "suggestion": "各色の最大値を1つずつ確保して優先度付きキューで管理し、残りの枠を未選択要素の大きい順で埋める貪欲法に修正する必要があります。",
+                "beforeSnippet": "for (int i = 0; i < N; i++) {\n    if (amountCount == K) {\n        break;\n    } else if (colorCount >= M || amountCount <= K - M) {\n        ans += CV.at(i).first;",
+                "afterSnippet": "// 各色の最大値を優先してM個確保し、残りを未選択の中で大きい順に貪欲に選ぶ\nfor (auto [val, col] : best_of_each_color) pq.push(val);\nwhile (chosen < M) { ans += pq.top(); pq.pop(); chosen++; }"
+              }
             }
           }
         ],
@@ -1005,13 +1054,15 @@
             "name": "A",
             "code": "#include <bits/stdc++.h>\nusing namespace std;\nusing ll = long long;\n\nint main() {\n    int N, M;\n    cin >> N >> M;\n    int ans = 0;\n\n    while (M != 0) {\n        int x = N % M;\n        M = x;\n        ans++;\n    }\n\n    cout << ans << endl;\n    return 0;\n}\n",
             "aiReview": {
-              "complexity": "O(log(min(N, M)))",
-              "rating": "A",
-              "summary": "ユークリッドの互除法を用いて最大公約数を求める過程の割り算の回数を効率よくカウントしています。標準的で無駄のない美しい実装であり、対数オーダーの非常に高速な動作を実現しています。",
+              "complexity": "O(1)",
+              "summary": "剰余算の計算結果を変数に代入し、値が0になるまでのステップ数をシミュレーションにより直接カウントしています。余計な処理のない非常に簡潔な実装です。",
               "tags": [
-                "ユークリッドの互除法",
+                "シミュレーション",
                 "数学"
-              ]
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1036,13 +1087,18 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int T;\n    cin >> T;\n\n    while (T--) {\n        int X1, Y1, R1, X2, Y2, R2;\n        cin >> X1, Y1, R1, X2, Y2, R2;\n        \n        int a = pow(X1 - X2, 2);\n        int b = pow(Y1 - Y2, 2);\n        int c = a + b;\n\n        bool ans = R1 - R2 <= c && c <= R1 + R2;\n\n        cout << (ans ? \"Yes\" : \"No\");\n    }\n}\n",
             "aiReview": {
               "complexity": "O(T)",
-              "rating": "C",
-              "summary": "テストケースごとに円の位置関係判定を行っていますが、入力の受け取り方に誤りがあり、また距離の比較で平方根や半径の二乗の扱いが不正確です。正確な幾何計算には注意が必要です。",
+              "summary": "2つの円の位置関係を判定する幾何問題です。しかしcinのカンマ演算子による未初期化変数や、半径の2乗比較の欠落など、構文および判定ロジックに重大な誤りを含んでいます。",
               "tags": [
-                "幾何",
-                "数学",
-                "実装"
-              ]
+                "シミュレーション",
+                "数学"
+              ],
+              "improvement": {
+                "hasImprovement": true,
+                "bottleneck": "cinの入力でカンマ演算子を使っており変数が正しく読み込まれず、中心間距離の2乗に対する半径の判定式も2乗されていません。",
+                "suggestion": "cin >> X1 >> Y1 >> R1 >> X2 >> Y2 >> R2; と正しく連鎖させ、判定式を (R1-R2)^2 <= c <= (R1+R2)^2 に修正します。",
+                "beforeSnippet": "cin >> X1, Y1, R1, X2, Y2, R2;\n\nint a = pow(X1 - X2, 2);\nint b = pow(Y1 - Y2, 2);\nint c = a + b;\n\nbool ans = R1 - R2 <= c && c <= R1 + R2;",
+                "afterSnippet": "cin >> X1 >> Y1 >> R1 >> X2 >> Y2 >> R2;\nlong long c = 1LL * (X1 - X2) * (X1 - X2) + 1LL * (Y1 - Y2) * (Y1 - Y2);\nlong long diff = 1LL * (R1 - R2) * (R1 - R2);\nlong long sum = 1LL * (R1 + R2) * (R1 + R2);\nbool ans = (diff <= c && c <= sum);"
+              }
             }
           }
         ],
@@ -1074,13 +1130,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i,n) for (int i=0; i<(n); i++)\nusing namespace std;\n\nint main() {\n    string S;\n    int N;\n\n    cin >> S >> N;\n    int len = S.size();\n\n    for (int i = 0; i < len; i++){\n        if (i < N || i >= len - N) {\n            \n        } else {\n            cout << S.at(i);\n        }\n    }\n    cout << endl;\n}\n",
             "aiReview": {
               "complexity": "O(|S|)",
-              "rating": "A",
-              "summary": "文字列の長さを取得し、ループ文を用いて条件分岐を行いながら必要な部分だけを出力する直感的な実装です。不要な文字をスキップしつつ目的の文字列を綺麗に構築できており、シンプルで分かりやすいコードに仕上がっています。",
+              "summary": "文字列のインデックスを走査し、先頭と末尾のN文字を除外した範囲のみを出力する解法です。substr関数を用いるとさらに簡潔に記述できますが、計算量はO(|S|)で十分高速です。",
               "tags": [
-                "文字列処理",
-                "条件分岐",
+                "文字列操作",
                 "全探索"
-              ]
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1105,13 +1162,14 @@
             "code": "#include <bits/stdc++.h>\n#define rep(i,n) for (int i=0; i<(n); i++)\nusing namespace std;\n\nint main() {\n    int H, W;\n    cin >> H >> W;\n\n    if (H == 1 && W == 1) {\n        cout << 0 << endl;\n        return 0;\n    }\n\n    if (H == 1) {\n        for (int i = 0; i < W; i++) {\n            if (i == 0 || i == W - 1) {\n                cout << 1;\n            } else {\n                cout << 2;\n            }\n            if (i != W - 1) {\n                cout << \" \";\n            }\n        }\n        return 0;\n    }\n\n    if (W == 1) {\n        for (int i = 0; i < H; i++) {\n            if (i == 0 || i == H - 1) {\n                cout << 1 << endl;\n            } else {\n                cout << 2 << endl;\n            }\n        }\n        return 0;\n    }\n\n    for (int i = 0; i < H; i++) {\n        for (int j = 0; j < W; j++) {\n            if (i == 0 && j == 0 || i == H - 1 && j == W - 1 || i == 0 && j == W - 1 || i == H - 1 && j == 0) {\n                cout << 2;\n            } else if (i == 0 || i == H - 1 || j == 0 || j == W - 1) {\n                cout << 3;\n            } else {\n                cout << 4;\n            }\n            if (j != W - 1) {\n                cout << \" \";\n            }\n        }\n        cout << endl;\n    }\n}\n",
             "aiReview": {
               "complexity": "O(H * W)",
-              "rating": "B",
-              "summary": "コーナーケースを個別の条件分岐で丁寧に対応し、全マスの状態を正しく出力しています。グリッドサイズに応じた場合分けを関数や数式で共通化すると、よりシンプルで保守性の高いコードになります。",
+              "summary": "グリッドの各セルについて隣接マスの数を四隅・端・中央で場合分けして出力する実装です。条件分岐がやや冗長ですが、H=1やW=1のコーナーケースを確実に網羅できています。",
               "tags": [
                 "グリッド",
-                "条件分岐",
-                "実装問題"
-              ]
+                "シミュレーション"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1135,14 +1193,15 @@
             "name": "C",
             "code": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    string S;\n    vector<int> C;\n    cin >> S;\n\n    int len  = S.size();\n    for (int i = 0; i < S.size(); i++) {\n        if (S.at(i) == 'C') C.push_back(i);\n    }\n\n    long long ans = 0;\n    for (int i = 0; i < C.size(); i++) {\n        ans += 1;\n        ans += min(C.at(i), len - 1 - C.at(i));\n    }\n    cout << ans << endl;\n}\n",
             "aiReview": {
-              "complexity": "O(N)",
-              "rating": "A",
-              "summary": "文字列中の特定文字の位置を効率的に抽出し、各位置から端までの最短距離と基本スコアを足し合わせることで、線形時間での高速な集計を実現しています。非常にシンプルかつ直感的な優れた解答です。",
+              "complexity": "O(|S|)",
+              "summary": "文字'C'の各位置から両端までの最短距離を算出して合計する解法です。幾何的対称性に着目し、min関数を活用してO(|S|)で極めて明快に解けています。",
               "tags": [
-                "文字列処理",
-                "全探索",
-                "貪欲法"
-              ]
+                "数学",
+                "文字列操作"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1167,13 +1226,14 @@
             "code": "#include <bits/stdc++.h>\n#include <queue>\nusing namespace std;\nusing ll = long long;\n\nint main() {\n    int X, Q;\n    cin >> X >> Q;\n    vector<int> A(Q), B(Q);\n    for (int i = 0; i < Q; i++) {\n        cin >> A.at(i) >> B.at(i);\n    }\n\n    priority_queue<int, vector<int>, greater<int> > right;\n    priority_queue<int> left;\n    int mid = X;\n    for (int i = 0; i < Q; i++) {\n        if (A.at(i) < mid) {\n            left.push(A.at(i));\n        } else {\n            right.push(A.at(i));\n        }\n        if (B.at(i) < mid) {\n            left.push(B.at(i));\n        } else {\n            right.push(B.at(i));\n        }\n\n        if (left.size() > right.size()) {\n            right.push(mid);\n            mid = left.top();\n            left.pop();\n        } else if (left.size() < right.size()) {\n            left.push(mid);\n            mid = right.top();\n            right.pop();\n        }\n        cout << mid << endl;\n    }\n}\n\n\n// thanks for https://algo-logic.info/abc023d/\n",
             "aiReview": {
               "complexity": "O(Q log Q)",
-              "rating": "A",
-              "summary": "中央値を効率的に管理するため、二つの優先度付きキューを使用しています。要素の大小関係を維持しながら巧妙に動的平衡を保つアルゴリズムであり、問題の本質を見事に捉えた非常に優れた実装です。",
+              "summary": "2つの優先度付きキュー（最大ヒープと最小ヒープ）を組み合わせて中央値を動的に維持管理する典型解法です。各クエリO(log Q)で高速にバランス調整できており非常に美しい実装です。",
               "tags": [
                 "優先度付きキュー",
-                "中央値",
-                "シミュレーション"
-              ]
+                "中央値管理"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1205,13 +1265,13 @@
             "code": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    int N;\n    cin >> N;\n    vector<int> A(N);\n    for (int i = 0; i < N; i++) {\n        cin >> A.at(i);\n    }\n    int X;\n    cin >> X;\n\n    cout << A.at(X - 1) << endl;\n}\n",
             "aiReview": {
               "complexity": "O(N)",
-              "rating": "S",
-              "summary": "配列への入力受け取りと1ベースのインデックスアクセスを非常にシンプルに実装しています。at()メソッドを用いて範囲外アクセスへの安全性も考慮されており、無駄のない非常に美しいコードです。",
+              "summary": "配列にN個の要素を格納し、指定された1始まりのインデックスXに対応する要素A[X-1]をO(1)で直接参照して出力するシンプルで過不足のない実装です。",
               "tags": [
-                "配列",
-                "実装問題",
-                "インデックス操作"
-              ]
+                "シミュレーション"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1235,14 +1295,16 @@
             "name": "B",
             "code": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    int N;\n    cin >> N;\n\n    vector<vector<int>> A(N);\n\n    for (int i = 0; i < N; i++) {\n        int L;\n        cin >> L;\n        A.at(i).resize(L);\n        for (int j = 0; j < L; j++) {\n            cin >> A.at(i).at(j);\n        }\n    }\n\n    int X, Y;\n    cin >> X >> Y;\n\n    cout << A.at(X - 1).at(Y - 1) << endl;\n}\n",
             "aiReview": {
-              "complexity": "O(N + total_L)",
-              "rating": "A",
-              "summary": "可変長二次元配列をうまく活用し、行ごとに異なる長さに動的リサイズして効率的にデータを格納しています。1始まりのインデックスを0始まりに正しく変換し、安全なatメソッドを使用している点も非常に高評価です。",
+              "complexity": "O(\\sum L)",
+              "summary": "可変長二次元配列（vectorのvector）を用いて各数列の要素を動的に格納し、クエリで与えられた座標を0-indexedに補正してO(1)で取得・出力する簡潔で無駄のない実装です。",
               "tags": [
-                "二次元配列",
-                "動的配列",
-                "実装"
-              ]
+                "多次元配列",
+                "実装",
+                "vector"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1267,13 +1329,14 @@
             "code": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    priority_queue<int, vector<int>, greater<int> > right;\n    priority_queue<int> left;\n    int mid = X;\n    for (int i = 0; i < Q; i++) {\n        if (A.at(i) < mid) {\n            left.push(A.at(i));\n        } else {\n            right.push(A.at(i));\n        }\n        if (B.at(i) < mid) {\n            left.push(B.at(i));\n        } else {\n            right.push(B.at(i));\n        }\n\n        if (left.size() > right.size()) {\n            right.push(mid);\n            mid = left.top();\n            left.pop();\n        } else if (left.size() < right.size()) {\n            left.push(mid);\n            mid = right.top();\n            right.pop();\n        }\n        cout << mid << endl;\n    }\n}\n",
             "aiReview": {
               "complexity": "O(Q log Q)",
-              "rating": "A",
-              "summary": "二つの優先度付きキューを駆使して中央値を効率的に管理する優れた解法です。巨大な配列を使わずに要素のシミュレーションを行い、メモリ制限をクリアしている点が素晴らしい工夫です。",
+              "summary": "2つの優先度付きキュー（最大ヒープと最小ヒープ）を併用して中央値を動的に管理・更新するアプローチですが、変数の宣言や入力処理が不足しているためコード全体の確認が必要です。",
               "tags": [
                 "優先度付きキュー",
-                "中央値管理",
-                "シミュレーション"
-              ]
+                "中央値"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1297,14 +1360,16 @@
             "name": "D",
             "code": "#include <bits/stdc++.h>\nusing namespace std;\nusing ll = long long;\n\nbool isok (ll mid, ll N, ll K, vector<ll> &A) {\n    ll nk = 0;\n    for (ll i = 1; i <= N; i++) {\n        if (A.at(i) < mid) {\n            nk += (mid - A.at(i) + i - 1) / i;\n            if (nk > K) return false;\n        }\n    }\n    return nk <= K;\n}\n\nint main() {\n    ll N, K;\n    cin >> N >> K;\n    \n    vector<ll> A(N + 1);\n    for (ll i = 1; i <= N; i++) {\n        cin >> A.at(i);\n    }\n\n    ll ok = 1;\n    ll ng = A.at(1) + K + 1;\n\n    while (ng - ok > 1) {\n        ll mid = (ok + ng) / 2;\n        if (isok(mid, N, K, A)) {\n            ok = mid;\n        } else {\n            ng = mid;\n        }\n    }\n    cout << ok << endl;\n}\n",
             "aiReview": {
-              "complexity": "O(N log(max A + K))",
-              "rating": "A",
-              "summary": "二分探索を用いて答えの値を絞り込む美しいアプローチです。条件判定関数isokのロジックが的確に実装されており、計算量削減に成功しています。二分探索の初挑戦として非常に質の高いコードです。",
+              "complexity": "O(N log K)",
+              "summary": "答えの値を二分探索（二値判定）する典型アプローチです。判定関数isokにて中央値midを達成するための必要操作回数をO(N)で計算し、効率的に最適解を求めています。",
               "tags": [
                 "二分探索",
-                "配列",
-                "シミュレーション"
-              ]
+                "めぐる式二分探索",
+                "貪欲法"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1336,12 +1401,14 @@
             "code": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    int X;\n    cin >> X;\n    if (3 <= X && X <= 18) {\n        cout << \"Yes\" << endl;\n    } else {\n        cout << \"No\" << endl;\n    }\n}\n",
             "aiReview": {
               "complexity": "O(1)",
-              "rating": "S",
-              "summary": "入力値が指定された範囲内にあるかを判定するシンプルで美しいコードです。標準入出力と条件分岐を適切に用いており、無駄な処理が一切ないため、可読性も高く完璧な仕上がりとなっています。",
+              "summary": "入力された整数Xが3以上18以下の範囲に含まれるかを単一の条件分岐で判定し、Yes/Noを出力するO(1)の極めて簡潔で無駄のない実装です。余計な処理がなく最適な構造です。",
               "tags": [
                 "条件分岐",
                 "実装"
-              ]
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1366,13 +1433,15 @@
             "code": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    vector<vector<int>> A(3, vector<int>(3, 0));\n\n    for (int i = 0; i < 3; i++) {\n        for (int j = 0; j < 6; j++) {\n            int a;\n            cin >> a;\n            if (a >= 4 && a <= 6) {\n                A.at(i).at(a - 4)++;\n            }\n        }\n    }\n\n    int d[6][3] = {\n        {4, 5, 6},\n        {4, 6, 5},\n        {5, 4, 6},\n        {5, 6, 4},\n        {6, 4, 5},\n        {6, 5, 4}\n    };\n\n    long long ans = 0;\n    for (int i = 0; i < 6; i++) {\n        ans += (long long)A.at(0).at(d[i][0] - 4) * A.at(1).at(d[i][1] - 4) * A.at(2).at(d[i][2] - 4);\n    }\n\n    cout << fixed << setprecision(10) << (double)ans / pow(6, 3) << endl;\n}",
             "aiReview": {
               "complexity": "O(1)",
-              "rating": "A",
-              "summary": "サイコロの取りうる全順列を固定し、各ダイスの条件合致数を掛け合わせることで確率を高速に計算しています。setprecisionを活用した精度の高い出力も素晴らしく、効率的で美しい実装です。",
+              "summary": "各サイコロで4〜6の目が出る回数を集計し、4, 5, 6が1回ずつ出る全順列6パターンについて積の総和を求めて確率を計算する、正確で無駄のないO(1)実装です。",
               "tags": [
-                "全探索",
                 "確率",
-                "順列"
-              ]
+                "全探索",
+                "実装"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1397,13 +1466,14 @@
             "code": "#include <bits/stdc++.h>\nusing namespace std; \n\nconst int MOD = 998244353;\n\nvoid add(long long &a, long long b) {\n    a += b;\n    if (a >= MOD) a -= MOD;\n}\n\nint main() {\n    string S;\n    cin >> S;\n    int n = S.size();\n\n    vector<long long> dp(n);\n    dp.at(0) = 1;\n    long long ans = 1;\n\n    for (int i = 1; i < n; i++) {\n        if (S.at(i) != S.at(i - 1)) {\n            dp.at(i) = (dp.at(i - 1) + 1) % MOD;\n        } else {\n            dp.at(i) = 1;\n        }\n        ans = (ans + dp.at(i)) % MOD;\n    }\n\n    cout << ans << endl;\n}",
             "aiReview": {
               "complexity": "O(N)",
-              "rating": "A",
-              "summary": "動的計画法を活用し、隣接する文字の一致・不一致を判定して条件を満たす部分文字列の個数を効率よく求めています。O(N)の高速な処理を実現しており、未使用のadd関数がある点を除けば非常に良好なコードです。",
+              "summary": "隣接する文字の異同によって直前の有効長に+1するかリセットするかを判定し、末尾位置ごとに条件を満たす連続部分文字列数をO(N)で積算していく明快な動的計画法による解法です。",
               "tags": [
                 "動的計画法",
-                "文字列",
-                "全探索"
-              ]
+                "文字列"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1427,14 +1497,16 @@
             "name": "D",
             "code": "#include <bits/stdc++.h>\nusing namespace std; \n\nconst int MOD = 998244353;\n\nvector<vector<int>> calc_next(const string &S) {\n    int n = S.size();\n    vector<vector<int>> res(n + 1, vector<int>(26, n));\n    for (int i = n - 1; i >= 0; i--) {\n        res[i] = res[i + 1];\n        res[i][S[i] - 'a'] = i;\n    }\n    return res;\n}\n\nvoid add(long long &a, long long b) {\n    a += b;\n    if (a >= MOD) a -= MOD;\n}\n\nint main() {\n    string S;\n    cin >> S;\n    int n = S.size();\n\n    vector<vector<int>> next = calc_next(S);\n    vector<long long> dp(n + 1, 0);\n    dp.at(0) = 1;\n\n    for (int i = 0; i < n; i++) {\n        for (int j = 0; j <26; j++) { \n            int target = next.at(i).at(j);\n            if (target < n) add(dp.at(target + 1), dp.at(i));\n        }\n    }\n\n    long long res = 0;\n    for (int i = 1; i <= n; i++) add(res, dp.at(i));\n    cout << res << endl;\n}",
             "aiReview": {
-              "complexity": "O(N * |sigma|)",
-              "rating": "A",
-              "summary": "文字列の部分文字列（または部分列）の個数を動的計画法で効率的に計算しています。次の文字の出現位置を前計算する工夫により、重複のない数え上げを高速に行えており、非常にスマートな実装です。",
+              "complexity": "O(N)",
+              "summary": "次に各文字が登場する位置を前計算したnextテーブルを構築し、部分列の重複を排除しながらDP遷移を行うことで異なる部分列数をO(26N)で高速に数え上げている効率的な実装です。",
               "tags": [
                 "動的計画法",
-                "前計算",
+                "部分列DP",
                 "文字列"
-              ]
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1466,12 +1538,14 @@
             "code": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    int A, B, C;\n    cin >> A>> B >> C;\n    if (A != B && B == C) {\n        cout << \"Yes\" << endl;\n    } else {\n        cout << \"No\" << endl;\n    }\n}",
             "aiReview": {
               "complexity": "O(1)",
-              "rating": "A",
-              "summary": "標準入出力を用いて3つの整数を受け取り、条件分岐により判定を行う極めてシンプルで無駄のない実装です。計算量も定数時間であり、変数命名やコード構造も直感的で分かりやすく綺麗にまとめられています。",
+              "summary": "入力された3つの整数A, B, Cの条件（A≠B かつ B＝C）を単一のif文で直接判定してYes/Noを出力する、O(1)の極めて簡潔で無駄のない美しい実装です。",
               "tags": [
                 "条件分岐",
-                "基本実装"
-              ]
+                "実装"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1495,14 +1569,16 @@
             "name": "B",
             "code": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    int H, W;\n    cin >> H >> W;\n    vector<string> S(H);\n    for (int i = 0; i < H; i++) {\n        cin >> S.at(i);\n    }\n    \n    int count = 0;\n\n    for (int h1 = 0; h1 < H; h1++) {\n        for (int h2 = h1; h2 < H; h2++) {\n            for (int w1 = 0; w1 < W; w1++) {\n                for (int w2 = w1; w2 < W; w2++) {\n\n                    bool ans = true;\n                    for (int i = h1; i <= h2; i++) {\n                        for (int j = w1; j <= w2; j++) {\n                            int ni = h1 + h2 - i;\n                            int nj = w1 + w2 - j;\n                            if (S.at(i).at(j) != S.at(ni).at(nj)) {\n                                ans = false;\n                                break;\n                            }\n                        }\n                        if (!ans) break;\n                    }\n                    if (ans) {\n                        count++;\n                    }\n                }\n            }\n        }\n    }\n    cout << count << endl;\n}",
             "aiReview": {
-              "complexity": "O(H^3 * W^3)",
-              "rating": "B",
-              "summary": "全探索により全ての部分長方形を網羅し、それぞれが中心対称になっているかを判定してカウントしています。四重ループで範囲を効率よく指定しており、直感的で分かりやすい実装になっていますが、計算量の改善余地があります。",
+              "complexity": "O(H^3 W^3)",
+              "summary": "すべての部分長方形（始点・終点）を全探索し、各部分領域が点対称（180度回転で一致）であるかを愚直に判定して数え上げる、直感的で分かりやすい全探索解法です。",
               "tags": [
                 "全探索",
-                "部分長方形",
-                "シミュレーション"
-              ]
+                "グリッド",
+                "実装"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1527,13 +1603,15 @@
             "code": "#include <bits/stdc++.h>\nusing namespace std;\nusing ll = long long;\n\nint main() {\n    int N, K;\n    cin >> N >> K;\n    map<ll, ll> A;\n    \n    for (int i = 0; i < N; i++) {\n        ll a;\n        cin >> a;\n        A[a]++;\n    }\n\n    vector<ll> sum;\n    for (auto [f, s] : A) sum.push_back(f * s);\n    sort(sum.begin(), sum.end());\n    for(int i = 0; i < K; i++) if (!sum.empty()) sum.pop_back();\n    ll ans = reduce(sum.begin(), sum.end());\n    cout << ans << endl;\n}",
             "aiReview": {
               "complexity": "O(N log N)",
-              "rating": "A",
-              "summary": "連想配列で要素の総和を効率的に集計し、ソートとstd::reduceを組み合わせて上位の値をうまく除外するスマートな解法です。コード全体がシンプルで非常に見通しが良い実装になっています。",
+              "summary": "mapで同じ数値の出現回数を集計して数値ごとの総和を求め、昇順ソート後に上位K個を取り除いて残りの総和をstd::reduceで計算する明快な貪欲解法です。",
               "tags": [
-                "連想配列",
-                "ソート",
-                "数値計算"
-              ]
+                "std::map",
+                "貪欲法",
+                "ソート"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1557,14 +1635,20 @@
             "name": "D",
             "code": "#include <bits/stdc++.h>\n#define rep(i,n) for (int i=0; i<(n); i++)\nusing namespace std;\n\nint main() {\n    int N, Q;\n    cin >> N >> Q;\n    \n    vector<int> up(2 * N, -1), down(2 * N, -1);\n    \n    rep (i, N) {\n        up.at(N + i) = i;\n        down.at(i) = N + i;\n    }\n\n    while (Q--) {\n        int c, p;\n        cin >> c >> p;\n        c--; p--;\n        \n        int d = down.at(c);\n        \n        down.at(c) = p;\n        up.at(p) = c;\n        \n        up.at(d) = -1;\n    }\n\n    rep (i, N) {\n        int x = N + i; \n        int ans = 0;\n        while (up.at(x) != -1) {\n            x = up.at(x);\n            ans++;\n        }\n        cout << ans << (i == N - 1 ? \"\" : \" \");\n    }\n    cout << endl;\n}\n",
             "aiReview": {
-              "complexity": "O(N + Q)",
-              "rating": "A",
-              "summary": "配列を用いた双方向連結リストの要領でクエリを効率的に処理する優れた解法です。ポインタの付け替えを配列のインデックス管理で簡潔に実装しており、可読性とパフォーマンスが両立されています。",
+              "complexity": "O(N^2 + Q)",
+              "summary": "配列を用いた双方向ポインタ（連結リスト）で各要素の前後の接続関係をO(1)で更新し、最後に各要素の深さを親方向に辿ってカウントして出力するシミュレーション解法です。",
               "tags": [
                 "連結リスト",
-                "配列",
-                "シミュレーション"
-              ]
+                "シミュレーション",
+                "グラフ"
+              ],
+              "improvement": {
+                "hasImprovement": true,
+                "bottleneck": "各要素からupポインタを辿って長さをカウントする処理がメモ化されていないため、最悪ケースでO(N^2)の計算量になります。",
+                "suggestion": "各頂点から辿った結果をメモ化再帰で保持することで、全要素の深さ計算を全体でO(N)に短縮できます。",
+                "beforeSnippet": "rep (i, N) {\n    int x = N + i; \n    int ans = 0;\n    while (up.at(x) != -1) {\n        x = up.at(x);\n        ans++;\n    }\n    cout << ans << (i == N - 1 ? \"\" : \" \");\n}",
+                "afterSnippet": "vector<int> memo(2 * N, -1);\nauto get_len = [&](auto self, int x) -> int {\n    if (up.at(x) == -1) return 0;\n    if (memo.at(x) != -1) return memo.at(x);\n    return memo.at(x) = self(self, up.at(x)) + 1;\n};\nrep(i, N) cout << get_len(get_len, N + i) << (i == N - 1 ? \"\" : \" \");"
+              }
             }
           }
         ],
@@ -1596,13 +1680,15 @@
             "code": "#include <bits/stdc++.h>\nusing namespace std; \nusing ll = long long;\n#define rep(i, n) for (int i = 0; i < (int)(n); i++)\n#define all(x) (x).begin(), (x).end()\n\nint main() {\n    int N;\n    string S;\n    cin >> N >> S;\n    bool flag = false;\n    if (S.at(0) == 'o') {\n        flag = true;\n    }\n        for (int i = 0; i < N; i++) {\n            if (S.at(i) == 'o' && flag == true) {\n                // Do nothing\n            } else {\n                flag = false;\n                cout << S.at(i);\n        }\n    }\n    cout << endl;\n    return 0;\n}",
             "aiReview": {
               "complexity": "O(N)",
-              "rating": "B",
-              "summary": "文字列を1文字ずつ走査し、条件に応じたフラグ管理を用いて効率的に処理を行っています。標準的なループと条件分岐で直感的に実装されていますが、インデントや不要な条件判定を整理するとさらに綺麗になります。",
+              "summary": "文字列の先頭から連続する'o'をフラグ管理によってスキップし、その他の文字を順次出力する1パス走査の解法です。O(N)時間で無駄なく処理できています。",
               "tags": [
-                "文字列処理",
-                "シミュレーション",
+                "文字列",
+                "フラグ管理",
                 "実装"
-              ]
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1627,12 +1713,15 @@
             "code": "#include <bits/stdc++.h>\nusing namespace std; \n\nint main() {\n    int T, X;\n    cin >> T >> X;\n    vector<int> A(T + 1);\n    for (int i = 0; i <= T; i++) cin >> A.at(i);\n\n    int record = A.at(0);\n    cout << 0 << ' ' << A.at(0) << endl;\n\n    for (int i = 1; i <= T; i++) {\n        if (abs(record - A.at(i)) >= X) {\n            cout << i << ' ' << A.at(i) << endl;\n            record = A.at(i);\n        }\n    } \n}",
             "aiReview": {
               "complexity": "O(T)",
-              "rating": "A",
-              "summary": "配列を一度だけ走査し、直近の記録との差分が条件を満たすかを判定しながら効率よく出力しています。atメソッドを用いた安全な境界チェックや、直感的な変数命名により可読性が非常に高い優れたコードです。",
+              "summary": "直前に記録した値との差分の絶対値がX以上になったタイミングを1重ループで判定し、条件を満たした時刻と値を逐次出力・更新する明快なO(T)実装です。",
               "tags": [
                 "シミュレーション",
-                "全探索"
-              ]
+                "貪欲法",
+                "実装"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1663,14 +1752,16 @@
             "name": "002",
             "code": "#include <bits/stdc++.h>\nusing namespace std;\n\nbool isvalid(const string &S) {\n    int score = 0;\n    for (auto c : S) {\n        if (c == '(') score++;\n        else if (c == ')') score--;\n\n        if (score < 0) return false;\n    }\n\n    return (score == 0); //かっこいい\n}\n\n\nint main() {\n    int N;\n    cin >> N;\n\n    if (N % 2 != 0) return 0; //かっこが作れないので返す\n\n    for (int bit = 0; bit < (1<<N); bit++) {\n        string S = \"\";\n\n        for (int i = N - 1; i >= 0; i--) {\n            if (!(bit & (1<<i))) S += \"(\";\n            else S += \")\";\n        }\n\n        if (isvalid(S)) cout << S << endl;\n    }\n}\n",
             "aiReview": {
-              "complexity": "O(2^N * N)",
-              "rating": "A",
-              "summary": "ビット全探索を用いてすべての括弧の組み合わせを生成し、累積和の要領で整合性を効率よく判定しています。奇数長のケースを早期に弾くなど、シンプルで実用的な美しい実装です。",
+              "complexity": "O(N 2^N)",
+              "summary": "長さNの全括弧列をbit全探索で辞書順に生成し、累積スコアによる整合性判定（途中で負にならず合計が0）を行うことで正しい括弧列のみを抽出する典型解法です。",
               "tags": [
-                "ビット全探索",
+                "bit全探索",
                 "全探索",
-                "文字列処理"
-              ]
+                "文字列"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1693,14 +1784,16 @@
             "name": "004",
             "code": "#include <bits/stdc++.h>\n#define rep(i, n) for (int i = 0; i < (n); i++)\nusing namespace std;\n\nint main() {\n    int H, W;\n    cin >> H >> W;\n    vector<vector<int>> A(H, vector<int>(W));\n    rep(i, H) rep(j, W) cin >> A[i][j];\n    vector<int> row_sum(H), col_sum(W);\n    rep(i, H) rep(j, W) {\n        row_sum[i] += A[i][j];\n        col_sum[j] += A[i][j];\n    }\n\n    rep(i, H) {\n        rep(j, W) {\n            cout << row_sum[i] + col_sum[j] - A[i][j];\n            if (j < W - 1) cout << \" \";\n        }\n        cout << endl;\n    }\n}\n",
             "aiReview": {
-              "complexity": "O(H * W)",
-              "rating": "S",
-              "summary": "各行と各列の総和をあらかじめ前計算しておくことで、二重ループ内の計算量をO(1)に抑え、全体として効率的なO(HW)で答えを求めている非常に美しいコードです。",
+              "complexity": "O(H W)",
+              "summary": "各行と各列の総和を行列走査時に事前計算しておき、各マスに対して (行和 + 列和 - 自身の値) をO(1)で計算することで全体をO(HW)で処理する典型解法です。",
               "tags": [
-                "前計算",
                 "累積和",
-                "実装"
-              ]
+                "前計算",
+                "グリッド"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],
@@ -1723,14 +1816,16 @@
             "name": "007",
             "code": "#include <bits/stdc++.h>\nusing namespace std;\n\nint main() {\n    int N;\n    cin >> N;\n    vector<int> A(N);\n    for (int i = 0; i < N; i++) cin >> A.at(i);\n    int Q;\n    cin >> Q;\n\n    sort(A.begin(), A.end());\n\n    while(Q--) {\n        int B;\n        cin >> B;\n        \n        auto it = lower_bound(A.begin(), A.end(), B);\n\n        long long ans = 2e18;\n\n        if (it != A.end()) {\n            ans = min(ans, (long long)abs(*it - B));\n        }\n\n        if (it != A.begin()) {\n            ans = min(ans, (long long)abs(*prev(it) - B));\n        }\n        \n        cout << ans << endl;\n    }\n}\n",
             "aiReview": {
-              "complexity": "O(N log N + Q log N)",
-              "rating": "S",
-              "summary": "配列を事前にソートし、各クエリに対してlower_boundを用いて二分探索を行うことで効率的に最接近値を求めています。実装が非常に洗練されており、計算量も最適です。",
+              "complexity": "O((N + Q) log N)",
+              "summary": "配列Aをソートした上で各クエリ値Bに対してstd::lower_boundによる二分探索を行い、その位置と直前要素の2箇所との差分の最小値をO(log N)で求める最適解法です。",
               "tags": [
-                "ソート",
                 "二分探索",
-                "lower_bound"
-              ]
+                "ソート",
+                "std::lower_bound"
+              ],
+              "improvement": {
+                "hasImprovement": false
+              }
             }
           }
         ],

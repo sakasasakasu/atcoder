@@ -61,11 +61,12 @@ const RESPONSE_SCHEMA = {
   properties: {
     complexity: {
       type: "STRING",
-      description: "時間計算量表記。例: 'O(N log N)', 'O(N + M)', 'O(1)'",
+      description: "時間計算量表記。例: 'O(N log N)', 'O(N + M)', 'O(1)'。余計な文章や空間計算量は含めないでください。",
     },
     rating: {
       type: "STRING",
-      description: "コードの可読性および品質の評価ランク。'S', 'A', 'B', 'C' のいずれか。",
+      enum: ["S", "A", "B", "C"],
+      description: "コードの可読性および品質の評価ランク。'S', 'A', 'B', 'C' のいずれか 1 文字。",
     },
     summary: {
       type: "STRING",
@@ -74,7 +75,7 @@ const RESPONSE_SCHEMA = {
     tags: {
       type: "ARRAY",
       items: { type: "STRING" },
-      description: "アルゴリズム・データ構造・手法に関する技術タグ（1〜4項目）。例: ['二分探索', '動的計画法', '優先度付きキュー']",
+      description: "アルゴリズム・データ構造・手法に関する技術タグ（1〜3項目）。例: ['二分探索', '動的計画法', '優先度付きキュー']",
     },
     improvement: {
       type: "OBJECT",
@@ -85,19 +86,19 @@ const RESPONSE_SCHEMA = {
         },
         bottleneck: {
           type: "STRING",
-          description: "非効率なボトルネック箇所の簡潔な説明（1〜2文）。例: '二重ループで全ペアを探索しているため O(N^2) かかっています'。hasImprovementがfalseの場合は空文字または省略。",
+          description: "非効率なボトルネック箇所の簡潔な説明（1〜2文）。hasImprovementがfalseの場合は空文字。",
         },
         suggestion: {
           type: "STRING",
-          description: "改善方針の簡潔な説明（1〜2文）。例: 'std::map を用いて一度の走査で出現頻度を集計すると O(N log N) に短縮できます'。hasImprovementがfalseの場合は空文字または省略。",
+          description: "改善方針の簡潔な説明（1〜2文）。hasImprovementがfalseの場合は空文字。",
         },
         beforeSnippet: {
           type: "STRING",
-          description: "改善対象となる問題箇所のコード抜粋（2〜5行程度）。I/Oではなくロジック部分のみ。マークダウンなしのプレーンテキスト。hasImprovementがfalseの場合は空文字または省略。",
+          description: "改善対象となる問題箇所のコード抜粋（2〜5行程度）。マークダウン記号（```など）は含めない生テキスト。hasImprovementがfalseの場合は空文字。",
         },
         afterSnippet: {
           type: "STRING",
-          description: "改善後の推奨ロジックのコード抜粋（2〜5行程度）。マークダウンなしのプレーンテキスト。hasImprovementがfalseの場合は空文字または省略。",
+          description: "改善後の推奨ロジックのコード抜粋（2〜5行程度）。マークダウン記号（```など）は含めない生テキスト。hasImprovementがfalseの場合は空文字。",
         },
       },
       required: ["hasImprovement"],
@@ -147,6 +148,92 @@ function saveCache(cacheItems) {
   fs.writeFileSync(CACHE_FILE, JSON.stringify(payload, null, 2), "utf-8")
 }
 
+/**
+ * LLM の出力揺らぎを吸収し、確実に型安全なオブジェクトに正規化します
+ * @param {any} raw
+ * @returns {{ complexity: string, rating: string, summary: string, tags: string[], improvement: { hasImprovement: boolean, bottleneck?: string, suggestion?: string, beforeSnippet?: string, afterSnippet?: string } }}
+ */
+function sanitizeReviewResult(raw) {
+  if (!raw || typeof raw !== "object") {
+    throw new Error("Invalid review format: response is not an object")
+  }
+
+  // 1. rating の正規化 ('S' | 'A' | 'B' | 'C')
+  let rating = "B"
+  if (typeof raw.rating === "string") {
+    const trimmed = raw.rating.trim().toUpperCase()
+    const match = trimmed.match(/^[SABC]$/) || trimmed.match(/([SABC])/)
+    if (match) {
+      rating = match[1]
+    }
+  }
+
+  // 2. complexity の正規化 (例: "$O(N)$" や "計算量: O(N log N)" -> "O(N log N)")
+  let complexity = "O(N)"
+  if (typeof raw.complexity === "string" && raw.complexity.trim()) {
+    let comp = raw.complexity.trim()
+    comp = comp.replace(/^\$+|\$+$/g, "").trim()
+    comp = comp.replace(/^計算量\s*[:：]\s*/i, "").trim()
+    if (comp) {
+      complexity = comp
+    }
+  }
+
+  // 3. summary の正規化
+  const summary = typeof raw.summary === "string" ? raw.summary.trim() : ""
+
+  // 4. tags の正規化 (1〜4個の非空文字列配列、#除去)
+  let tags = []
+  if (Array.isArray(raw.tags)) {
+    tags = raw.tags
+      .filter((t) => typeof t === "string" && t.trim().length > 0)
+      .map((t) => t.trim().replace(/^#+/, "").trim())
+      .filter((t) => t.length > 0)
+      .slice(0, 4)
+  }
+
+  // 5. improvement の正規化
+  const rawImp = raw.improvement && typeof raw.improvement === "object" ? raw.improvement : {}
+  let hasImprovement = Boolean(rawImp.hasImprovement)
+
+  const cleanSnippet = (snip) => {
+    if (typeof snip !== "string") return ""
+    return snip
+      .replace(/^```[a-zA-Z]*\r?\n?/g, "")
+      .replace(/\r?\n?```$/g, "")
+      .trim()
+  }
+
+  const bottleneck = typeof rawImp.bottleneck === "string" ? rawImp.bottleneck.trim() : ""
+  const suggestion = typeof rawImp.suggestion === "string" ? rawImp.suggestion.trim() : ""
+  const beforeSnippet = cleanSnippet(rawImp.beforeSnippet)
+  const afterSnippet = cleanSnippet(rawImp.afterSnippet)
+
+  // 改善余地が true でも実質的なアドバイス情報が何もない場合は安全のため false に補正
+  if (hasImprovement && !bottleneck && !suggestion && !beforeSnippet) {
+    hasImprovement = false
+  }
+
+  const improvement = {
+    hasImprovement,
+  }
+
+  if (hasImprovement) {
+    if (bottleneck) improvement.bottleneck = bottleneck
+    if (suggestion) improvement.suggestion = suggestion
+    if (beforeSnippet) improvement.beforeSnippet = beforeSnippet
+    if (afterSnippet) improvement.afterSnippet = afterSnippet
+  }
+
+  return {
+    complexity,
+    rating,
+    summary,
+    tags,
+    improvement,
+  }
+}
+
 async function callGeminiApi(apiKey, promptText, retries = 3) {
   const models = [MODEL_NAME, FALLBACK_MODEL_NAME]
   let lastErr = null
@@ -162,7 +249,7 @@ async function callGeminiApi(apiKey, promptText, retries = 3) {
       generationConfig: {
         responseMimeType: "application/json",
         responseSchema: RESPONSE_SCHEMA,
-        temperature: 0.2,
+        temperature: 0.1,
       },
     }
 
@@ -197,10 +284,23 @@ async function callGeminiApi(apiKey, promptText, retries = 3) {
         throw new Error(`API response error ${res.status}: ${errText}`)
       }
 
-      const data = await res.json()
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text
-      if (!text) throw new Error("API returned empty content")
-      return JSON.parse(text)
+      try {
+        const data = await res.json()
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text
+        if (!text) {
+          throw new Error("API returned empty content")
+        }
+        const parsed = JSON.parse(text)
+        return sanitizeReviewResult(parsed)
+      } catch (err) {
+        lastErr = err
+        if (attempt < retries) {
+          console.warn(`[LLM Review] 応答解析エラーのためリトライします (${attempt}/${retries}): ${err.message}`)
+          await sleep(2000)
+          continue
+        }
+        break
+      }
     }
   }
 
@@ -220,17 +320,31 @@ ${problem.content}
 【解答コード (${codeFile.name}.cpp)】
 ${codeFile.code}
 
-【レビュー要件】
-1. complexity: コードから時間計算量を推定し、計算量表記で出力してください。
-2. rating: 可読性・変数命名・構造の簡潔さから品質評価を行ってください（S: 極めて綺麗, A: 実用的で良好, B: 標準的・改善余地あり, C: 複雑）。
-3. summary: 初心者にも分かりやすく、解法の核心やコードの工夫点を100文字程度でポジティブに説明してください。
-4. tags: 使用されている具体的なアルゴリズム・データ構造・解法テクニックのタグを1〜4個指定してください。
-5. improvement: アルゴリズムや計算量の観点でのピンポイント改善アドバイス。
-   ※ 注意事項:
-   - cin.tie(nullptr) や '\\n' などの I/O 形式の些細な高速化は無視してください。
-   - ループ構造の削減、不要な全探索の排除、適切なデータ構造（map, set, 優先度付きキュー, 二分探索, 累積和等）の活用など、アルゴリズム・ロジックの本質的な改善に特化してください。
-   - 改善の余地がない（すでに最適解・十分な計算量である）場合は hasImprovement: false としてください。
-   - 改善余地がある場合、コード全体ではなく「問題の 2〜5 行」を beforeSnippet、改善版を afterSnippet としてピンポイントで出力してください（マークダウン記号は含めないでください）。`
+【レビュー要件と厳格な評価基準】
+1. complexity (時間計算量):
+   - コードから時間計算量を推定し、'O(1)', 'O(N)', 'O(N log N)', 'O(N^2)', 'O(N + M)', 'O(2^N)' などの標準的なビッグオー記法のみを出力してください。
+   - 日本語の注記（例: "最悪時"）や空間計算量は含めないでください。
+2. rating (総合品質ランク):
+   - 以下の基準に従い、必ず 'S', 'A', 'B', 'C' のいずれか 1 文字を出力してください。
+     - S: 最適なアルゴリズム・計算量であり、コードが極めて簡潔・明瞭で無駄がない。
+     - A: アルゴリズム・計算量が十分であり、標準的かつ良好な実装。
+     - B: 正解しているが、計算量の改善余地や冗長な処理・改善可能な箇所がある。
+     - C: 計算量が大幅に非効率、または可読性や構造に大きな問題がある。
+3. summary (要約解説):
+   - 解法の核心・アプローチとコードの工夫点を、初心者にも分かりやすい日本語で 80〜120 文字程度で簡潔に記述してください。
+4. tags (技術タグ):
+   - 使用されている具体的なアルゴリズム・データ構造（例: 二分探索, 累積和, 動的計画法, 貪欲法, 全探索, 幅優先探索, 深さ優先探索, 素因数分解, 優先度付きキュー, Union-Find, std::map, std::set など）から 1〜3 個を選択してください。
+5. improvement (アルゴリズム・ロジック改善提案):
+   - 本質的な計算量削減やアルゴリズム・データ構造の効率化余地がある場合のみ hasImprovement: true としてください（例: O(N^2) を map や sort で O(N log N) に短縮できる等）。
+   - 単なる cin.tie や std::endl 改行の変更、変数名変更などの些細なスタイル・I/O 高速化は改善対象外とし、hasImprovement: false としてください。
+   - すでに十分最適・定数倍レベルの差しかない場合は hasImprovement: false としてください。
+   - hasImprovement が true の場合:
+     - bottleneck: どこがなぜ非効率かを 1〜2 文で説明。
+     - suggestion: どう改善すべきかを 1〜2 文で説明。
+     - beforeSnippet: 改善対象の該当コード（ロジック部分の 2〜5 行）。※ \`\`\` 等のマークダウン記号は含めず生コードのみ。
+     - afterSnippet: 改善後の推奨コード（2〜5 行）。※ \`\`\` 等のマークダウン記号は含めず生コードのみ。
+   - hasImprovement が false の場合:
+     - bottleneck, suggestion, beforeSnippet, afterSnippet は空文字列 "" としてください。`
 }
 
 /**
@@ -296,4 +410,7 @@ module.exports = {
   computeHash,
   enrichContestsWithLlmReviews,
   loadDotEnv,
+  sanitizeReviewResult,
+  RESPONSE_SCHEMA,
+  buildPrompt,
 }

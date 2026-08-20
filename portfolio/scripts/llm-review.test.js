@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const test = require("node:test")
 const assert = require("node:assert/strict")
-const { computeHash, enrichContestsWithLlmReviews, callGeminiApi } = require("./llm-review")
+const {
+  computeHash,
+  enrichContestsWithLlmReviews,
+  callGeminiApi,
+  sanitizeReviewResult,
+  RESPONSE_SCHEMA,
+} = require("./llm-review")
 
 test("computeHash: コードファイル単位で確定的な SHA-256 ハッシュを計算する", () => {
   const problem = { id: "A", title: "A問題", content: "AC" }
@@ -14,6 +20,74 @@ test("computeHash: コードファイル単位で確定的な SHA-256 ハッシ�
 
   assert.equal(hash1, hash2)
   assert.notEqual(hash1, hashDiffCode)
+})
+
+test("RESPONSE_SCHEMA: rating に S, A, B, C の enum 制約が含まれている", () => {
+  assert.deepEqual(RESPONSE_SCHEMA.properties.rating.enum, ["S", "A", "B", "C"])
+})
+
+test("sanitizeReviewResult: 揺らぎのある rating / complexity / tags / スニペットを正規化する", () => {
+  const raw = {
+    complexity: "  $O(N \\log N)$  ",
+    rating: "S Rank (最高)",
+    summary: "  簡潔なコードです。  ",
+    tags: ["#二分探索", " 累積和 ", "#", ""],
+    improvement: {
+      hasImprovement: true,
+      bottleneck: " 二重ループです ",
+      suggestion: " map を使います ",
+      beforeSnippet: "```cpp\nfor(int i=0;i<n;i++) {}\n```",
+      afterSnippet: "```\nmap<int, int> mp;\n```",
+    },
+  }
+
+  const result = sanitizeReviewResult(raw)
+  assert.equal(result.complexity, "O(N \\log N)")
+  assert.equal(result.rating, "S")
+  assert.equal(result.summary, "簡潔なコードです。")
+  assert.deepEqual(result.tags, ["二分探索", "累積和"])
+  assert.equal(result.improvement.hasImprovement, true)
+  assert.equal(result.improvement.bottleneck, "二重ループです")
+  assert.equal(result.improvement.suggestion, "map を使います")
+  assert.equal(result.improvement.beforeSnippet, "for(int i=0;i<n;i++) {}")
+  assert.equal(result.improvement.afterSnippet, "map<int, int> mp;")
+})
+
+test("sanitizeReviewResult: hasImprovement が false の場合は余計なフィールドを含めない", () => {
+  const raw = {
+    complexity: "O(1)",
+    rating: "A",
+    summary: "良好",
+    tags: ["算術演算"],
+    improvement: {
+      hasImprovement: false,
+      bottleneck: "",
+      suggestion: "",
+    },
+  }
+
+  const result = sanitizeReviewResult(raw)
+  assert.equal(result.improvement.hasImprovement, false)
+  assert.equal(result.improvement.bottleneck, undefined)
+})
+
+test("sanitizeReviewResult: hasImprovement が true でも中身が空なら安全に false にフォールバックする", () => {
+  const raw = {
+    complexity: "O(1)",
+    rating: "B",
+    summary: "テスト",
+    tags: [],
+    improvement: {
+      hasImprovement: true,
+      bottleneck: "",
+      suggestion: "",
+      beforeSnippet: "",
+      afterSnippet: "",
+    },
+  }
+
+  const result = sanitizeReviewResult(raw)
+  assert.equal(result.improvement.hasImprovement, false)
 })
 
 test("callGeminiApi: 429 一時エラー後はリトライして成功する", async () => {

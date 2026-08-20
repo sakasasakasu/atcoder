@@ -153,29 +153,31 @@ function AiInspectorPanel({ aiReview }: { aiReview: AiReview }) {
                   {(aiReview.improvement.beforeSnippet || aiReview.improvement.afterSnippet) && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-1">
                       {aiReview.improvement.beforeSnippet && (
-                        <div className="space-y-1">
+                        <div className="space-y-1 min-w-0">
                           <span className="text-[10px] font-semibold text-red-500 dark:text-red-400 flex items-center gap-1">
                             <span>❌</span> 現状のロジック (Before)
                           </span>
-                          <div className="rounded-md border border-red-500/30 bg-stone-950 overflow-hidden">
+                          <div className="rounded-md border border-red-500/30 bg-stone-950 overflow-x-auto">
                             <Code
                               code={aiReview.improvement.beforeSnippet}
                               language="cpp"
-                              className="p-2 text-[11px]"
+                              customStyle={{ padding: "0.5rem 0.65rem", fontSize: "0.75rem" }}
+                              lineNumberStyle={{ minWidth: "1.25rem", paddingRight: "0.4rem", fontSize: "0.72rem" }}
                             />
                           </div>
                         </div>
                       )}
                       {aiReview.improvement.afterSnippet && (
-                        <div className="space-y-1">
+                        <div className="space-y-1 min-w-0">
                           <span className="text-[10px] font-semibold text-emerald-500 dark:text-emerald-400 flex items-center gap-1">
                             <span>⭕️</span> 推奨ロジック (After)
                           </span>
-                          <div className="rounded-md border border-emerald-500/30 bg-stone-950 overflow-hidden">
+                          <div className="rounded-md border border-emerald-500/30 bg-stone-950 overflow-x-auto">
                             <Code
                               code={aiReview.improvement.afterSnippet}
                               language="cpp"
-                              className="p-2 text-[11px]"
+                              customStyle={{ padding: "0.5rem 0.65rem", fontSize: "0.75rem" }}
+                              lineNumberStyle={{ minWidth: "1.25rem", paddingRight: "0.4rem", fontSize: "0.72rem" }}
                             />
                           </div>
                         </div>
