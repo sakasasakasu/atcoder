@@ -3,6 +3,9 @@ name: Deploy Next.js site to Pages
 on:
   push:
     branches: ["main"] # mainブランチにpushされたら起動
+  workflow_dispatch: # 手動実行
+  schedule:
+    - cron: "0 15 * * *" # 毎日 日本時間 0:00 (15:00 UTC) に自動実行して Diff 確定や未処理 AI レビューを更新
 
 permissions:
   contents: read
@@ -23,16 +26,46 @@ jobs:
           cache: 'npm'
           cache-dependency-path: portfolio/package-lock.json
 
+      - name: Restore LLM and AtCoder API Cache
+        id: llm-cache-restore
+        uses: actions/cache/restore@v4
+        with:
+          path: portfolio/scripts/.cache
+          # 保存側は「キャッシュ内容のハッシュ」をキーに付与するため、復元はプレフィックスで最新を取得する
+          key: llm-cache-${{ runner.os }}
+          restore-keys: |
+            llm-cache-${{ runner.os }}-
+
       - name: Install dependencies
         run: npm install
         working-directory: ./portfolio
 
       - name: Generate JSON Data
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/generate.js
         working-directory: ./portfolio
 
+      - name: Compute cache content hash
+        id: llm-cache-hash
+        run: |
+          HASH="none"
+          if [ -d portfolio/scripts/.cache ] && [ -n "$(find portfolio/scripts/.cache -type f | head -n 1)" ]; then
+            HASH=$(find portfolio/scripts/.cache -type f -exec sha1sum {} \; | sort | sha1sum | cut -d' ' -f1)
+          fi
+          echo "hash=$HASH" >> "$GITHUB_OUTPUT"
+
+      # 内容が変わった場合のみ新キーで保存する（同じ内容なら保存せずキャッシュの肥大化を防ぐ）
+      - name: Save LLM and AtCoder API Cache
+        if: steps.llm-cache-restore.outputs.cache-matched-key != format('llm-cache-{0}-{1}', runner.os, steps.llm-cache-hash.outputs.hash)
+        uses: actions/cache/save@v4
+        with:
+          path: portfolio/scripts/.cache
+          key: llm-cache-${{ runner.os }}-${{ steps.llm-cache-hash.outputs.hash }}
+
+      # generate は既に上のステップで実行済みのため、prebuild の再生成をスキップする
       - name: Build Next.js
-        run: npm run build
+        run: npm run build --ignore-scripts
         working-directory: ./portfolio
 
       - name: Upload artifact

@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# script cache（problem-models.json は毎日更新されるためコミット対象外）
+# llm-reviews.json のみコミットし、APIキーなし環境でも AI レビューを表示できるようにする
+scripts/.cache/*
+!scripts/.cache/llm-reviews.json
+

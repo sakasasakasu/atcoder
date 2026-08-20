@@ -15,7 +15,25 @@
         ],
         "content": "AC\n\n### 思った事\n\n移項がよくわからず、1WAしてしまった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc471/tasks/abc471_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc471",
+        "difficulty": 19,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(1)",
+          "rating": "A",
+          "summary": "四則演算の条件分岐を網羅し、移項による間違いを防ぐ工夫が光る実装です。シンプルで直感的なコード構造になっており、数式のバリエーションにも柔軟に対応できています。",
+          "tags": [
+            "条件分岐",
+            "全探索",
+            "算術演算"
+          ]
+        }
       },
       {
         "id": "B",
@@ -28,7 +46,25 @@
         ],
         "content": "AC\n\n### 思った事\n\n文字列のケースを揃える方法を調べた。\n\n方法は意外と単純だったけど、ぱっと出せるようにしたい。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc471/tasks/abc471_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc471",
+        "difficulty": 48,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N^2 * L)",
+          "rating": "B",
+          "summary": "入力を全て大文字に統一し、全ペアの文字列比較を行うことで頻度をカウントしています。toupperとtransformを適切に活用して文字列処理を実装できており、アルゴリズムの選択も分かりやすいです。",
+          "tags": [
+            "文字列処理",
+            "全探索",
+            "STL"
+          ]
+        }
       },
       {
         "id": "C",
@@ -45,7 +81,25 @@
         ],
         "content": "AC\n\n### 思った事\n\n本を整理する問題を思い出してマイナスとプラスで配列を作り、ソートして内側から読んでいく感じにした。\n\n解説を読むと、もっといい方法があったみたいで。\n\nというか同じ計算を同じレイヤーでやるなら全て変数に切り分けたほうがいい気がした。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc471/tasks/abc471_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc471",
+        "difficulty": 301,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N log N)",
+          "rating": "A",
+          "summary": "入力を正負の配列に分離してそれぞれソートし、貪欲法で現在位置からより近い方を選択しながら処理しています。分岐条件を丁寧に整理して実装されており、計算量効率も良好で非常に分かりやすい解法です。",
+          "tags": [
+            "貪欲法",
+            "ソート",
+            "配列"
+          ]
+        }
       }
     ]
   },
@@ -65,7 +119,24 @@
         ],
         "content": "AC\n\n### 思った事\n\nなぜかめちゃくちゃ躓いてしまった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc470/tasks/abc470_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc470",
+        "difficulty": 12,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "A",
+          "summary": "ループを用いて1からNまでの数値を順番に処理し、条件分岐によって指定された文字列や数値を効率よく出力しています。シンプルかつ直感的な実装で、可読性も高く非常に良好なコードです。",
+          "tags": [
+            "実装",
+            "ループ"
+          ]
+        }
       },
       {
         "id": "B",
@@ -78,7 +149,25 @@
         ],
         "content": "AC\n\n### 思った事\n\nもっとも多い色を取って、それを総数と比較する。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc470/tasks/abc470_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc470",
+        "difficulty": 29,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "A",
+          "summary": "要素の出現回数を配列でカウントし、最頻値を用いて効率的に処理しています。標準ライブラリの活用により、シンプルで可読性の高いコードに仕上がっています。",
+          "tags": [
+            "集計",
+            "配列",
+            "STL"
+          ]
+        }
       },
       {
         "id": "C",
@@ -91,7 +180,25 @@
         ],
         "content": "解説AC\n\n### 思った事\n\nコンテスト中は典型アルゴリズムで計算量を落とすのかと思ったが、実際は賢いデータの持ち方だった。\n\nXORみたい論理和に対する体制が強くなく、面食らってしまったのも敗因。$\\oplus$ みたいな記号に慣れる必要がある。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc470/tasks/abc470_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc470",
+        "difficulty": 1006,
+        "difficultyColor": {
+          "label": "緑",
+          "colorClass": "text-emerald-600 dark:text-emerald-500 border-emerald-500/30 bg-emerald-500/10",
+          "hex": "#008000"
+        },
+        "aiReview": {
+          "complexity": "O(N + Q * (activeの要素数))",
+          "rating": "A",
+          "summary": "変更のある要素のみをsetで管理し、全体を一括処理することで効率化を図っています。ラムダ式を用いたxor演算の更新処理もスマートで、可読性の高い実装に仕上がっています。",
+          "tags": [
+            "set",
+            "ビット演算",
+            "シミュレーション"
+          ]
+        }
       },
       {
         "id": "D",
@@ -104,7 +211,25 @@
         ],
         "content": "解説AC\n\n### 思った事\n\n愚直でよかったってことだった。読めばよかった。\n\nただ、問題文が難しすぎるよ。と思いました。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc470/tasks/abc470_d",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc470",
+        "difficulty": 777,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        },
+        "aiReview": {
+          "complexity": "O(N + Q)",
+          "rating": "A",
+          "summary": "順列とその逆順列を適切に管理し、クエリに対して要素の交換と配列自体のスワップを効率的に処理しています。計算量も最適で、シンプルかつ見通しの良い美しい実装です。",
+          "tags": [
+            "シミュレーション",
+            "順列",
+            "逆引き配列"
+          ]
+        }
       }
     ]
   },
@@ -124,7 +249,24 @@
         ],
         "content": "AC\n\n### 思った事\n\nやるだけ",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc469/tasks/abc469_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc469",
+        "difficulty": 11,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(1)",
+          "rating": "S",
+          "summary": "入力された二つの整数を用いて、問題文の条件通りの数値を一発で計算・出力しています。無駄な処理が一切なく、競技プログラミングの基本に忠実で非常に美しく簡潔なコードです。",
+          "tags": [
+            "実装",
+            "四則演算"
+          ]
+        }
       }
     ]
   },
@@ -144,7 +286,25 @@
         ],
         "content": "AC\n\n### 思った事\n\n$A_i​ < A_i+1 > A_i+2$​ が知らない記号に見えて戸惑ってしまった。\n\n$< x >$ みたいな記号があって、知らない操作をするのかと思った。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc468/tasks/abc468_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc468",
+        "difficulty": 17,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "A",
+          "summary": "配列の要素を走査し、左右の隣接要素より大きいピークの数を効率的にカウントしています。シンプルで読みやすいコードです。",
+          "tags": [
+            "全探索",
+            "配列",
+            "実装"
+          ]
+        }
       },
       {
         "id": "B",
@@ -157,7 +317,25 @@
         ],
         "content": "AC\n\n### 思った事\n\nB問題は愚直に行けることを意識しないといけないなと思った。\n\n愚直以外の方法を考えてちょっとタイムロス",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc468/tasks/abc468_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc468",
+        "difficulty": 56,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(M \\times D)",
+          "rating": "A",
+          "summary": "全探索を用いて問題文の条件を素直に実装した分かりやすいコードです。愚直な方針で制約に間に合うことを見極め、ループ範囲の境界チェックを適切に行うことで安全に正解を導いています。",
+          "tags": [
+            "全探索",
+            "シミュレーション",
+            "配列"
+          ]
+        }
       },
       {
         "id": "C",
@@ -176,7 +354,25 @@
             "label": "辞書順列挙（配列の並び替え）",
             "href": "/atcoder/solution#辞書順列挙（配列の並び替え）"
           }
-        ]
+        ],
+        "url": "https://atcoder.jp/contests/abc468/tasks/abc468_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc468",
+        "difficulty": 298,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N! * N)",
+          "rating": "B",
+          "summary": "順列の全探索にnext_permutationを活用し、辞書順での順序関係を正確にシミュレートした意欲的な解答です。探索範囲が大きい場合は計算量に注意が必要ですが、標準ライブラリを適切に発見して用いる姿勢は素晴らしいです。",
+          "tags": [
+            "全探索",
+            "順列",
+            "標準ライブラリ"
+          ]
+        }
       }
     ]
   },
@@ -196,7 +392,25 @@
         ],
         "content": "AC\n\n### 思った事\n\n割り算だとダメだろうから、掛け算にしないといけなくて。\n\nイライラしますね。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc467/tasks/abc467_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc467",
+        "difficulty": 76,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(1)",
+          "rating": "S",
+          "summary": "浮動小数点数の誤差を避けるため、割り算を掛け算に変えて整数演算で判定している点が非常に素晴らしいです。コードも短くまとまっており、無駄のない美しい実装です。",
+          "tags": [
+            "条件分岐",
+            "算術演算",
+            "整数演算"
+          ]
+        }
       },
       {
         "id": "B",
@@ -209,7 +423,25 @@
         ],
         "content": "AC\n\n### 思った事\n\nA問題より簡単、って、",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc467/tasks/abc467_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc467",
+        "difficulty": 39,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "A",
+          "summary": "入力された文字列の条件に応じて値を適切に加算していくシンプルで分かりやすい実装です。ループ内で変数を直接処理しており、無駄なメモリや計算量が発生しない効率的なコードになっています。",
+          "tags": [
+            "実装",
+            "シミュレーション",
+            "条件分岐"
+          ]
+        }
       },
       {
         "id": "C",
@@ -222,7 +454,25 @@
         ],
         "content": "AC\n\n### 思った事\n\nこちらも簡単。絵を描いたら分かった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc467/tasks/abc467_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc467",
+        "difficulty": 608,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "A",
+          "summary": "先頭の要素を変更するかどうかというわずか2通りの自由度に着目し、貪欲法を用いて各要素の状態を効率よく一意に決定しています。全探索とシミュレーションを組み合わせた非常にスマートな解法です。",
+          "tags": [
+            "貪欲法",
+            "全探索",
+            "シミュレーション"
+          ]
+        }
       },
       {
         "id": "D",
@@ -230,7 +480,25 @@
         "codes": [],
         "content": "WA\n\n### 思った事\n\n数学すぎ。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc467/tasks/abc467_d",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc467",
+        "difficulty": 928,
+        "difficultyColor": {
+          "label": "緑",
+          "colorClass": "text-emerald-600 dark:text-emerald-500 border-emerald-500/30 bg-emerald-500/10",
+          "hex": "#008000"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "C",
+          "summary": "数学的なアプローチが必要な問題です。コードが未添付のため詳細な評価はできませんが、公式解説などを参考に数式を整理し、シンプルなループや算術演算で実装することで、簡潔かつ効率的なコードに仕上がります。",
+          "tags": [
+            "数学",
+            "考察",
+            "シミュレーション"
+          ]
+        }
       }
     ]
   },
@@ -250,7 +518,25 @@
         ],
         "content": "AC\n\n### 思った事\n\n特に無い。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc466/tasks/abc466_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc466",
+        "difficulty": 16,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "S",
+          "summary": "すべての入力要素が負数であるかを判定するシンプルなコードです。不要な配列保持を避け、ストリーム処理で直接判定を行うことでメモリを節約した効率的かつ美しい実装です。",
+          "tags": [
+            "全探索",
+            "判定問題",
+            "実装"
+          ]
+        }
       },
       {
         "id": "B",
@@ -263,7 +549,25 @@
         ],
         "content": "AC\n\n### 思った事\n\nそういう配列で。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc466/tasks/abc466_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc466",
+        "difficulty": 37,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N + M)",
+          "rating": "A",
+          "summary": "入力されたデータに対して配列を用いた効率的な集計を行っており、計算量がO(N + M)と非常に高速です。atメソッドによる安全な範囲外チェックや、シンプルで無駄のない実装が美しく、可読性に優れています。",
+          "tags": [
+            "配列",
+            "シミュレーション",
+            "実装"
+          ]
+        }
       },
       {
         "id": "C",
@@ -276,7 +580,25 @@
         ],
         "content": "AC\n\n### 思った事\n\nいや！インタラクティブって、何！",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc466/tasks/abc466_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc466",
+        "difficulty": 658,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "A",
+          "summary": "インタラクティブ問題に対する効率的な二者択一の状態遷移を見事に実装しています。状態変数の巧妙な更新により無駄なクエリを削減し、制限回数内に最適に答えを導き出す美しい解法となっています。",
+          "tags": [
+            "インタラクティブ",
+            "シミュレーション",
+            "貪欲法"
+          ]
+        }
       }
     ]
   },
@@ -296,7 +618,24 @@
         ],
         "content": "AC\n\n### 思った事\n\n特にいう事は無い。\n\n簡単。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc464/tasks/abc464_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc464",
+        "difficulty": 13,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(|S|)",
+          "rating": "A",
+          "summary": "文字列を1文字ずつ走査して文字の種類をカウントし、条件に応じて条件演算子で出力する非常にシンプルかつ効率的な実装です。無駄な処理がなく、コードの可読性も非常に高い良好な状態です。",
+          "tags": [
+            "文字列",
+            "実装"
+          ]
+        }
       },
       {
         "id": "B",
@@ -309,7 +648,25 @@
         ],
         "content": "AC\n\n### 思った事\n\n配列を直接操作しようとしてみたが、違うな～と。\n\n尺取りっぽく（？）見る部分を減らしていくことに。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc464/tasks/abc464_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc464",
+        "difficulty": 103,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(H * W)",
+          "rating": "A",
+          "summary": "グリッド上の目的の文字('#')が存在する最小および最大の行・列のインデックスを全探索で特定し、その矩形範囲のみを効率的に切り出して出力する非常にすっきりとした美しい解法です。",
+          "tags": [
+            "全探索",
+            "グリッド",
+            "実装"
+          ]
+        }
       },
       {
         "id": "C",
@@ -317,7 +674,23 @@
         "codes": [],
         "content": "WA\n\n### 思った事\n\n分からなかった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc464/tasks/abc464_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc464",
+        "difficulty": 400,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        },
+        "aiReview": {
+          "complexity": "O(1)",
+          "rating": "C",
+          "summary": "解答コードが未添付のため計算量や処理の評価ができません。まずは解法方針を固めてコードを実装し、再度レビューをご依頼ください。競技プログラミングでは、制約条件を見極めて適切なデータ構造を選ぶことが上達への近道です。",
+          "tags": [
+            "未実装"
+          ]
+        }
       }
     ]
   },
@@ -337,7 +710,25 @@
         ],
         "content": "AC\n\n### 思った事\n\n手間取りました。割り算って上手にできないから。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc463/tasks/abc463_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc463",
+        "difficulty": 15,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(1)",
+          "rating": "S",
+          "summary": "実数の割り算は誤差を生じるため、両辺に16を掛けて整数の乗算へ変換することで、安全かつ正確に判定を行っています。非常にスマートで誤差の心配がない優れた実装です。",
+          "tags": [
+            "算術演算",
+            "条件分岐",
+            "誤差回避"
+          ]
+        }
       },
       {
         "id": "B",
@@ -350,7 +741,25 @@
         ],
         "content": "AC\n\n### 思った事\n\n見た通り。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc463/tasks/abc463_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc463",
+        "difficulty": 30,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N^2)",
+          "rating": "A",
+          "summary": "入力を適切に受け取り、二重ループを用いて条件判定を行う直感的で分かりやすいコードです。マクロの活用や安全なat()メソッドの使用など、競技プログラミングの基礎が綺麗にまとまっています。",
+          "tags": [
+            "全探索",
+            "実装",
+            "文字処理"
+          ]
+        }
       },
       {
         "id": "C",
@@ -363,7 +772,25 @@
         ],
         "content": "WA\n\n### 思った事\n\n分からなかった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc463/tasks/abc463_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc463",
+        "difficulty": 274,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N + Q \\cdot N)",
+          "rating": "B",
+          "summary": "後ろからの累積最大値の前計算など工夫が見られますが、クエリごとの線形探索がボトルネックになりTLEする可能性があります。二分探索などを活用するとさらに効率的です。",
+          "tags": [
+            "前計算",
+            "線形探索",
+            "累積最大値"
+          ]
+        }
       }
     ]
   },
@@ -383,7 +810,25 @@
         ],
         "content": "AC\n\n### 思った事\n\nそのまま、文字通り実装、簡単♪",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc462/tasks/abc462_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc462",
+        "difficulty": 13,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(|S|)",
+          "rating": "A",
+          "summary": "文字列の各文字を先頭から走査し、それが数字であるか判定して標準出力に出力する素直で分かりやすい実装です。標準ライブラリを適切に活用しており、無駄な処理がなく簡潔に正解を導いています。",
+          "tags": [
+            "文字列処理",
+            "文字判定",
+            "全探索"
+          ]
+        }
       },
       {
         "id": "B",
@@ -396,7 +841,25 @@
         ],
         "content": "AC\n\n### 思った事\n\nそのまま",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc462/tasks/abc462_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc462",
+        "difficulty": 70,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N * K)",
+          "rating": "B",
+          "summary": "標準的な入出力処理とループを用いた素直な実装です。vectorの要素アクセスにat()を使用しており安全ですが、[]演算子を用いるとさらにスマートになり、変数名の改善余地もあります。",
+          "tags": [
+            "全探索",
+            "配列",
+            "シミュレーション"
+          ]
+        }
       },
       {
         "id": "C",
@@ -409,7 +872,25 @@
         ],
         "content": "AC\n\n### 思った事\n\n良い感じだね。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc462/tasks/abc462_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc462",
+        "difficulty": 298,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "A",
+          "summary": "配列を用いたインデックス管理と、これまでの最小値を逐次更新する貪欲法的なアプローチにより、効率的かつ簡潔に問題を解いています。コメントアウトを残して思考の跡がわかる点も良好です。",
+          "tags": [
+            "配列",
+            "貪欲法",
+            "実装"
+          ]
+        }
       }
     ]
   },
@@ -429,7 +910,24 @@
         ],
         "content": "AC\n\n### 思った事\n\nそのまま、文字通り実装、簡単♪",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc461/tasks/abc461_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc461",
+        "difficulty": 12,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(1)",
+          "rating": "S",
+          "summary": "条件分岐を三項演算子で極めて簡潔に記述しており、無駄な処理が一切ない美しい実装です。標準入出力と基本的な比較演算子のみを用いており、実行速度・可読性ともに完璧な解答となっています。",
+          "tags": [
+            "条件分岐",
+            "実装"
+          ]
+        }
       },
       {
         "id": "B",
@@ -442,7 +940,25 @@
         ],
         "content": "AC\n\n### 思った事\n\nめちゃくちゃ手間取った\n\n何を思ったか配列Aのi番目をイテレーターとして取って配列Bについて考えて、、、\n\nみたいなことをしてしまい。3ミス。これが無ければ茶パフォでした。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc461/tasks/abc461_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc461",
+        "difficulty": 34,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "B",
+          "summary": "配列AとBの関係性を直接的かつシンプルに判定しています。イテレータの誤用で苦戦したとのことですが、要素のインデックスと値の対応関係を丁寧に整理することで、正しく判定処理を実装できています。",
+          "tags": [
+            "配列",
+            "シミュレーション",
+            "全探索"
+          ]
+        }
       },
       {
         "id": "C",
@@ -455,7 +971,25 @@
         ],
         "content": "WA\n\n### 思った事\n\n全く分からない。\n\nソートして上から自由に取って、ある程度まで行ったら色数確認して、、、ってやればよさそうなのに。\n\nテストケース通ったのに。。。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc461/tasks/abc461_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc461",
+        "difficulty": 332,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N log N)",
+          "rating": "B",
+          "summary": "ソートを活用して貪欲法的に要素を選択しようとしていますが、条件分岐が複雑化し、問題の制約を正確に満たせていない可能性があります。貪欲法の適用条件を再整理するとスムーズに正解に近づけます。",
+          "tags": [
+            "ソート",
+            "貪欲法",
+            "ペアの利用"
+          ]
+        }
       }
     ]
   },
@@ -475,7 +1009,24 @@
         ],
         "content": "AC\n\n### 思った事\n\n覚えていない。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc460/tasks/abc460_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc460",
+        "difficulty": 15,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(log(min(N, M)))",
+          "rating": "A",
+          "summary": "ユークリッドの互除法を応用したループ処理により、効率的に計算を行っています。変数の命名もシンプルで分かりやすく、全体的にコンパクトかつ綺麗な構造にまとまっている素晴らしい実装です。",
+          "tags": [
+            "ユークリッドの互除法",
+            "数学"
+          ]
+        }
       },
       {
         "id": "B",
@@ -488,7 +1039,25 @@
         ],
         "content": "AC\n\n### 思った事\n\n覚えていない。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc460/tasks/abc460_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc460",
+        "difficulty": 128,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(T)",
+          "rating": "C",
+          "summary": "テストケースごとに円の位置関係を判定しています。入力受け取りのカンマ演算子の誤りや、二乗和の比較における半径の二乗の計算漏れがあるため、幾何計算の基本を確認し修正する必要があります。",
+          "tags": [
+            "幾何",
+            "数学",
+            "実装"
+          ]
+        }
       }
     ]
   },
@@ -508,7 +1077,24 @@
         ],
         "content": "AC\n\n### 思った事\n\n愚直に文字列操作をするべきだったのに。。。\n\nどうしてか1文字ずつ見て、、、という感じに実装してしまった。\n\n次は文字列操作を使います。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc458/tasks/abc458_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc458",
+        "difficulty": 15,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(|S|)",
+          "rating": "A",
+          "summary": "文字列の長さを取得し、ループ文と条件分岐を用いて指定された範囲外の文字だけを丁寧に出力しています。インデックス制御のロジックが分かりやすく、意図通りの動作を確実に実装できています。",
+          "tags": [
+            "文字列処理",
+            "実装"
+          ]
+        }
       },
       {
         "id": "B",
@@ -521,7 +1107,25 @@
         ],
         "content": "AC\n\n### 思った事\n\n例外を見て、、、という実装。\n\n恐らくもっときれいに実装できます。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc458/tasks/abc458_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc458",
+        "difficulty": 55,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(H * W)",
+          "rating": "B",
+          "summary": "グリッドの端や角といった例外条件を細かく場合分けして正確に実装されています。条件分岐が多いため、座標からの距離や相対位置を活用して一般化すると、さらにシンプルで美しいコードになります。",
+          "tags": [
+            "場合分け",
+            "グリッド",
+            "シミュレーション"
+          ]
+        }
       },
       {
         "id": "C",
@@ -534,7 +1138,25 @@
         ],
         "content": "AC\n\n### 思った事\n\nこれはとっても簡単、楽しい。\n\n絵を描いたら2秒でわかった",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc458/tasks/abc458_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc458",
+        "difficulty": 142,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "A",
+          "summary": "文字列中の特定文字の位置を効率的に抽出し、各位置から端までの最短距離と基本スコアを足し合わせることで、線形時間で最適解を求めています。シンプルかつ直感的な実装が非常に美しいです。",
+          "tags": [
+            "文字列",
+            "全探索",
+            "実装"
+          ]
+        }
       },
       {
         "id": "D",
@@ -547,7 +1169,25 @@
         ],
         "content": "CA\n\n### 思った事\n\nあまりにも時間がかかってしまった。\n\nお絵描きをしながら操作を抽象化していったら分かりました。\n\n総評として、お絵描きをしよう。というものがあります。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc458/tasks/abc458_d",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc458",
+        "difficulty": 450,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        },
+        "aiReview": {
+          "complexity": "O(Q log Q)",
+          "rating": "A",
+          "summary": "中央値を管理するために2つの優先度付きキューを巧みに活用した素晴らしい解法です。データ構造の特性を理解して効率的に動的中央値を求める実装になっており、競技プログラミングにおいて非常に実用的です。",
+          "tags": [
+            "中央値",
+            "優先度付きキュー",
+            "データ構造"
+          ]
+        }
       }
     ]
   },
@@ -567,7 +1207,24 @@
         ],
         "content": "AC",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc457/tasks/abc457_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc457",
+        "difficulty": 13,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "A",
+          "summary": "入力を素直に配列で受け取り、1-indexedのクエリに対応する要素を直接O(1)で参照しています。無駄な処理がなくシンプルで非常に読みやすいコードです。",
+          "tags": [
+            "配列",
+            "シミュレーション"
+          ]
+        }
       },
       {
         "id": "B",
@@ -580,7 +1237,25 @@
         ],
         "content": "AC\n\n### 思った事\n\nresizeの事を忘れていたので、巨大な配列を用意しようとしてしまった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc457/tasks/abc457_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc457",
+        "difficulty": 45,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(sum(L_i))",
+          "rating": "A",
+          "summary": "可変長配列のサイズを動的に変更するresize関数を適切に活用し、無駄なメモリ消費を抑えた効率的な実装です。二次元ベクタを用いて可変長な入力を安全に受け取り、1-indexedから0-indexedへの変換も確実に行えています。",
+          "tags": [
+            "二次元配列",
+            "動的配列",
+            "シミュレーション"
+          ]
+        }
       },
       {
         "id": "C",
@@ -593,7 +1268,25 @@
         ],
         "content": "AC\n\n### 思った事\n\n∑を知らないので焦ってしまった。\n\n問題の理解が難しかったが、出力例１を見て納得。実際に配列を用意するとメモリ制限とかに引っかかるかな？という事で、配列をシミュレーションする事で解決。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc457/tasks/abc457_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc457",
+        "difficulty": 230,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(Q log Q)",
+          "rating": "A",
+          "summary": "2つの優先度付きキューを用いて中央値を効率的に管理する美しい解法です。動的なデータ追加と中央値の取得を高速に行うことで、メモリ制限や計算量のボトルネックを上手に回避しています。",
+          "tags": [
+            "優先度付きキュー",
+            "中央値",
+            "データ構造"
+          ]
+        }
       },
       {
         "id": "D",
@@ -606,7 +1299,25 @@
         ],
         "content": "WA\n\n### 思った事\n\nちょっと分からなかった。\n\npriority queで少ないものに足していくのかと思いきや二分探索を使う必要があった。\n\n二分探索って知ってるけど使ったことは無かったのでWA",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc457/tasks/abc457_d",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc457",
+        "difficulty": 677,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        },
+        "aiReview": {
+          "complexity": "O(N log(max A + K))",
+          "rating": "A",
+          "summary": "答えで二分探索（めぐる式）を用いて最適値を効率的に探索しています。判定関数も綺麗に実装されており、方針の選択が非常に素晴らしいです。",
+          "tags": [
+            "二分探索",
+            "答えで二分探索",
+            "シミュレーション"
+          ]
+        }
       }
     ]
   },
@@ -626,7 +1337,24 @@
         ],
         "content": "AC",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc456/tasks/abc456_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc456",
+        "difficulty": 14,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(1)",
+          "rating": "A",
+          "summary": "標準入出力を用いて整数を受け取り、条件分岐により指定された範囲内であるかを判定するシンプルな実装です。無駄な処理がなく、コードの可読性や構造が非常にすっきりとまとまっています。",
+          "tags": [
+            "条件分岐",
+            "実装問題"
+          ]
+        }
       },
       {
         "id": "B",
@@ -639,7 +1367,25 @@
         ],
         "content": "AC\n\n### 思った事\nsetprecision()を使う問題が出てきて嬉しかった。\n\nサイコロの状態管理に面食らってしまい、すこし実装に時間がかかってしまった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc456/tasks/abc456_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc456",
+        "difficulty": 96,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(1)",
+          "rating": "A",
+          "summary": "入力を適切に集計し、全通りの状態を配列で全探索して確率を計算しています。setprecisionを用いた精度の高い出力も正しく実装されており、論理的で分かりやすい良好なコードです。",
+          "tags": [
+            "全探索",
+            "確率",
+            "実装"
+          ]
+        }
       },
       {
         "id": "C",
@@ -652,7 +1398,25 @@
         ],
         "content": "AC\n\n### 思った事\n部分文字列！？DPやんけ！ということでDPを使って実装しました。\n\n部分列と見事に勘違いしてしまい、Qiita見ながらやったのでadd()関数が残っています。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc456/tasks/abc456_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc456",
+        "difficulty": 233,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "A",
+          "summary": "文字列の連続性を動的計画法で効率的に処理しています。直前の文字との比較により状態を1次元で管理し、線形時間で正しく答えを求めています。未使用の関数が残っている点を除けば、非常に実用的で美しいコードです。",
+          "tags": [
+            "動的計画法",
+            "文字列",
+            "線形探索"
+          ]
+        }
       },
       {
         "id": "D",
@@ -665,7 +1429,25 @@
         ],
         "content": "AC\n\n### 思った事\n実はC問題でこっちを実装していたため、同時にクリアという感じ。\n\n部分列はDPで、部分文字列はもっと簡単に引っ張ってこれたらしい。\n\n悔しさ、もあるけど、うれしさも同時に",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc456/tasks/abc456_d",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc456",
+        "difficulty": 586,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        },
+        "aiReview": {
+          "complexity": "O(N * Γ)",
+          "rating": "A",
+          "summary": "剅午予算を用いて次に出猰する文字の位置を高速に取得し、動的計画法で逍遵に部分列を排列しています。利息と可読性に優れた確実な処理です。",
+          "tags": [
+            "動的計画法",
+            "剅午予算",
+            "文字列"
+          ]
+        }
       }
     ]
   },
@@ -685,7 +1467,24 @@
         ],
         "content": "AC",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc455/tasks/abc455_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc455",
+        "difficulty": 14,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(1)",
+          "rating": "A",
+          "summary": "3つの整数を入力し、条件分岐を用いて値の一致・不一致を正確に判定しています。標準的な入出力とシンプルな論理演算で構成されており、非常に読みやすく無駄のない綺麗なコードです。",
+          "tags": [
+            "条件分岐",
+            "基本実装"
+          ]
+        }
       },
       {
         "id": "B",
@@ -698,7 +1497,25 @@
         ],
         "content": "AC",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc455/tasks/abc455_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc455",
+        "difficulty": 187,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(H^3 * W^3)",
+          "rating": "B",
+          "summary": "すべての長方形領域を全探索し、各領域内で上下左右対称性を正しく判定して条件を満たす数をカウントしています。グリッドの部分長方形を直接全探索する直感的な解法ですが、制約によっては計算量の改善余地があります。",
+          "tags": [
+            "全探索",
+            "グリッド",
+            "シミュレーション"
+          ]
+        }
       },
       {
         "id": "C",
@@ -711,7 +1528,25 @@
         ],
         "content": "解説AC\n\n### 思った事\n\nlong longをllにするやつ、大事だなと思いました。\n\nreduce()って知らない関数だった。dorループで足していた俺って、、、。\n\nたとえばフィボナッチ数列NEOがあったとして、reduce(dp.at(i - 2), dp.at(i))みたいな事が出来るってわけだ。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc455/tasks/abc455_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc455",
+        "difficulty": 210,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N log N)",
+          "rating": "A",
+          "summary": "要素の集計にmapを用い、出現頻度を考慮した総和計算にstd::reduceを活用しています。ソート後に上位の要素を削除する処理もシンプルにまとまっており、C++のモダンな機能を取り入れた優れた実装です。",
+          "tags": [
+            "ソート",
+            "std::map",
+            "集計処理"
+          ]
+        }
       },
       {
         "id": "D",
@@ -724,7 +1559,25 @@
         ],
         "content": "解説AC\n\n### 思った事\n\n連結リストを知らなかった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc455/tasks/abc455_d",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc455",
+        "difficulty": 796,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        },
+        "aiReview": {
+          "complexity": "O(N + Q * N)",
+          "rating": "B",
+          "summary": "双方向のポインタを配列で管理し連結リストを模した実装です。クエリ処理の効率化には更なる工夫の余地がありますが、データ構造を自作して直感的にシミュレーションを行えている点が素晴らしいアプローチです。",
+          "tags": [
+            "連結リスト",
+            "シミュレーション",
+            "配列"
+          ]
+        }
       }
     ]
   },
@@ -744,7 +1597,24 @@
         ],
         "content": "AC",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc454/tasks/abc454_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc454",
+        "difficulty": 15,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(N)",
+          "rating": "B",
+          "summary": "文字列を先頭から走査し、条件に応じた文字のスキップと出力を適切に実装しています。条件分岐をよりシンプルに整理することで、コードの可読性をさらに向上させることができます。",
+          "tags": [
+            "文字列",
+            "実装"
+          ]
+        }
       },
       {
         "id": "B",
@@ -757,7 +1627,25 @@
         ],
         "content": "解説AC\n\n\n### 思った事",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc454/tasks/abc454_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc454",
+        "difficulty": 45,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        },
+        "aiReview": {
+          "complexity": "O(T)",
+          "rating": "A",
+          "summary": "配列を用いたシンプルなシミュレーション解法です。条件判定に絶対値関数を使用し、前回の記録からの変動量を適切に追跡することで、効率的かつ正確に出力を行っています。コードの構造も非常に直感的で読みやすいです。",
+          "tags": [
+            "シミュレーション",
+            "配列",
+            "全探索"
+          ]
+        }
       }
     ]
   },
@@ -777,7 +1665,24 @@
         ],
         "content": "典型の問題メモです。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/典型/tasks/典型_002",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/典型",
+        "difficultyColor": {
+          "label": "Unrated",
+          "colorClass": "text-muted-foreground border-border bg-muted/30",
+          "hex": "#888888"
+        },
+        "aiReview": {
+          "complexity": "O(N * 2^N)",
+          "rating": "A",
+          "summary": "全探索とビット演算を用いてすべての括弧列を生成し、関数を用いて効率的に整合性を判定しています。奇数長の入力を早期リターンで弾くなど、直感的で分かりやすい実装になっています。",
+          "tags": [
+            "全探索",
+            "ビット全探索",
+            "文字列処理"
+          ]
+        }
       },
       {
         "id": "004",
@@ -790,7 +1695,24 @@
         ],
         "content": "典型の問題メモです。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/典型/tasks/典型_004",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/典型",
+        "difficultyColor": {
+          "label": "Unrated",
+          "colorClass": "text-muted-foreground border-border bg-muted/30",
+          "hex": "#888888"
+        },
+        "aiReview": {
+          "complexity": "O(H \\times W)",
+          "rating": "S",
+          "summary": "各行と各列の総和をあらかじめ前計算し、クエリごとに定数時間で答えを求めています。重複して足される交差箇所の値を引く処理もスマートで、無駄のない非常に効率的な実装です。",
+          "tags": [
+            "前計算",
+            "実装",
+            "累積和"
+          ]
+        }
       },
       {
         "id": "007",
@@ -803,7 +1725,24 @@
         ],
         "content": "典型の問題メモです。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/典型/tasks/典型_007",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/典型",
+        "difficultyColor": {
+          "label": "Unrated",
+          "colorClass": "text-muted-foreground border-border bg-muted/30",
+          "hex": "#888888"
+        },
+        "aiReview": {
+          "complexity": "O(N log N + Q log N)",
+          "rating": "S",
+          "summary": "配列を事前にソートし、lower_boundを用いて各クエリに対して二分探索で効率的に最も近い値を求めています。非常にシンプルかつ高速で、競プロの模範的な実装です。",
+          "tags": [
+            "ソート",
+            "二分探索",
+            "std::lower_bound"
+          ]
+        }
       }
     ]
   }

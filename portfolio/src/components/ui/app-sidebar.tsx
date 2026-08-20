@@ -13,9 +13,11 @@ export function AppSidebar({ contests }: { contests: Contest[] }) {
     .map((contest) => ({
       ...contest,
       problems: keyword
-        ? contest.problems.filter((problem) =>
-            `${contest.abc} ${problem.id} ${problem.title}`.toLowerCase().includes(keyword),
-          )
+        ? contest.problems.filter((problem) => {
+            const aiTags = problem.codes.flatMap((c) => c.aiReview?.tags ?? []).join(" ")
+            const searchText = `${contest.abc} ${problem.id} ${problem.title} ${aiTags}`.toLowerCase()
+            return searchText.includes(keyword)
+          })
         : contest.problems,
     }))
     .filter((contest) => contest.problems.length > 0)
@@ -28,7 +30,7 @@ export function AppSidebar({ contests }: { contests: Contest[] }) {
         <div className="px-2 py-2">
           <SidebarInput
             type="search"
-            placeholder="問題を検索"
+            placeholder="問題・AIタグを検索"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
