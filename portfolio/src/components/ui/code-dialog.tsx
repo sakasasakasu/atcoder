@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { CheckIcon, CodeIcon, CopyIcon, Sparkles, Cpu, Award, Tag } from "lucide-react"
+import { CheckIcon, CodeIcon, CopyIcon, Sparkles, Cpu, Award } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Code } from "@/components/ui/code"
 import {
@@ -11,11 +11,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import type { AiReview } from "@/types/contest"
+import { AiReview } from "@/types/contest"
 
-/**
- * 評価ランクに応じたバッジカラーを返します
- */
 function getRatingBadgeClass(rating?: string) {
   switch (rating?.toUpperCase()) {
     case "S":
@@ -24,15 +21,13 @@ function getRatingBadgeClass(rating?: string) {
       return "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
     case "B":
       return "bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30"
-    case "C":
-      return "bg-orange-500/15 text-orange-600 dark:text-orange-400 border-orange-500/30"
     default:
       return "bg-secondary text-secondary-foreground"
   }
 }
 
 /**
- * 「コードを見る」ボタンを押すとモーダルを開き、コード、コピーボタン、および AI コードレビューを表示する共通コンポーネント
+ * 「コードを見る」ボタンを押すとモーダルを開き、コードを表示する共通コンポーネント
  */
 export function CodeDialog({
   code,
@@ -67,23 +62,23 @@ export function CodeDialog({
           {buttonLabel}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>{label ? `コードを見る: ${label}` : "コードを見る"}</DialogTitle>
         </DialogHeader>
 
-        {/* AI コードレビューパネル（存在する場合） */}
+        {/* AI コードレビューパネル (シンプル化) */}
         {aiReview && (
-          <div className="rounded-lg border bg-gradient-to-br from-primary/5 via-background to-secondary/10 p-4 space-y-3 shadow-xs">
-            <div className="flex items-center justify-between border-b pb-2">
-              <div className="flex items-center gap-2 font-semibold text-sm">
-                <Sparkles className="h-4 w-4 text-primary" />
-                <span>AI コードレビュー (Gemini)</span>
+          <div className="rounded-md border bg-muted/30 p-3 space-y-2 text-xs">
+            <div className="flex items-center justify-between font-semibold border-b pb-1.5">
+              <div className="flex items-center gap-1.5 text-foreground">
+                <Sparkles className="h-3.5 w-3.5 text-primary" />
+                <span>AI コードレビュー</span>
               </div>
               <div className="flex items-center gap-2">
                 {aiReview.rating && (
                   <span
-                    className={`inline-flex items-center gap-1 border px-2 py-0.5 rounded-full text-xs font-bold ${getRatingBadgeClass(
+                    className={`inline-flex items-center gap-1 border px-1.5 py-0.5 rounded text-[11px] font-bold ${getRatingBadgeClass(
                       aiReview.rating
                     )}`}
                   >
@@ -92,7 +87,7 @@ export function CodeDialog({
                   </span>
                 )}
                 {aiReview.complexity && (
-                  <span className="inline-flex items-center gap-1 rounded bg-secondary px-2 py-0.5 text-xs font-mono font-medium">
+                  <span className="inline-flex items-center gap-1 rounded bg-secondary px-1.5 py-0.5 font-mono">
                     <Cpu className="h-3 w-3" />
                     {aiReview.complexity}
                   </span>
@@ -100,33 +95,16 @@ export function CodeDialog({
               </div>
             </div>
 
-            {/* レビュー本文 */}
             {aiReview.summary && (
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed">
                 {aiReview.summary}
               </p>
-            )}
-
-            {/* AI タグ */}
-            {aiReview.tags && aiReview.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                {aiReview.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="inline-flex items-center gap-1 rounded-md border border-primary/20 bg-background px-2 py-0.5 text-xs text-primary"
-                  >
-                    <Tag className="h-2.5 w-2.5" />
-                    {tag}
-                  </span>
-                ))}
-              </div>
             )}
           </div>
         )}
 
-        {/* ソースコード表示エリア */}
         <div className="relative min-w-0">
-          <div className="max-h-[60vh] overflow-auto rounded-sm">
+          <div className="max-h-[70vh] overflow-auto rounded-sm">
             <Code code={code} language={language} />
           </div>
           <Button

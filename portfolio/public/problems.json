@@ -18,10 +18,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc471/tasks/abc471_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc471",
-        "difficulty": -817,
+        "difficulty": 19,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -49,10 +49,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc471/tasks/abc471_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc471",
-        "difficulty": -451,
+        "difficulty": 48,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -84,10 +84,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc471/tasks/abc471_c",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc471",
-        "difficulty": 286,
+        "difficulty": 301,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -122,10 +122,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc470/tasks/abc470_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc470",
-        "difficulty": -995,
+        "difficulty": 12,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -152,10 +152,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc470/tasks/abc470_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc470",
-        "difficulty": -649,
+        "difficulty": 29,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -186,7 +186,7 @@
         "difficulty": 1006,
         "difficultyColor": {
           "label": "緑",
-          "colorClass": "text-emerald-500 border-emerald-500/30 bg-emerald-500/10",
+          "colorClass": "text-emerald-600 dark:text-emerald-500 border-emerald-500/30 bg-emerald-500/10",
           "hex": "#008000"
         },
         "aiReview": {
@@ -252,10 +252,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc469/tasks/abc469_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc469",
-        "difficulty": -1026,
+        "difficulty": 11,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -289,10 +289,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc468/tasks/abc468_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc468",
-        "difficulty": -868,
+        "difficulty": 17,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -320,10 +320,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc468/tasks/abc468_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc468",
-        "difficulty": -388,
+        "difficulty": 56,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -357,10 +357,10 @@
         ],
         "url": "https://atcoder.jp/contests/abc468/tasks/abc468_c",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc468",
-        "difficulty": 282,
+        "difficulty": 298,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -395,10 +395,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc467/tasks/abc467_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc467",
-        "difficulty": -262,
+        "difficulty": 76,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -426,10 +426,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc467/tasks/abc467_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc467",
-        "difficulty": -535,
+        "difficulty": 39,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -486,7 +486,7 @@
         "difficulty": 928,
         "difficultyColor": {
           "label": "緑",
-          "colorClass": "text-emerald-500 border-emerald-500/30 bg-emerald-500/10",
+          "colorClass": "text-emerald-600 dark:text-emerald-500 border-emerald-500/30 bg-emerald-500/10",
           "hex": "#008000"
         },
         "aiReview": {
@@ -521,10 +521,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc466/tasks/abc466_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc466",
-        "difficulty": -891,
+        "difficulty": 16,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -552,10 +552,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc466/tasks/abc466_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc466",
-        "difficulty": -552,
+        "difficulty": 37,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -621,10 +621,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc464/tasks/abc464_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc464",
-        "difficulty": -979,
+        "difficulty": 13,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -651,10 +651,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc464/tasks/abc464_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc464",
-        "difficulty": -142,
+        "difficulty": 103,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -713,10 +713,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc463/tasks/abc463_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc463",
-        "difficulty": -914,
+        "difficulty": 15,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -744,10 +744,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc463/tasks/abc463_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc463",
-        "difficulty": -630,
+        "difficulty": 30,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -775,10 +775,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc463/tasks/abc463_c",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc463",
-        "difficulty": 248,
+        "difficulty": 274,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -813,10 +813,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc462/tasks/abc462_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc462",
-        "difficulty": -973,
+        "difficulty": 13,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -844,10 +844,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc462/tasks/abc462_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc462",
-        "difficulty": -297,
+        "difficulty": 70,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -875,10 +875,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc462/tasks/abc462_c",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc462",
-        "difficulty": 282,
+        "difficulty": 298,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -913,10 +913,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc461/tasks/abc461_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc461",
-        "difficulty": -988,
+        "difficulty": 12,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -943,10 +943,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc461/tasks/abc461_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc461",
-        "difficulty": -581,
+        "difficulty": 34,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -974,10 +974,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc461/tasks/abc461_c",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc461",
-        "difficulty": 325,
+        "difficulty": 332,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1012,10 +1012,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc460/tasks/abc460_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc460",
-        "difficulty": -914,
+        "difficulty": 15,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1042,10 +1042,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc460/tasks/abc460_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc460",
-        "difficulty": -56,
+        "difficulty": 128,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1080,10 +1080,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc458/tasks/abc458_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc458",
-        "difficulty": -904,
+        "difficulty": 15,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1110,10 +1110,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc458/tasks/abc458_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc458",
-        "difficulty": -391,
+        "difficulty": 55,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1141,10 +1141,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc458/tasks/abc458_c",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc458",
-        "difficulty": -15,
+        "difficulty": 142,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1210,10 +1210,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc457/tasks/abc457_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc457",
-        "difficulty": -972,
+        "difficulty": 13,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1240,10 +1240,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc457/tasks/abc457_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc457",
-        "difficulty": -478,
+        "difficulty": 45,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1271,10 +1271,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc457/tasks/abc457_c",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc457",
-        "difficulty": 179,
+        "difficulty": 230,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1340,10 +1340,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc456/tasks/abc456_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc456",
-        "difficulty": -945,
+        "difficulty": 14,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1370,10 +1370,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc456/tasks/abc456_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc456",
-        "difficulty": -171,
+        "difficulty": 96,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1401,10 +1401,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc456/tasks/abc456_c",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc456",
-        "difficulty": 183,
+        "difficulty": 233,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1470,10 +1470,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc455/tasks/abc455_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc455",
-        "difficulty": -941,
+        "difficulty": 14,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1500,10 +1500,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc455/tasks/abc455_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc455",
-        "difficulty": 96,
+        "difficulty": 187,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1531,10 +1531,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc455/tasks/abc455_c",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc455",
-        "difficulty": 143,
+        "difficulty": 210,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1600,10 +1600,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc454/tasks/abc454_a",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc454",
-        "difficulty": -912,
+        "difficulty": 15,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1630,10 +1630,10 @@
         "referencedBy": [],
         "url": "https://atcoder.jp/contests/abc454/tasks/abc454_b",
         "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc454",
-        "difficulty": -472,
+        "difficulty": 45,
         "difficultyColor": {
           "label": "灰",
-          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "colorClass": "text-neutral-500 dark:text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
           "hex": "#808080"
         },
         "aiReview": {
@@ -1666,6 +1666,13 @@
         "content": "典型の問題メモです。",
         "mentions": [],
         "referencedBy": [],
+        "url": "https://atcoder.jp/contests/典型/tasks/典型_002",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/典型",
+        "difficultyColor": {
+          "label": "Unrated",
+          "colorClass": "text-muted-foreground border-border bg-muted/30",
+          "hex": "#888888"
+        },
         "aiReview": {
           "complexity": "O(N * 2^N)",
           "rating": "A",
@@ -1689,6 +1696,13 @@
         "content": "典型の問題メモです。",
         "mentions": [],
         "referencedBy": [],
+        "url": "https://atcoder.jp/contests/典型/tasks/典型_004",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/典型",
+        "difficultyColor": {
+          "label": "Unrated",
+          "colorClass": "text-muted-foreground border-border bg-muted/30",
+          "hex": "#888888"
+        },
         "aiReview": {
           "complexity": "O(H \\times W)",
           "rating": "S",
@@ -1712,6 +1726,13 @@
         "content": "典型の問題メモです。",
         "mentions": [],
         "referencedBy": [],
+        "url": "https://atcoder.jp/contests/典型/tasks/典型_007",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/典型",
+        "difficultyColor": {
+          "label": "Unrated",
+          "colorClass": "text-muted-foreground border-border bg-muted/30",
+          "hex": "#888888"
+        },
         "aiReview": {
           "complexity": "O(N log N + Q log N)",
           "rating": "S",
