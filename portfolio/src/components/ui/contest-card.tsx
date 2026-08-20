@@ -57,6 +57,20 @@ function getDiffCircleStyle(difficulty?: number) {
   }
 }
 
+/**
+ * 計算量文字列（例: "O(N log N)"）を KaTeX 数式（例: "$O(N \\log N)$"）に整形
+ */
+export function formatComplexityToTex(complexity?: string) {
+  if (!complexity) return ""
+  let text = complexity.trim()
+  if (text.startsWith("$") && text.endsWith("$")) {
+    return text
+  }
+  // log を \log に置換
+  text = text.replace(/(?<!\\)log/gi, "\\log ")
+  return `$${text}$`
+}
+
 export function ContestCard({ contest }: { contest: Contest }) {
   return (
     <TooltipProvider>
@@ -113,7 +127,7 @@ export function ContestCard({ contest }: { contest: Contest }) {
                     <Markdown>{problem.content}</Markdown>
                   </div>
 
-                  {/* C++コード枠：計算量はシンプルな文字表記 + Separator 区切り */}
+                  {/* C++コード枠：計算量は KaTeX 数式表示 + Separator 区切り */}
                   {problem.codes.length > 0 && (
                     <div className="flex flex-col gap-2 pt-1 border-t border-border/40">
                       {problem.codes.map((codeFile, idx) => {
@@ -122,13 +136,13 @@ export function ContestCard({ contest }: { contest: Contest }) {
                           <React.Fragment key={codeFile.name}>
                             {idx > 0 && <Separator className="my-1 bg-border/40" />}
                             <div className="flex flex-col gap-1.5 py-0.5">
-                              {/* 計算量 (シンプルな文字表示) + #タグ 1 #タグ 2 ... の行 */}
+                              {/* 計算量 (KaTeX 数式レンダリング) + #タグ 1 #タグ 2 ... の行 */}
                               {review && (review.complexity || (review.tags && review.tags.length > 0)) && (
                                 <div className="flex flex-wrap items-center gap-2 text-xs">
                                   {review.complexity && (
-                                    <span className="font-mono font-semibold text-foreground/90 tracking-tight">
-                                      {review.complexity}
-                                    </span>
+                                    <div className="text-sm text-foreground/90 font-medium [&_p]:inline [&_p]:m-0">
+                                      <Markdown>{formatComplexityToTex(review.complexity)}</Markdown>
+                                    </div>
                                   )}
                                   {review.tags?.map((tag) => (
                                     <span
