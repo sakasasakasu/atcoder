@@ -34,6 +34,31 @@ test("getAtCoderUrl / getAtCoderProblemsUrl: 正しい URL を生成する", () 
   assert.equal(getAtCoderProblemsUrl("ABC471"), "https://kenkoooo.com/atcoder/#/table/abc471")
 })
 
+test("enrichContestsWithAtCoderData: flat（典型）セクションには URL や Diff を付与しない", () => {
+  const contests = [
+    {
+      abc: "典型",
+      summary: "テスト",
+      flat: true,
+      problems: [
+        { id: "002", title: "典型 002", codes: [], content: "", mentions: [], referencedBy: [] },
+      ],
+    },
+  ]
+
+  const problemModels = {
+    typical90_002: { difficulty: 100 },
+  }
+
+  enrichContestsWithAtCoderData(contests, problemModels)
+
+  // 典型セクションは AtCoder のコンテストに紐づかないため、壊れた URL を付与してはいけない
+  assert.equal(contests[0].problems[0].url, undefined)
+  assert.equal(contests[0].problems[0].problemsUrl, undefined)
+  assert.equal(contests[0].problems[0].difficulty, undefined)
+  assert.equal(contests[0].problems[0].difficultyColor, undefined)
+})
+
 test("enrichContestsWithAtCoderData: コンテストデータに Diff と URL を正しく統合する", () => {
   const contests = [
     {

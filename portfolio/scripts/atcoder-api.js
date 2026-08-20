@@ -80,6 +80,10 @@ async function fetchProblemModels() {
     const res = await fetch(API_URL)
     if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`)
     const data = await res.json()
+    // problem-models.json は { problemId: { difficulty, ... } } のオブジェクト形式であるべき
+    if (!data || typeof data !== "object" || Array.isArray(data)) {
+      throw new Error("problem-models.json の形式が不正です")
+    }
     fs.writeFileSync(CACHE_FILE, JSON.stringify(data, null, 2), "utf-8")
     return data
   } catch (err) {
@@ -103,6 +107,10 @@ async function fetchProblemModels() {
  */
 function enrichContestsWithAtCoderData(contests, problemModels) {
   for (const contest of contests) {
+    // 典型形式（flat）は AtCoder の特定コンテストに紐づかないため URL / Diff を付与しない
+    // （例: 「典型」セクションの 002.cpp を typical90_002 と安直に扱うと壊れたリンクになる）
+    if (contest.flat) continue
+
     const contestId = contest.abc
     for (const problem of contest.problems) {
       // 公式URL・Problems URL のセット

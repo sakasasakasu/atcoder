@@ -20,7 +20,11 @@ export function ContestCard({ contest }: { contest: Contest }) {
         <div className="flex gap-4 pb-4">
           {contest.problems.map((problem) => {
             const diffColor = problem.difficultyColor
-            const diffLabel = problem.difficulty !== undefined ? `Diff: ${Math.round(problem.difficulty)}` : "Diff: Unrated"
+            // 負の difficulty は「簡単すぎてレート未確定」の目安のため ~ 付きの概算表示にする
+            const diffLabel =
+              problem.difficulty !== undefined
+                ? `Diff: ${problem.difficulty < 0 ? `~${Math.abs(Math.round(problem.difficulty))}` : Math.round(problem.difficulty)}`
+                : "Diff: Unrated"
 
             return (
               <div

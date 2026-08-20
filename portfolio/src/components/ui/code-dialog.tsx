@@ -11,7 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { AiReview } from "@/types/contest"
+import type { AiReview } from "@/types/contest"
 
 /**
  * 評価ランクに応じたバッジカラーを返します
@@ -24,6 +24,8 @@ function getRatingBadgeClass(rating?: string) {
       return "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
     case "B":
       return "bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30"
+    case "C":
+      return "bg-orange-500/15 text-orange-600 dark:text-orange-400 border-orange-500/30"
     default:
       return "bg-secondary text-secondary-foreground"
   }
@@ -67,9 +69,7 @@ export function CodeDialog({
       </DialogTrigger>
       <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="flex items-center justify-between">
-            <span>{label ? `コードを見る: ${label}` : "コードを見る"}</span>
-          </DialogTitle>
+          <DialogTitle>{label ? `コードを見る: ${label}` : "コードを見る"}</DialogTitle>
         </DialogHeader>
 
         {/* AI コードレビューパネル（存在する場合） */}

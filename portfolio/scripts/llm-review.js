@@ -10,8 +10,14 @@ const CACHE_FILE = path.join(CACHE_DIR, "llm-reviews.json")
 const REQUEST_INTERVAL_MS = 4100
 // 200 RPD を遵守するため、1回の実行あたりの最大 API 呼び出し回数
 const MAX_REQUESTS_PER_RUN = 50
+// 一時的なAPIエラー（429 / 5xx / ネットワークエラー）の最大リトライ回数
+const MAX_RETRIES = 3
 
-const MODEL_NAME = "gemini-2.5-flash-lite"
+// 2026年現在、gemini-2.5-flash-lite は新規利用不可のため 3.5 系を使用する
+const MODEL_NAME = "gemini-3.5-flash-lite"
+
+// RESPONSE_SCHEMA を変更した場合は必ずこのバージョンを上げ、旧形式のキャッシュを無効化する
+const CACHE_SCHEMA_VERSION = "v1"
 
 // responseSchema の定義
 const RESPONSE_SCHEMA = {
@@ -45,7 +51,8 @@ function sleep(ms) {
 function computeHash(problem, contestId) {
   const codesStr = problem.codes.map((c) => `${c.name}:${c.code}`).join("\n")
   const contentStr = `${contestId}:${problem.id}:${problem.content}`
-  return crypto.createHash("sha256").update(`${contentStr}\n${codesStr}`).digest("hex")
+  // RESPONSE_SCHEMA の変更で出力形式が変わった場合は CACHE_SCHEMA_VERSION を上げて旧キャッシュを無効化する
+  return crypto.createHash("sha256").update(`${CACHE_SCHEMA_VERSION}\n${contentStr}\n${codesStr}`).digest("hex")
 }
 
 function loadCache() {
@@ -85,21 +92,50 @@ async function callGeminiApi(apiKey, promptText) {
     },
   }
 
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(requestBody),
-  })
+  // 一時的な障害（429 / 5xx / ネットワークエラー）に対して最大 MAX_RETRIES 回リトライする
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    let res
+    try {
+      res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      })
+    } catch (err) {
+      // ネットワークエラー（fetch が throw する場合）はリトライ
+      if (attempt === MAX_RETRIES) throw err
+      console.warn(`[LLM Review] ネットワークエラーのためリトライします (${attempt + 1}/${MAX_RETRIES}):`, err.message)
+      await sleep(REQUEST_INTERVAL_MS * attempt)
+      continue
+    }
 
-  if (!res.ok) {
-    const errText = await res.text()
-    throw new Error(`API response error ${res.status}: ${errText}`)
+    // 429 / 5xx は一時的障害としてリトライ
+    if (res.status === 429 || res.status >= 500) {
+      if (attempt === MAX_RETRIES) {
+        const errText = await res.text()
+        throw new Error(`API response error ${res.status}: ${errText}`)
+      }
+      const retryAfterHeader = res.headers.get("retry-after")
+      const retryAfter = retryAfterHeader ? Number(retryAfterHeader) : NaN
+      const waitMs = Number.isFinite(retryAfter) ? retryAfter * 1000 : REQUEST_INTERVAL_MS * attempt
+      console.warn(
+        `[LLM Review] 一時的なAPIエラー (${res.status}) のため ${Math.ceil(waitMs / 1000)} 秒後にリトライします (${attempt + 1}/${MAX_RETRIES})`
+      )
+      await sleep(waitMs)
+      continue
+    }
+
+    // 4xx は恒久的なエラーなのでリトライしない
+    if (!res.ok) {
+      const errText = await res.text()
+      throw new Error(`API response error ${res.status}: ${errText}`)
+    }
+
+    const data = await res.json()
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text
+    if (!text) throw new Error("API returned empty content")
+    return JSON.parse(text)
   }
-
-  const data = await res.json()
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text
-  if (!text) throw new Error("API returned empty content")
-  return JSON.parse(text)
 }
 
 function buildPrompt(contestId, problem) {
@@ -184,6 +220,7 @@ async function enrichContestsWithLlmReviews(contests) {
 }
 
 module.exports = {
+  callGeminiApi,
   computeHash,
   enrichContestsWithLlmReviews,
 }
