@@ -32,9 +32,9 @@ jobs:
         with:
           path: portfolio/scripts/.cache
           # 保存側は「キャッシュ内容のハッシュ」をキーに付与するため、復元はプレフィックスで最新を取得する
-          key: llm-cache-${{ runner.os }}
+          key: llm-cache-v3-${{ runner.os }}
           restore-keys: |
-            llm-cache-${{ runner.os }}-
+            llm-cache-v3-${{ runner.os }}-
 
       - name: Install dependencies
         run: npm install
@@ -57,11 +57,11 @@ jobs:
 
       # 内容が変わった場合のみ新キーで保存する（同じ内容なら保存せずキャッシュの肥大化を防ぐ）
       - name: Save LLM and AtCoder API Cache
-        if: steps.llm-cache-restore.outputs.cache-matched-key != format('llm-cache-{0}-{1}', runner.os, steps.llm-cache-hash.outputs.hash)
+        if: steps.llm-cache-restore.outputs.cache-matched-key != format('llm-cache-v3-{0}-{1}', runner.os, steps.llm-cache-hash.outputs.hash)
         uses: actions/cache/save@v4
         with:
           path: portfolio/scripts/.cache
-          key: llm-cache-${{ runner.os }}-${{ steps.llm-cache-hash.outputs.hash }}
+          key: llm-cache-v3-${{ runner.os }}-${{ steps.llm-cache-hash.outputs.hash }}
 
       # generate は既に上のステップで実行済みのため、prebuild の再生成をスキップする
       - name: Build Next.js

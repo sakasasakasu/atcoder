@@ -49,7 +49,7 @@ loadDotEnv()
 // 15 RPM を遵守するためのウェイト時間 (4.1秒)
 const REQUEST_INTERVAL_MS = 4100
 // 200 RPD を遵守するため、1回の実行あたりの最大 API 呼び出し回数
-const MAX_REQUESTS_PER_RUN = 50
+const MAX_REQUESTS_PER_RUN = 60
 
 const MODEL_NAME = "gemini-3.5-flash-lite"
 const FALLBACK_MODEL_NAME = "gemini-1.5-flash"
