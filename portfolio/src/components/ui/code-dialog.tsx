@@ -21,6 +21,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+} from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 import { AiReview } from "@/types/common"
 import { formatComplexityToTex } from "@/components/ui/contest-card"
