@@ -1,14 +1,17 @@
-import { ExternalLink, Cpu, Sparkles } from "lucide-react"
+"use client"
+
+import * as React from "react"
+import { ExternalLink } from "lucide-react"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { CodeDialog } from "@/components/ui/code-dialog"
 import { MentionTags } from "@/components/ui/mention-tags"
 import { Markdown } from "@/components/ui/markdown"
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
+import { Separator } from "@/components/ui/separator"
 import { Contest } from "@/types/contest"
 
 /**
  * Diff の値から「下から上に水のように色が満ちていく」円のスタイルを生成します
- * 例: Diff 1000 (緑帯の中間) -> 枠線緑 + 下半分(50%)が緑塗りで上半分透明
  */
 function getDiffCircleStyle(difficulty?: number) {
   if (difficulty === undefined || difficulty === null) {
@@ -54,6 +57,20 @@ function getDiffCircleStyle(difficulty?: number) {
   }
 }
 
+/**
+ * 計算量文字列（例: "O(N log N)"）を KaTeX 数式（例: "$O(N \\log N)$"）に整形
+ */
+export function formatComplexityToTex(complexity?: string) {
+  if (!complexity) return ""
+  let text = complexity.trim()
+  if (text.startsWith("$") && text.endsWith("$")) {
+    return text
+  }
+  // log を \log に置換
+  text = text.replace(/(?<!\\)log/gi, "\\log ")
+  return `$${text}$`
+}
+
 export function ContestCard({ contest }: { contest: Contest }) {
   return (
     <TooltipProvider>
@@ -73,10 +90,9 @@ export function ContestCard({ contest }: { contest: Contest }) {
                   id={`${contest.abc}-${problem.id}`}
                   className="bg-card flex w-[350px] shrink-0 flex-col space-y-3 rounded-xl border border-border/60 p-4 whitespace-normal scroll-mt-28 shadow-2xs transition-all hover:border-border hover:shadow-xs"
                 >
-                  {/* 問題タイトル + 難易度サークル (左側・大きめ・下から水のように埋まる) + 外部リンク */}
+                  {/* 問題タイトル + 難易度サークル (左側・水深表現) + 外部リンク */}
                   <div className="flex items-center justify-between border-b border-border/50 pb-2.5">
                     <div className="flex items-center gap-2.5">
-                      {/* タイトルの左側に、下から水位が満ちる円 */}
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <span
@@ -111,51 +127,42 @@ export function ContestCard({ contest }: { contest: Contest }) {
                     <Markdown>{problem.content}</Markdown>
                   </div>
 
-                  {/* C++コードおよびコードごとの AI メタデータ & AI サマリー */}
+                  {/* C++コード枠：計算量は小ぶりで上品な KaTeX 数式表示 (text-[11px]) + Separator 区切り */}
                   {problem.codes.length > 0 && (
-                    <div className="flex flex-col gap-3.5 pt-1 border-t border-border/40">
-                      {problem.codes.map((codeFile) => {
+                    <div className="flex flex-col gap-2 pt-1 border-t border-border/40">
+                      {problem.codes.map((codeFile, idx) => {
                         const review = codeFile.aiReview
                         return (
-                          <div
-                            key={codeFile.name}
-                            className="flex flex-col gap-2 rounded-lg border border-indigo-500/15 bg-indigo-500/5 p-2.5"
-                          >
-                            {/* 計算量 + #タグ 1 #タグ 2 ... の行 */}
-                            {review && (review.complexity || (review.tags && review.tags.length > 0)) && (
-                              <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
-                                {review.complexity && (
-                                  <span className="inline-flex items-center gap-1 rounded bg-background px-1.5 py-0.5 font-mono text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shadow-2xs">
-                                    <Cpu className="h-3 w-3" />
-                                    {review.complexity}
-                                  </span>
-                                )}
-                                {review.tags?.map((tag) => (
-                                  <span
-                                    key={tag}
-                                    className="inline-flex items-center rounded border border-border/40 bg-background/80 px-1.5 py-0.5 text-[10px] text-muted-foreground"
-                                  >
-                                    #{tag}
-                                  </span>
-                                ))}
-                              </div>
-                            )}
+                          <React.Fragment key={codeFile.name}>
+                            {idx > 0 && <Separator className="my-1 bg-border/40" />}
+                            <div className="flex flex-col gap-1.5 py-0.5">
+                              {/* 計算量 (小ぶりな 11px KaTeX レンダリング) + #タグ 1 #タグ 2 ... の行 */}
+                              {review && (review.complexity || (review.tags && review.tags.length > 0)) && (
+                                <div className="flex flex-wrap items-center gap-2 text-xs">
+                                  {review.complexity && (
+                                    <div className="text-[11px] text-foreground/90 font-medium [&_p]:inline [&_p]:m-0">
+                                      <Markdown>{formatComplexityToTex(review.complexity)}</Markdown>
+                                    </div>
+                                  )}
+                                  {review.tags?.map((tag) => (
+                                    <span
+                                      key={tag}
+                                      className="inline-flex items-center rounded border border-border/40 bg-background/80 px-1.5 py-0.5 text-[10px] text-muted-foreground"
+                                    >
+                                      #{tag}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
 
-                            {/* AI サマリー解説文 (カード上に表示) */}
-                            {review?.summary && (
-                              <div className="flex items-start gap-1.5 text-xs text-muted-foreground leading-relaxed bg-background/50 p-2 rounded border border-indigo-500/10">
-                                <Sparkles className="h-3.5 w-3.5 shrink-0 text-indigo-500 mt-0.5" />
-                                <span>{review.summary}</span>
-                              </div>
-                            )}
-
-                            {/* ＜＞ コードを見る（A） ボタン */}
-                            <CodeDialog
-                              code={codeFile.code}
-                              label={codeFile.name}
-                              aiReview={review}
-                            />
-                          </div>
+                              {/* ＜＞ コードを見る（A） ボタン */}
+                              <CodeDialog
+                                code={codeFile.code}
+                                label={codeFile.name}
+                                aiReview={review}
+                              />
+                            </div>
+                          </React.Fragment>
                         )
                       })}
                     </div>

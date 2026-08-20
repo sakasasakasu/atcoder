@@ -1,18 +1,10 @@
 "use client"
 
 import * as React from "react"
-import {
-  CheckIcon,
-  CodeIcon,
-  CopyIcon,
-  Sparkles,
-  Cpu,
-  Award,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react"
+import { Code as CodeIcon, Sparkles, Award, ChevronDown, ChevronUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Code } from "@/components/ui/code"
+import { Markdown } from "@/components/ui/markdown"
 import {
   Dialog,
   DialogContent,
@@ -21,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { AiReview } from "@/types/common"
+import { formatComplexityToTex } from "@/components/ui/contest-card"
 
 function getRatingStyle(rating?: string) {
   switch (rating?.toUpperCase()) {
@@ -76,10 +69,9 @@ function AiInspectorPanel({ aiReview }: { aiReview: AiReview }) {
             </span>
           )}
           {aiReview.complexity && (
-            <span className="inline-flex items-center gap-1.5 rounded-md border border-border/60 bg-background/80 px-2 py-0.5 font-mono text-[11px] font-semibold text-foreground shadow-2xs">
-              <Cpu className="h-3 w-3 text-indigo-500" />
-              {aiReview.complexity}
-            </span>
+            <div className="inline-flex items-center rounded-md border border-border/60 bg-background/80 px-2 py-0.5 text-[11px] font-medium text-foreground [&_p]:inline [&_p]:m-0">
+              <Markdown>{formatComplexityToTex(aiReview.complexity)}</Markdown>
+            </div>
           )}
           <Button variant="ghost" size="icon" className="h-6 w-6 p-0 text-muted-foreground">
             {isOpen ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
@@ -103,7 +95,7 @@ function AiInspectorPanel({ aiReview }: { aiReview: AiReview }) {
               {aiReview.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="inline-flex items-center rounded-md border border-indigo-500/20 bg-indigo-500/10 px-2 py-0.5 text-[11px] font-medium text-indigo-600 dark:text-indigo-300"
+                  className="inline-flex items-center rounded-md border border-indigo-500/20 bg-indigo-500/10 px-2 py-0.5 text-[10px] font-medium text-indigo-600 dark:text-indigo-300"
                 >
                   #{tag}
                 </span>
@@ -118,59 +110,39 @@ function AiInspectorPanel({ aiReview }: { aiReview: AiReview }) {
 
 export function CodeDialog({
   code,
-  language = "cpp",
   label,
   aiReview,
 }: {
   code: string
-  language?: string
-  label?: string
+  label: string
   aiReview?: AiReview
 }) {
-  const [copied, setCopied] = React.useState(false)
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(code)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
-    } catch {
-      // クリップボード非対応時
-    }
-  }
-
-  const buttonLabel = label ? `コードを見る（${label}）` : "コードを見る"
+  const [open, setOpen] = React.useState(false)
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="w-full justify-center">
+        <Button variant="outline" size="sm" className="w-full flex items-center justify-center gap-2 text-xs">
           <CodeIcon className="h-4 w-4" />
-          {buttonLabel}
+          <span>コードを見る ({label})</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-3xl">
-        <DialogHeader>
-          <DialogTitle className="text-base font-semibold">
-            {label ? `コード解析: ${label}` : "コード解析"}
+      <DialogContent className="max-w-4xl max-h-[85vh] flex flex-col p-6">
+        <DialogHeader className="flex flex-row items-center justify-between pb-2 border-b">
+          <DialogTitle className="text-lg font-bold flex items-center gap-2">
+            <CodeIcon className="h-5 w-5 text-muted-foreground" />
+            <span>解答コード: {label}.cpp</span>
           </DialogTitle>
         </DialogHeader>
 
-        {aiReview && <AiInspectorPanel aiReview={aiReview} />}
+        <div className="flex-1 overflow-y-auto space-y-4 pt-4 pr-1">
+          {/* AI レビューパネル (レビュー情報が存在する場合に表示) */}
+          {aiReview && <AiInspectorPanel aiReview={aiReview} />}
 
-        <div className="relative min-w-0">
-          <div className="max-h-[65vh] overflow-auto rounded-lg border border-border/50">
-            <Code code={code} language={language} />
+          {/* C++ ソースコード */}
+          <div className="rounded-lg border overflow-hidden">
+            <Code code={code} />
           </div>
-          <Button
-            variant="secondary"
-            size="icon-sm"
-            onClick={handleCopy}
-            aria-label="コードをコピー"
-            className="bg-background/90 hover:bg-background absolute top-2.5 right-2.5 shadow-sm backdrop-blur-md"
-          >
-            {copied ? <CheckIcon className="h-4 w-4 text-emerald-500" /> : <CopyIcon className="h-4 w-4" />}
-          </Button>
         </div>
       </DialogContent>
     </Dialog>
