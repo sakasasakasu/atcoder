@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ExternalLink, Cpu } from "lucide-react"
+import { ExternalLink } from "lucide-react"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { CodeDialog } from "@/components/ui/code-dialog"
 import { MentionTags } from "@/components/ui/mention-tags"
@@ -113,7 +113,7 @@ export function ContestCard({ contest }: { contest: Contest }) {
                     <Markdown>{problem.content}</Markdown>
                   </div>
 
-                  {/* C++コード枠：shadcn/ui Separator でスマートに区切る構造 */}
+                  {/* C++コード枠：計算量はシンプルな文字表記 + Separator 区切り */}
                   {problem.codes.length > 0 && (
                     <div className="flex flex-col gap-2 pt-1 border-t border-border/40">
                       {problem.codes.map((codeFile, idx) => {
@@ -122,12 +122,11 @@ export function ContestCard({ contest }: { contest: Contest }) {
                           <React.Fragment key={codeFile.name}>
                             {idx > 0 && <Separator className="my-1 bg-border/40" />}
                             <div className="flex flex-col gap-1.5 py-0.5">
-                              {/* 計算量 + #タグ 1 #タグ 2 ... の行 */}
+                              {/* 計算量 (シンプルな文字表示) + #タグ 1 #タグ 2 ... の行 */}
                               {review && (review.complexity || (review.tags && review.tags.length > 0)) && (
-                                <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
+                                <div className="flex flex-wrap items-center gap-2 text-xs">
                                   {review.complexity && (
-                                    <span className="inline-flex items-center gap-1 rounded bg-background px-1.5 py-0.5 font-mono text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shadow-2xs">
-                                      <Cpu className="h-3 w-3" />
+                                    <span className="font-mono font-semibold text-foreground/90 tracking-tight">
                                       {review.complexity}
                                     </span>
                                   )}
