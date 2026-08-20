@@ -1,12 +1,5 @@
 import { CodeFile, MentionRef } from "./common"
 
-export interface AiReview {
-  complexity: string
-  rating: string
-  summary: string
-  tags: string[]
-}
-
 export interface DifficultyColor {
   label: string
   colorClass: string
@@ -31,8 +24,6 @@ export interface Problem {
   url?: string
   /** AtCoder Problems コンテストページ URL */
   problemsUrl?: string
-  /** LLM (Gemini) による自動コードレビュー・タグ評価 */
-  aiReview?: AiReview
 }
 
 export interface Contest {

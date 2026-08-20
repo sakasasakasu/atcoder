@@ -1,101 +1,175 @@
-import { ExternalLink, Cpu } from "lucide-react"
+import { ExternalLink, Cpu, Sparkles } from "lucide-react"
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { CodeDialog } from "@/components/ui/code-dialog"
 import { MentionTags } from "@/components/ui/mention-tags"
 import { Markdown } from "@/components/ui/markdown"
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { Contest } from "@/types/contest"
+
+/**
+ * Diff の値から「下から上に水のように色が満ちていく」円のスタイルを生成します
+ * 例: Diff 1000 (緑帯の中間) -> 枠線緑 + 下半分(50%)が緑塗りで上半分透明
+ */
+function getDiffCircleStyle(difficulty?: number) {
+  if (difficulty === undefined || difficulty === null) {
+    return {
+      style: {
+        borderColor: "#888888",
+        background: "transparent",
+      },
+      label: "Unrated",
+    }
+  }
+
+  const val = Math.max(0, Math.round(difficulty))
+  const rates = [
+    { min: 0, max: 400, color: "#808080" },      // 灰
+    { min: 400, max: 800, color: "#804000" },    // 茶
+    { min: 800, max: 1200, color: "#008000" },   // 緑
+    { min: 1200, max: 1600, color: "#00C0C0" },  // 水
+    { min: 1600, max: 2000, color: "#0000FF" },  // 青
+    { min: 2000, max: 2400, color: "#C0C000" },  // 黄
+    { min: 2400, max: 2800, color: "#FF8000" },  // 橙
+  ]
+
+  let color = "#FF0000" // 赤 (2800+)
+  let pct = 100
+
+  if (val < 2800) {
+    for (const r of rates) {
+      if (val >= r.min && val < r.max) {
+        color = r.color
+        pct = Math.max(0, Math.min(100, Math.round(((val - r.min) / (r.max - r.min)) * 100)))
+        break
+      }
+    }
+  }
+
+  return {
+    style: {
+      borderColor: color,
+      background: `linear-gradient(to top, ${color} 0%, ${color} ${pct}%, transparent ${pct}%, transparent 100%)`,
+    },
+    label: `Difficulty: ${val}`,
+  }
+}
 
 export function ContestCard({ contest }: { contest: Contest }) {
   return (
-    <div className="w-full overflow-hidden p-4">
-      <h2 className="mb-2 text-xl font-bold">{contest.abc}</h2>
-      <p className="text-muted-foreground mb-4 text-sm">{contest.summary}</p>
-      {/* 問題 A, B, C... を横に並べるエリア */}
-      <ScrollArea className="h-full w-full whitespace-nowrap">
-        <div className="flex gap-4 pb-2">
-          {contest.problems.map((problem) => {
-            const diffColor = problem.difficultyColor
-            const diffText = problem.difficulty !== undefined ? `Diff ${problem.difficulty}` : "Diff -"
+    <TooltipProvider>
+      <div className="w-full overflow-hidden p-4">
+        <h2 className="mb-2 text-xl font-bold">{contest.abc}</h2>
+        <p className="text-muted-foreground mb-4 text-sm">{contest.summary}</p>
 
-            return (
-              <div
-                key={problem.id}
-                id={`${contest.abc}-${problem.id}`}
-                className="bg-card flex w-[350px] shrink-0 flex-col space-y-3 rounded-lg border p-4 whitespace-normal scroll-mt-28"
-              >
-                {/* 問題タイトル + Diff バッジ + 外部リンク */}
-                <div className="flex items-center justify-between border-b pb-2">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-bold">{problem.title}</h3>
-                    {diffColor && (
-                      <span
-                        className={`inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium ${diffColor.colorClass}`}
+        {/* 問題 A, B, C... を横に並べるエリア */}
+        <ScrollArea className="h-full w-full whitespace-nowrap">
+          <div className="flex gap-4 pb-2">
+            {contest.problems.map((problem) => {
+              const diffCircle = getDiffCircleStyle(problem.difficulty)
+
+              return (
+                <div
+                  key={problem.id}
+                  id={`${contest.abc}-${problem.id}`}
+                  className="bg-card flex w-[350px] shrink-0 flex-col space-y-3 rounded-xl border border-border/60 p-4 whitespace-normal scroll-mt-28 shadow-2xs transition-all hover:border-border hover:shadow-xs"
+                >
+                  {/* 問題タイトル + 難易度サークル (左側・大きめ・下から水のように埋まる) + 外部リンク */}
+                  <div className="flex items-center justify-between border-b border-border/50 pb-2.5">
+                    <div className="flex items-center gap-2.5">
+                      {/* タイトルの左側に、下から水位が満ちる円 */}
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span
+                            className="size-5 shrink-0 rounded-full border-2 shadow-2xs transition-transform hover:scale-110 cursor-help"
+                            style={diffCircle.style}
+                            aria-label={diffCircle.label}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent side="top">
+                          <p className="font-semibold text-xs">{diffCircle.label}</p>
+                        </TooltipContent>
+                      </Tooltip>
+
+                      <h3 className="text-lg font-bold tracking-tight">{problem.title}</h3>
+                    </div>
+
+                    {problem.url && (
+                      <a
+                        href={problem.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-muted-foreground hover:text-foreground transition-colors p-1"
+                        title="AtCoder公式問題ページを開く"
                       >
-                        {diffText}
-                      </span>
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
                     )}
                   </div>
 
-                  {problem.url && (
-                    <a
-                      href={problem.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-muted-foreground hover:text-foreground transition-colors p-1"
-                      title="AtCoder公式問題ページを開く"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </a>
+                  {/* 感想・メモ */}
+                  <div className="prose text-muted-foreground h-[200px] overflow-y-auto text-sm leading-relaxed">
+                    <Markdown>{problem.content}</Markdown>
+                  </div>
+
+                  {/* C++コードおよびコードごとの AI メタデータ & AI サマリー */}
+                  {problem.codes.length > 0 && (
+                    <div className="flex flex-col gap-3.5 pt-1 border-t border-border/40">
+                      {problem.codes.map((codeFile) => {
+                        const review = codeFile.aiReview
+                        return (
+                          <div
+                            key={codeFile.name}
+                            className="flex flex-col gap-2 rounded-lg border border-indigo-500/15 bg-indigo-500/5 p-2.5"
+                          >
+                            {/* 計算量 + #タグ 1 #タグ 2 ... の行 */}
+                            {review && (review.complexity || (review.tags && review.tags.length > 0)) && (
+                              <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
+                                {review.complexity && (
+                                  <span className="inline-flex items-center gap-1 rounded bg-background px-1.5 py-0.5 font-mono text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 shadow-2xs">
+                                    <Cpu className="h-3 w-3" />
+                                    {review.complexity}
+                                  </span>
+                                )}
+                                {review.tags?.map((tag) => (
+                                  <span
+                                    key={tag}
+                                    className="inline-flex items-center rounded border border-border/40 bg-background/80 px-1.5 py-0.5 text-[10px] text-muted-foreground"
+                                  >
+                                    #{tag}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* AI サマリー解説文 (カード上に表示) */}
+                            {review?.summary && (
+                              <div className="flex items-start gap-1.5 text-xs text-muted-foreground leading-relaxed bg-background/50 p-2 rounded border border-indigo-500/10">
+                                <Sparkles className="h-3.5 w-3.5 shrink-0 text-indigo-500 mt-0.5" />
+                                <span>{review.summary}</span>
+                              </div>
+                            )}
+
+                            {/* ＜＞ コードを見る（A） ボタン */}
+                            <CodeDialog
+                              code={codeFile.code}
+                              label={codeFile.name}
+                              aiReview={review}
+                            />
+                          </div>
+                        )
+                      })}
+                    </div>
                   )}
+
+                  {/* 解法から言及されたタグ */}
+                  <MentionTags refs={problem.referencedBy} label="解法" />
                 </div>
-
-                {/* 感想・メモ (元のサイズ固定) */}
-                <div className="prose text-muted-foreground h-[200px] overflow-y-auto text-sm">
-                  <Markdown>{problem.content}</Markdown>
-                </div>
-
-                {/* AI メタデータ (計算量・タグ) */}
-                {problem.aiReview && (
-                  <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
-                    {problem.aiReview.complexity && (
-                      <span className="inline-flex items-center gap-1 rounded bg-secondary px-1.5 py-0.5 font-mono text-secondary-foreground">
-                        <Cpu className="h-3 w-3" />
-                        {problem.aiReview.complexity}
-                      </span>
-                    )}
-                    {problem.aiReview.tags?.map((tag) => (
-                      <span
-                        key={tag}
-                        className="inline-flex items-center rounded border border-border bg-muted/40 px-1.5 py-0.5 text-muted-foreground"
-                      >
-                        #{tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                {/* C++コード（あれば） */}
-                {problem.codes.length > 0 && (
-                  <div className="flex flex-col gap-2">
-                    {problem.codes.map((codeFile) => (
-                      <CodeDialog
-                        key={codeFile.name}
-                        code={codeFile.code}
-                        label={codeFile.name}
-                        aiReview={problem.aiReview}
-                      />
-                    ))}
-                  </div>
-                )}
-
-                {/* 解法から言及されたタグ */}
-                <MentionTags refs={problem.referencedBy} label="解法" />
-              </div>
-            )
-          })}
-        </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
-    </div>
+              )
+            })}
+          </div>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+      </div>
+    </TooltipProvider>
   )
 }

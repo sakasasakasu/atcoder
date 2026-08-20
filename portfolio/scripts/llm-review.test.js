@@ -1,83 +1,93 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const test = require("node:test")
 const assert = require("node:assert/strict")
-const { callGeminiApi, computeHash, enrichContestsWithLlmReviews } = require("./llm-review")
+const { computeHash, enrichContestsWithLlmReviews, callGeminiApi } = require("./llm-review")
 
-test("computeHash: 問題の内容から確定的な SHA-256 ハッシュを計算する", () => {
-  const problem1 = {
-    id: "A",
-    title: "A問題",
-    content: "AC",
-    codes: [{ name: "A", code: "int main() {}" }],
-  }
+test("computeHash: コードファイル単位で確定的な SHA-256 ハッシュを計算する", () => {
+  const problem = { id: "A", title: "A問題", content: "AC" }
+  const codeFile1 = { name: "A", code: "int main() {}" }
+  const codeFile2 = { name: "A1", code: "int main() {}" }
 
-  const problem2 = {
-    id: "A",
-    title: "A問題",
-    content: "AC",
-    codes: [{ name: "A", code: "int main() {}" }],
-  }
-
-  const problemDifferent = {
-    id: "A",
-    title: "A問題",
-    content: "WA",
-    codes: [{ name: "A", code: "int main() {}" }],
-  }
-
-  const hash1 = computeHash(problem1, "ABC471")
-  const hash2 = computeHash(problem2, "ABC471")
-  const hashDiff = computeHash(problemDifferent, "ABC471")
+  const hash1 = computeHash(problem, codeFile1, "ABC471")
+  const hash2 = computeHash(problem, codeFile1, "ABC471")
+  const hashDiffCode = computeHash(problem, codeFile2, "ABC471")
 
   assert.equal(hash1, hash2)
-  assert.notEqual(hash1, hashDiff)
+  assert.notEqual(hash1, hashDiffCode)
 })
 
 test("callGeminiApi: 429 一時エラー後はリトライして成功する", async () => {
+  const originalFetch = global.fetch
   let callCount = 0
-  test.mock.method(globalThis, "fetch", async () => {
+
+  global.fetch = async () => {
     callCount++
     if (callCount === 1) {
-      // retry-after: 0 により待機時間をゼロにしてテストを高速化する
       return {
         ok: false,
         status: 429,
-        headers: new Headers({ "retry-after": "0" }),
-        text: async () => "Too Many Requests",
+        text: async () => "Rate limit exceeded",
       }
     }
     return {
       ok: true,
       status: 200,
-      headers: new Headers(),
       json: async () => ({
-        candidates: [{ content: { parts: [{ text: JSON.stringify({ complexity: "O(N)", rating: "A", summary: "テスト", tags: ["greedy"] }) }] } }],
+        candidates: [
+          {
+            content: {
+              parts: [
+                {
+                  text: JSON.stringify({
+                    complexity: "O(1)",
+                    rating: "A",
+                    summary: "テスト",
+                    tags: ["テスト"],
+                  }),
+                },
+              ],
+            },
+          },
+        ],
       }),
     }
-  })
+  }
 
   try {
-    const result = await callGeminiApi("test-key", "prompt")
-    assert.deepEqual(result, { complexity: "O(N)", rating: "A", summary: "テスト", tags: ["greedy"] })
+    const result = await callGeminiApi("fake-key", "prompt text", 2)
+    assert.equal(result.complexity, "O(1)")
     assert.equal(callCount, 2)
   } finally {
-    test.mock.restoreAll()
+    global.fetch = originalFetch
   }
 })
 
 test("callGeminiApi: 恒久的なエラー（400）はリトライしない", async () => {
-  const fetchMock = test.mock.method(globalThis, "fetch", async () => ({
-    ok: false,
-    status: 400,
-    headers: new Headers(),
-    text: async () => "Bad Request",
-  }))
+  const originalFetch = global.fetch
+  let callCount = 0
+
+  global.fetch = async () => {
+    callCount++
+    return {
+      ok: false,
+      status: 400,
+      text: async () => "Bad Request",
+    }
+  }
 
   try {
-    await assert.rejects(callGeminiApi("test-key", "prompt"), /API response error 400/)
-    assert.equal(fetchMock.mock.calls.length, 1)
+    await assert.rejects(
+      async () => {
+        await callGeminiApi("fake-key", "prompt text", 3)
+      },
+      (err) => {
+        assert.match(err.message, /API response error 400/)
+        return true
+      }
+    )
+    assert.equal(callCount, 1)
   } finally {
-    test.mock.restoreAll()
+    global.fetch = originalFetch
   }
 })
 
@@ -105,7 +115,6 @@ test("enrichContestsWithLlmReviews: APIキーが無い場合はクラッシュ�
 
   try {
     await enrichContestsWithLlmReviews(contests)
-    // エラーが投げられずに完了すれば合格
     assert.ok(true)
   } finally {
     if (oldApiKey) process.env.GEMINI_API_KEY = oldApiKey

@@ -10,14 +10,9 @@ const CACHE_FILE = path.join(CACHE_DIR, "llm-reviews.json")
 const REQUEST_INTERVAL_MS = 4100
 // 200 RPD を遵守するため、1回の実行あたりの最大 API 呼び出し回数
 const MAX_REQUESTS_PER_RUN = 50
-// 一時的なAPIエラー（429 / 5xx / ネットワークエラー）の最大リトライ回数
-const MAX_RETRIES = 3
 
-// 2026年現在、gemini-2.5-flash-lite は新規利用不可のため 3.5 系を使用する
-const MODEL_NAME = "gemini-3.5-flash-lite"
-
-// RESPONSE_SCHEMA を変更した場合は必ずこのバージョンを上げ、旧形式のキャッシュを無効化する
-const CACHE_SCHEMA_VERSION = "v1"
+const MODEL_NAME = "gemini-2.5-flash-lite"
+const CACHE_SCHEMA_VERSION = "v2"
 
 // responseSchema の定義
 const RESPONSE_SCHEMA = {
@@ -48,11 +43,13 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-function computeHash(problem, contestId) {
-  const codesStr = problem.codes.map((c) => `${c.name}:${c.code}`).join("\n")
+/**
+ * コード単位で SHA-256 ハッシュを計算します
+ */
+function computeHash(problem, codeFile, contestId) {
+  const codeContent = `${codeFile.name}:${codeFile.code}`
   const contentStr = `${contestId}:${problem.id}:${problem.content}`
-  // RESPONSE_SCHEMA の変更で出力形式が変わった場合は CACHE_SCHEMA_VERSION を上げて旧キャッシュを無効化する
-  return crypto.createHash("sha256").update(`${CACHE_SCHEMA_VERSION}\n${contentStr}\n${codesStr}`).digest("hex")
+  return crypto.createHash("sha256").update(`${CACHE_SCHEMA_VERSION}:${contentStr}\n${codeContent}`).digest("hex")
 }
 
 function loadCache() {
@@ -61,7 +58,10 @@ function loadCache() {
   }
   if (fs.existsSync(CACHE_FILE)) {
     try {
-      return JSON.parse(fs.readFileSync(CACHE_FILE, "utf-8"))
+      const data = JSON.parse(fs.readFileSync(CACHE_FILE, "utf-8"))
+      if (data && data.version === CACHE_SCHEMA_VERSION && data.items) {
+        return data.items
+      }
     } catch (e) {
       console.warn("LLM レビューキャッシュの読み込みに失敗しました:", e.message)
     }
@@ -69,14 +69,18 @@ function loadCache() {
   return {}
 }
 
-function saveCache(cache) {
+function saveCache(cacheItems) {
   if (!fs.existsSync(CACHE_DIR)) {
     fs.mkdirSync(CACHE_DIR, { recursive: true })
   }
-  fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2), "utf-8")
+  const payload = {
+    version: CACHE_SCHEMA_VERSION,
+    items: cacheItems,
+  }
+  fs.writeFileSync(CACHE_FILE, JSON.stringify(payload, null, 2), "utf-8")
 }
 
-async function callGeminiApi(apiKey, promptText) {
+async function callGeminiApi(apiKey, promptText, retries = 3) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`
 
   const requestBody = {
@@ -92,8 +96,7 @@ async function callGeminiApi(apiKey, promptText) {
     },
   }
 
-  // 一時的な障害（429 / 5xx / ネットワークエラー）に対して最大 MAX_RETRIES 回リトライする
-  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
     let res
     try {
       res = await fetch(url, {
@@ -102,32 +105,18 @@ async function callGeminiApi(apiKey, promptText) {
         body: JSON.stringify(requestBody),
       })
     } catch (err) {
-      // ネットワークエラー（fetch が throw する場合）はリトライ
-      if (attempt === MAX_RETRIES) throw err
-      console.warn(`[LLM Review] ネットワークエラーのためリトライします (${attempt + 1}/${MAX_RETRIES}):`, err.message)
-      await sleep(REQUEST_INTERVAL_MS * attempt)
+      if (attempt === retries) throw err
+      await sleep(2000)
       continue
     }
 
-    // 429 / 5xx は一時的障害としてリトライ
-    if (res.status === 429 || res.status >= 500) {
-      if (attempt === MAX_RETRIES) {
-        const errText = await res.text()
-        throw new Error(`API response error ${res.status}: ${errText}`)
-      }
-      const retryAfterHeader = res.headers.get("retry-after")
-      const retryAfter = retryAfterHeader ? Number(retryAfterHeader) : NaN
-      const waitMs = Number.isFinite(retryAfter) ? retryAfter * 1000 : REQUEST_INTERVAL_MS * attempt
-      console.warn(
-        `[LLM Review] 一時的なAPIエラー (${res.status}) のため ${Math.ceil(waitMs / 1000)} 秒後にリトライします (${attempt + 1}/${MAX_RETRIES})`
-      )
-      await sleep(waitMs)
-      continue
-    }
-
-    // 4xx は恒久的なエラーなのでリトライしない
     if (!res.ok) {
       const errText = await res.text()
+      if ((res.status === 429 || res.status >= 500) && attempt < retries) {
+        console.warn(`[LLM Review] 一時的なAPIエラー (${res.status}) のため 2 秒後にリトライします (${attempt}/${retries})`)
+        await sleep(2000)
+        continue
+      }
       throw new Error(`API response error ${res.status}: ${errText}`)
     }
 
@@ -138,13 +127,9 @@ async function callGeminiApi(apiKey, promptText) {
   }
 }
 
-function buildPrompt(contestId, problem) {
-  const codeText = problem.codes.length > 0
-    ? problem.codes.map((c) => `// --- ${c.name} ---\n${c.code}`).join("\n\n")
-    : "（コード未添付）"
-
+function buildPrompt(contestId, problem, codeFile) {
   return `あなたは競技プログラミング（AtCoder）の高度な C++ コードレビューアナリストです。
-以下の問題情報と C++ 解答コードを分析し、指定された JSON スキーマに従ってレビューを出力してください。
+以下の問題情報と指定された C++ 解答コード (${codeFile.name}.cpp) を分析し、指定された JSON スキーマに従ってレビューを出力してください。
 
 【コンテスト・問題名】
 ${contestId} ${problem.title}
@@ -152,8 +137,8 @@ ${contestId} ${problem.title}
 【問題・解説メモ】
 ${problem.content}
 
-【解答コード (C++)】
-${codeText}
+【解答コード (${codeFile.name}.cpp)】
+${codeFile.code}
 
 【レビュー要件】
 1. complexity: コードから時間計算量を推定し、計算量表記で出力してください。
@@ -163,13 +148,12 @@ ${codeText}
 }
 
 /**
- * Contests データに対し、Gemini API を使って LLM レビューを追加します。
- * API キーが未設定の場合はスキップし、既存キャッシュがあるものは即時適用します。
+ * Contests データに対し、Gemini API を使って各 CodeFile 単位で LLM レビューを追加します。
  * @param {import("./main").Contest[]} contests 
  */
 async function enrichContestsWithLlmReviews(contests) {
   const apiKey = process.env.GEMINI_API_KEY
-  const cache = loadCache()
+  const cacheItems = loadCache()
 
   let apiCallCount = 0
   let isCacheUpdated = false
@@ -181,41 +165,43 @@ async function enrichContestsWithLlmReviews(contests) {
   for (const contest of contests) {
     const contestId = contest.abc
     for (const problem of contest.problems) {
-      const hash = computeHash(problem, contestId)
+      // コード未添付の問題はスキップ
+      if (!problem.codes || problem.codes.length === 0) continue
 
-      if (cache[hash]) {
-        // キャッシュが存在する場合は即座に割り当て
-        problem.aiReview = cache[hash]
-        continue
-      }
+      for (const codeFile of problem.codes) {
+        const hash = computeHash(problem, codeFile, contestId)
 
-      // API キーがない、または呼び出し上限に達している場合は新規生成スキップ
-      if (!apiKey || apiCallCount >= MAX_REQUESTS_PER_RUN) {
-        continue
-      }
+        if (cacheItems[hash]) {
+          codeFile.aiReview = cacheItems[hash]
+          continue
+        }
 
-      console.log(`[LLM Review] 生成中: ${contestId} ${problem.title} (${apiCallCount + 1}/${MAX_REQUESTS_PER_RUN})...`)
+        if (!apiKey || apiCallCount >= MAX_REQUESTS_PER_RUN) {
+          continue
+        }
 
-      try {
-        const promptText = buildPrompt(contestId, problem)
-        const reviewResult = await callGeminiApi(apiKey, promptText)
+        console.log(`[LLM Review] 生成中: ${contestId} ${problem.title} (${codeFile.name}) (${apiCallCount + 1}/${MAX_REQUESTS_PER_RUN})...`)
 
-        problem.aiReview = reviewResult
-        cache[hash] = reviewResult
-        isCacheUpdated = true
-        apiCallCount++
+        try {
+          const promptText = buildPrompt(contestId, problem, codeFile)
+          const reviewResult = await callGeminiApi(apiKey, promptText)
 
-        // 15 RPM 制限を守るため 4.1秒待機
-        await sleep(REQUEST_INTERVAL_MS)
-      } catch (err) {
-        console.warn(`[LLM Review Warning] ${contestId} ${problem.title} の生成に失敗しました:`, err.message)
+          codeFile.aiReview = reviewResult
+          cacheItems[hash] = reviewResult
+          isCacheUpdated = true
+          apiCallCount++
+
+          await sleep(REQUEST_INTERVAL_MS)
+        } catch (err) {
+          console.warn(`[LLM Review Warning] ${contestId} ${problem.title} (${codeFile.name}) の生成に失敗しました:`, err.message)
+        }
       }
     }
   }
 
   if (isCacheUpdated) {
-    saveCache(cache)
-    console.log(`[LLM Review] ${apiCallCount} 件の新規レビューを完了し、キャッシュを保存しました。`)
+    saveCache(cacheItems)
+    console.log(`[LLM Review] ${apiCallCount} 件のコード単位新規レビューを完了し、キャッシュを保存しました。`)
   }
 }
 
