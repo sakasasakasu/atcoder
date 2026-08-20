@@ -69,7 +69,7 @@ function AiInspectorPanel({ aiReview }: { aiReview: AiReview }) {
             </span>
           )}
           {aiReview.complexity && (
-            <div className="inline-flex items-center rounded-md border border-border/60 bg-background/80 px-2 py-0.5 text-[11px] font-medium text-foreground shadow-2xs [&_p]:inline [&_p]:m-0">
+            <div className="inline-flex items-center rounded-md border border-border/60 bg-background/80 px-2 py-0.5 text-[11px] font-medium text-foreground [&_p]:inline [&_p]:m-0">
               <Markdown>{formatComplexityToTex(aiReview.complexity)}</Markdown>
             </div>
           )}
