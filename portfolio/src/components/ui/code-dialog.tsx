@@ -243,7 +243,7 @@ export function CodeDialog({
       <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-base font-semibold">
-            {label ? `コード解析: ${label}` : "コード解析"}
+            {label ? `コードを見る（${label}）` : "コードを見る"}
           </DialogTitle>
         </DialogHeader>
 

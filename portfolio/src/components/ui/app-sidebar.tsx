@@ -25,12 +25,12 @@ export function AppSidebar({ contests }: { contests: Contest[] }) {
   return (
     <SidebarShell
       title="AtCoder精進"
-      footerText="なんかカッコいい文章を書く。"
+      footerText="AIがアドバイスもしてくれる"
       toolbar={
         <div className="px-2 py-2">
           <SidebarInput
             type="search"
-            placeholder="問題・AIタグを検索"
+            placeholder="問題を検索"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />

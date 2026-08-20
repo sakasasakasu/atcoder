@@ -88,7 +88,7 @@ export function ContestCard({ contest }: { contest: Contest }) {
                 <div
                   key={problem.id}
                   id={`${contest.abc}-${problem.id}`}
-                  className="bg-card flex w-[350px] shrink-0 flex-col space-y-3 rounded-xl border border-border/60 p-4 whitespace-normal scroll-mt-28 shadow-2xs transition-all hover:border-border hover:shadow-xs"
+                  className="bg-card flex w-[350px] shrink-0 flex-col space-y-3 rounded-xl border border-border/60 p-4 whitespace-normal scroll-mt-28 transition-all"
                 >
                   {/* 問題タイトル + 難易度サークル (左側・水深表現) + 外部リンク */}
                   <div className="flex items-center justify-between border-b border-border/50 pb-2.5">
@@ -96,7 +96,7 @@ export function ContestCard({ contest }: { contest: Contest }) {
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <span
-                            className="size-5 shrink-0 rounded-full border-2 shadow-2xs transition-transform hover:scale-110 cursor-help"
+                            className="size-5 shrink-0 rounded-full border-2 transition-transform cursor-help"
                             style={diffCircle.style}
                             aria-label={diffCircle.label}
                           />
