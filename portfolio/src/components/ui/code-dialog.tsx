@@ -1,7 +1,15 @@
 "use client"
 
 import * as React from "react"
-import { Code as CodeIcon, Sparkles, Award, ChevronDown, ChevronUp } from "lucide-react"
+import {
+  CheckIcon,
+  Code as CodeIcon,
+  CopyIcon,
+  Sparkles,
+  Award,
+  ChevronDown,
+  ChevronUp,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Code } from "@/components/ui/code"
 import { Markdown } from "@/components/ui/markdown"
@@ -110,39 +118,59 @@ function AiInspectorPanel({ aiReview }: { aiReview: AiReview }) {
 
 export function CodeDialog({
   code,
+  language = "cpp",
   label,
   aiReview,
 }: {
   code: string
-  label: string
+  language?: string
+  label?: string
   aiReview?: AiReview
 }) {
-  const [open, setOpen] = React.useState(false)
+  const [copied, setCopied] = React.useState(false)
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 1500)
+    } catch {
+      // クリップボード非対応時
+    }
+  }
+
+  const buttonLabel = label ? `コードを見る（${label}）` : "コードを見る"
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="w-full flex items-center justify-center gap-2 text-xs">
+        <Button variant="outline" size="sm" className="w-full justify-center">
           <CodeIcon className="h-4 w-4" />
-          <span>コードを見る ({label})</span>
+          {buttonLabel}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-4xl max-h-[85vh] flex flex-col p-6">
-        <DialogHeader className="flex flex-row items-center justify-between pb-2 border-b">
-          <DialogTitle className="text-lg font-bold flex items-center gap-2">
-            <CodeIcon className="h-5 w-5 text-muted-foreground" />
-            <span>解答コード: {label}.cpp</span>
+      <DialogContent className="sm:max-w-3xl">
+        <DialogHeader>
+          <DialogTitle className="text-base font-semibold">
+            {label ? `コード解析: ${label}` : "コード解析"}
           </DialogTitle>
         </DialogHeader>
 
-        <div className="flex-1 overflow-y-auto space-y-4 pt-4 pr-1">
-          {/* AI レビューパネル (レビュー情報が存在する場合に表示) */}
-          {aiReview && <AiInspectorPanel aiReview={aiReview} />}
+        {aiReview && <AiInspectorPanel aiReview={aiReview} />}
 
-          {/* C++ ソースコード */}
-          <div className="rounded-lg border overflow-hidden">
-            <Code code={code} />
+        <div className="relative min-w-0">
+          <div className="max-h-[65vh] overflow-auto rounded-lg border border-border/50">
+            <Code code={code} language={language} />
           </div>
+          <Button
+            variant="secondary"
+            size="icon-sm"
+            onClick={handleCopy}
+            aria-label="コードをコピー"
+            className="bg-background/90 hover:bg-background absolute top-2.5 right-2.5 shadow-sm backdrop-blur-md"
+          >
+            {copied ? <CheckIcon className="h-4 w-4 text-emerald-500" /> : <CopyIcon className="h-4 w-4" />}
+          </Button>
         </div>
       </DialogContent>
     </Dialog>
