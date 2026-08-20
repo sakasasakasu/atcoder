@@ -15,7 +15,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n移項がよくわからず、1WAしてしまった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc471/tasks/abc471_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc471",
+        "difficulty": -817,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -28,7 +36,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n文字列のケースを揃える方法を調べた。\n\n方法は意外と単純だったけど、ぱっと出せるようにしたい。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc471/tasks/abc471_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc471",
+        "difficulty": -451,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "C",
@@ -45,7 +61,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n本を整理する問題を思い出してマイナスとプラスで配列を作り、ソートして内側から読んでいく感じにした。\n\n解説を読むと、もっといい方法があったみたいで。\n\nというか同じ計算を同じレイヤーでやるなら全て変数に切り分けたほうがいい気がした。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc471/tasks/abc471_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc471",
+        "difficulty": 286,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       }
     ]
   },
@@ -65,7 +89,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nなぜかめちゃくちゃ躓いてしまった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc470/tasks/abc470_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc470",
+        "difficulty": -995,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -78,7 +110,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nもっとも多い色を取って、それを総数と比較する。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc470/tasks/abc470_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc470",
+        "difficulty": -649,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "C",
@@ -91,7 +131,15 @@
         ],
         "content": "解説AC\n\n### 思った事\n\nコンテスト中は典型アルゴリズムで計算量を落とすのかと思ったが、実際は賢いデータの持ち方だった。\n\nXORみたい論理和に対する体制が強くなく、面食らってしまったのも敗因。$\\oplus$ みたいな記号に慣れる必要がある。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc470/tasks/abc470_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc470",
+        "difficulty": 1006,
+        "difficultyColor": {
+          "label": "緑",
+          "colorClass": "text-emerald-500 border-emerald-500/30 bg-emerald-500/10",
+          "hex": "#008000"
+        }
       },
       {
         "id": "D",
@@ -104,7 +152,15 @@
         ],
         "content": "解説AC\n\n### 思った事\n\n愚直でよかったってことだった。読めばよかった。\n\nただ、問題文が難しすぎるよ。と思いました。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc470/tasks/abc470_d",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc470",
+        "difficulty": 777,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        }
       }
     ]
   },
@@ -124,7 +180,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nやるだけ",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc469/tasks/abc469_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc469",
+        "difficulty": -1026,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       }
     ]
   },
@@ -144,7 +208,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n$A_i​ < A_i+1 > A_i+2$​ が知らない記号に見えて戸惑ってしまった。\n\n$< x >$ みたいな記号があって、知らない操作をするのかと思った。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc468/tasks/abc468_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc468",
+        "difficulty": -868,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -157,7 +229,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nB問題は愚直に行けることを意識しないといけないなと思った。\n\n愚直以外の方法を考えてちょっとタイムロス",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc468/tasks/abc468_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc468",
+        "difficulty": -388,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "C",
@@ -176,7 +256,15 @@
             "label": "辞書順列挙（配列の並び替え）",
             "href": "/atcoder/solution#辞書順列挙（配列の並び替え）"
           }
-        ]
+        ],
+        "url": "https://atcoder.jp/contests/abc468/tasks/abc468_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc468",
+        "difficulty": 282,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       }
     ]
   },
@@ -196,7 +284,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n割り算だとダメだろうから、掛け算にしないといけなくて。\n\nイライラしますね。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc467/tasks/abc467_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc467",
+        "difficulty": -262,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -209,7 +305,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nA問題より簡単、って、",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc467/tasks/abc467_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc467",
+        "difficulty": -535,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "C",
@@ -222,7 +326,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nこちらも簡単。絵を描いたら分かった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc467/tasks/abc467_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc467",
+        "difficulty": 608,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        }
       },
       {
         "id": "D",
@@ -230,7 +342,15 @@
         "codes": [],
         "content": "WA\n\n### 思った事\n\n数学すぎ。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc467/tasks/abc467_d",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc467",
+        "difficulty": 928,
+        "difficultyColor": {
+          "label": "緑",
+          "colorClass": "text-emerald-500 border-emerald-500/30 bg-emerald-500/10",
+          "hex": "#008000"
+        }
       }
     ]
   },
@@ -250,7 +370,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n特に無い。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc466/tasks/abc466_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc466",
+        "difficulty": -891,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -263,7 +391,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nそういう配列で。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc466/tasks/abc466_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc466",
+        "difficulty": -552,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "C",
@@ -276,7 +412,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nいや！インタラクティブって、何！",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc466/tasks/abc466_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc466",
+        "difficulty": 658,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        }
       }
     ]
   },
@@ -296,7 +440,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n特にいう事は無い。\n\n簡単。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc464/tasks/abc464_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc464",
+        "difficulty": -979,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -309,7 +461,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n配列を直接操作しようとしてみたが、違うな～と。\n\n尺取りっぽく（？）見る部分を減らしていくことに。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc464/tasks/abc464_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc464",
+        "difficulty": -142,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "C",
@@ -317,7 +477,15 @@
         "codes": [],
         "content": "WA\n\n### 思った事\n\n分からなかった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc464/tasks/abc464_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc464",
+        "difficulty": 400,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        }
       }
     ]
   },
@@ -337,7 +505,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n手間取りました。割り算って上手にできないから。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc463/tasks/abc463_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc463",
+        "difficulty": -914,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -350,7 +526,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n見た通り。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc463/tasks/abc463_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc463",
+        "difficulty": -630,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "C",
@@ -363,7 +547,15 @@
         ],
         "content": "WA\n\n### 思った事\n\n分からなかった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc463/tasks/abc463_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc463",
+        "difficulty": 248,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       }
     ]
   },
@@ -383,7 +575,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nそのまま、文字通り実装、簡単♪",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc462/tasks/abc462_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc462",
+        "difficulty": -973,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -396,7 +596,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nそのまま",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc462/tasks/abc462_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc462",
+        "difficulty": -297,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "C",
@@ -409,7 +617,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n良い感じだね。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc462/tasks/abc462_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc462",
+        "difficulty": 282,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       }
     ]
   },
@@ -429,7 +645,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nそのまま、文字通り実装、簡単♪",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc461/tasks/abc461_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc461",
+        "difficulty": -988,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -442,7 +666,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nめちゃくちゃ手間取った\n\n何を思ったか配列Aのi番目をイテレーターとして取って配列Bについて考えて、、、\n\nみたいなことをしてしまい。3ミス。これが無ければ茶パフォでした。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc461/tasks/abc461_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc461",
+        "difficulty": -581,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "C",
@@ -455,7 +687,15 @@
         ],
         "content": "WA\n\n### 思った事\n\n全く分からない。\n\nソートして上から自由に取って、ある程度まで行ったら色数確認して、、、ってやればよさそうなのに。\n\nテストケース通ったのに。。。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc461/tasks/abc461_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc461",
+        "difficulty": 325,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       }
     ]
   },
@@ -475,7 +715,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n覚えていない。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc460/tasks/abc460_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc460",
+        "difficulty": -914,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -488,7 +736,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n覚えていない。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc460/tasks/abc460_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc460",
+        "difficulty": -56,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       }
     ]
   },
@@ -508,7 +764,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n愚直に文字列操作をするべきだったのに。。。\n\nどうしてか1文字ずつ見て、、、という感じに実装してしまった。\n\n次は文字列操作を使います。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc458/tasks/abc458_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc458",
+        "difficulty": -904,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -521,7 +785,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n例外を見て、、、という実装。\n\n恐らくもっときれいに実装できます。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc458/tasks/abc458_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc458",
+        "difficulty": -391,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "C",
@@ -534,7 +806,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nこれはとっても簡単、楽しい。\n\n絵を描いたら2秒でわかった",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc458/tasks/abc458_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc458",
+        "difficulty": -15,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "D",
@@ -547,7 +827,15 @@
         ],
         "content": "CA\n\n### 思った事\n\nあまりにも時間がかかってしまった。\n\nお絵描きをしながら操作を抽象化していったら分かりました。\n\n総評として、お絵描きをしよう。というものがあります。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc458/tasks/abc458_d",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc458",
+        "difficulty": 450,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        }
       }
     ]
   },
@@ -567,7 +855,15 @@
         ],
         "content": "AC",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc457/tasks/abc457_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc457",
+        "difficulty": -972,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -580,7 +876,15 @@
         ],
         "content": "AC\n\n### 思った事\n\nresizeの事を忘れていたので、巨大な配列を用意しようとしてしまった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc457/tasks/abc457_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc457",
+        "difficulty": -478,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "C",
@@ -593,7 +897,15 @@
         ],
         "content": "AC\n\n### 思った事\n\n∑を知らないので焦ってしまった。\n\n問題の理解が難しかったが、出力例１を見て納得。実際に配列を用意するとメモリ制限とかに引っかかるかな？という事で、配列をシミュレーションする事で解決。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc457/tasks/abc457_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc457",
+        "difficulty": 179,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "D",
@@ -606,7 +918,15 @@
         ],
         "content": "WA\n\n### 思った事\n\nちょっと分からなかった。\n\npriority queで少ないものに足していくのかと思いきや二分探索を使う必要があった。\n\n二分探索って知ってるけど使ったことは無かったのでWA",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc457/tasks/abc457_d",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc457",
+        "difficulty": 677,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        }
       }
     ]
   },
@@ -626,7 +946,15 @@
         ],
         "content": "AC",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc456/tasks/abc456_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc456",
+        "difficulty": -945,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -639,7 +967,15 @@
         ],
         "content": "AC\n\n### 思った事\nsetprecision()を使う問題が出てきて嬉しかった。\n\nサイコロの状態管理に面食らってしまい、すこし実装に時間がかかってしまった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc456/tasks/abc456_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc456",
+        "difficulty": -171,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "C",
@@ -652,7 +988,15 @@
         ],
         "content": "AC\n\n### 思った事\n部分文字列！？DPやんけ！ということでDPを使って実装しました。\n\n部分列と見事に勘違いしてしまい、Qiita見ながらやったのでadd()関数が残っています。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc456/tasks/abc456_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc456",
+        "difficulty": 183,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "D",
@@ -665,7 +1009,15 @@
         ],
         "content": "AC\n\n### 思った事\n実はC問題でこっちを実装していたため、同時にクリアという感じ。\n\n部分列はDPで、部分文字列はもっと簡単に引っ張ってこれたらしい。\n\n悔しさ、もあるけど、うれしさも同時に",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc456/tasks/abc456_d",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc456",
+        "difficulty": 586,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        }
       }
     ]
   },
@@ -685,7 +1037,15 @@
         ],
         "content": "AC",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc455/tasks/abc455_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc455",
+        "difficulty": -941,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -698,7 +1058,15 @@
         ],
         "content": "AC",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc455/tasks/abc455_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc455",
+        "difficulty": 96,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "C",
@@ -711,7 +1079,15 @@
         ],
         "content": "解説AC\n\n### 思った事\n\nlong longをllにするやつ、大事だなと思いました。\n\nreduce()って知らない関数だった。dorループで足していた俺って、、、。\n\nたとえばフィボナッチ数列NEOがあったとして、reduce(dp.at(i - 2), dp.at(i))みたいな事が出来るってわけだ。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc455/tasks/abc455_c",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc455",
+        "difficulty": 143,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "D",
@@ -724,7 +1100,15 @@
         ],
         "content": "解説AC\n\n### 思った事\n\n連結リストを知らなかった。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc455/tasks/abc455_d",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc455",
+        "difficulty": 796,
+        "difficultyColor": {
+          "label": "茶",
+          "colorClass": "text-amber-700 dark:text-amber-500 border-amber-600/30 bg-amber-500/10",
+          "hex": "#804000"
+        }
       }
     ]
   },
@@ -744,7 +1128,15 @@
         ],
         "content": "AC",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc454/tasks/abc454_a",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc454",
+        "difficulty": -912,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       },
       {
         "id": "B",
@@ -757,7 +1149,15 @@
         ],
         "content": "解説AC\n\n\n### 思った事",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/abc454/tasks/abc454_b",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/abc454",
+        "difficulty": -472,
+        "difficultyColor": {
+          "label": "灰",
+          "colorClass": "text-neutral-400 border-neutral-400/30 bg-neutral-500/10",
+          "hex": "#808080"
+        }
       }
     ]
   },
@@ -777,7 +1177,14 @@
         ],
         "content": "典型の問題メモです。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/典型/tasks/典型_002",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/典型",
+        "difficultyColor": {
+          "label": "Unrated",
+          "colorClass": "text-muted-foreground border-border bg-muted/30",
+          "hex": "#888888"
+        }
       },
       {
         "id": "004",
@@ -790,7 +1197,14 @@
         ],
         "content": "典型の問題メモです。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/典型/tasks/典型_004",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/典型",
+        "difficultyColor": {
+          "label": "Unrated",
+          "colorClass": "text-muted-foreground border-border bg-muted/30",
+          "hex": "#888888"
+        }
       },
       {
         "id": "007",
@@ -803,7 +1217,14 @@
         ],
         "content": "典型の問題メモです。",
         "mentions": [],
-        "referencedBy": []
+        "referencedBy": [],
+        "url": "https://atcoder.jp/contests/典型/tasks/典型_007",
+        "problemsUrl": "https://kenkoooo.com/atcoder/#/table/典型",
+        "difficultyColor": {
+          "label": "Unrated",
+          "colorClass": "text-muted-foreground border-border bg-muted/30",
+          "hex": "#888888"
+        }
       }
     ]
   }

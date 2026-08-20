@@ -3,6 +3,9 @@ name: Deploy Next.js site to Pages
 on:
   push:
     branches: ["main"] # mainブランチにpushされたら起動
+  workflow_dispatch: # 手動実行
+  schedule:
+    - cron: "0 15 * * *" # 毎日 日本時間 0:00 (15:00 UTC) に自動実行して Diff 確定や未処理 AI レビューを更新
 
 permissions:
   contents: read
@@ -23,11 +26,21 @@ jobs:
           cache: 'npm'
           cache-dependency-path: portfolio/package-lock.json
 
+      - name: Restore/Save LLM and AtCoder API Cache
+        uses: actions/cache@v4
+        with:
+          path: portfolio/scripts/.cache
+          key: llm-cache-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            llm-cache-${{ runner.os }}-
+
       - name: Install dependencies
         run: npm install
         working-directory: ./portfolio
 
       - name: Generate JSON Data
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: node scripts/generate.js
         working-directory: ./portfolio
 

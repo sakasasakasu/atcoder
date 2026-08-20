@@ -1,5 +1,18 @@
 import { CodeFile, MentionRef } from "./common"
 
+export interface AiReview {
+  complexity: string
+  rating: string
+  summary: string
+  tags: string[]
+}
+
+export interface DifficultyColor {
+  label: string
+  colorClass: string
+  hex: string
+}
+
 export interface Problem {
   id: string
   title: string
@@ -9,6 +22,17 @@ export interface Problem {
   mentions: MentionRef[]
   /** この問題を言及している解法（バックリンク＝タグ） */
   referencedBy: MentionRef[]
+
+  /** AtCoder Problems の diff (推定レート) */
+  difficulty?: number
+  /** レートに対応した難易度カラー表現 */
+  difficultyColor?: DifficultyColor
+  /** AtCoder 公式問題ページ URL */
+  url?: string
+  /** AtCoder Problems コンテストページ URL */
+  problemsUrl?: string
+  /** LLM (Gemini) による自動コードレビュー・タグ評価 */
+  aiReview?: AiReview
 }
 
 export interface Contest {
