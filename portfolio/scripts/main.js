@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require("fs")
 const path = require("path")
+const { listSubdirectories, readTextFile, sortNamesAsc, writeJson } = require("./fs-utils")
 
 const README_FILE_NAME = "README.md"
 const CPP_FILE_EXTENSION = ".cpp"
@@ -42,17 +43,6 @@ const PROBLEM_SECTION_SPLIT = /(?=## [A-G]問題)/
  */
 
 /**
- * ディレクトリ直下のサブディレクトリ名を列挙する
- * @param {string} dir
- * @returns {string[]}
- */
-function listSubdirectories(dir) {
-  return fs
-    .readdirSync(dir)
-    .filter((entry) => fs.statSync(path.join(dir, entry)).isDirectory())
-}
-
-/**
  * ディレクトリ直下の .cpp ファイル名を列挙する
  * main.cpp はローカル作業用の一時ファイルのため除外する
  * @param {string} dir
@@ -88,15 +78,6 @@ function listProblemCodeFiles(dir, problemId) {
 }
 
 /**
- * 文字列を日本語ロケールの昇順にソートする
- * @param {string[]} names
- * @returns {string[]}
- */
-function sortNamesAsc(names) {
-  return [...names].sort((a, b) => a.localeCompare(b, "ja"))
-}
-
-/**
  * コンテストディレクトリ名を降順にソートする（例: ABC471 → ABC470）
  * @param {string[]} names
  * @returns {string[]}
@@ -110,17 +91,14 @@ function sortContestDirsDesc(names) {
  * @param {string[]} names
  * @returns {string[]}
  */
-function sortTypicalFilesAsc(names) {
-  return [...names].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
-}
 
 /**
- * ファイルを読み込んで文字列を返す
- * @param {string} filePath
- * @returns {string}
+ * 典型問題のファイル名を数値昇順にソートする（既存仕様を維持）
+ * @param {string[]} names
+ * @returns {string[]}
  */
-function readTextFile(filePath) {
-  return fs.readFileSync(filePath, "utf-8")
+function sortTypicalFilesAsc(names) {
+  return [...names].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
 }
 
 /**
@@ -247,7 +225,7 @@ function collectProblemsData(baseRoot = path.join(__dirname, "..", "..", "proble
  * @param {string} outputPath
  */
 function writeProblemsJson(results, outputPath) {
-  fs.writeFileSync(outputPath, JSON.stringify(results, null, 2), "utf-8")
+  writeJson(results, outputPath)
 }
 
 if (require.main === module) {

@@ -9,67 +9,8 @@ import { Markdown } from "@/components/ui/markdown"
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 import { Separator } from "@/components/ui/separator"
 import { Contest } from "@/types/contest"
-
-/**
- * Diff の値から「下から上に水のように色が満ちていく」円のスタイルを生成します
- */
-function getDiffCircleStyle(difficulty?: number) {
-  if (difficulty === undefined || difficulty === null) {
-    return {
-      style: {
-        borderColor: "#888888",
-        background: "transparent",
-      },
-      label: "Unrated",
-    }
-  }
-
-  const val = Math.max(0, Math.round(difficulty))
-  const rates = [
-    { min: 0, max: 400, color: "#808080" },      // 灰
-    { min: 400, max: 800, color: "#804000" },    // 茶
-    { min: 800, max: 1200, color: "#008000" },   // 緑
-    { min: 1200, max: 1600, color: "#00C0C0" },  // 水
-    { min: 1600, max: 2000, color: "#0000FF" },  // 青
-    { min: 2000, max: 2400, color: "#C0C000" },  // 黄
-    { min: 2400, max: 2800, color: "#FF8000" },  // 橙
-  ]
-
-  let color = "#FF0000" // 赤 (2800+)
-  let pct = 100
-
-  if (val < 2800) {
-    for (const r of rates) {
-      if (val >= r.min && val < r.max) {
-        color = r.color
-        pct = Math.max(0, Math.min(100, Math.round(((val - r.min) / (r.max - r.min)) * 100)))
-        break
-      }
-    }
-  }
-
-  return {
-    style: {
-      borderColor: color,
-      background: `linear-gradient(to top, ${color} 0%, ${color} ${pct}%, transparent ${pct}%, transparent 100%)`,
-    },
-    label: `Difficulty: ${val}`,
-  }
-}
-
-/**
- * 計算量文字列（例: "O(N log N)"）を KaTeX 数式（例: "$O(N \\log N)$"）に整形
- */
-export function formatComplexityToTex(complexity?: string) {
-  if (!complexity) return ""
-  let text = complexity.trim()
-  if (text.startsWith("$") && text.endsWith("$")) {
-    return text
-  }
-  // log を \log に置換
-  text = text.replace(/(?<!\\)log/gi, "\\log ")
-  return `$${text}$`
-}
+import { getDiffCircleStyle } from "@/lib/difficulty"
+import { formatComplexityToTex } from "@/lib/format"
 
 export function ContestCard({ contest }: { contest: Contest }) {
   return (
@@ -82,7 +23,7 @@ export function ContestCard({ contest }: { contest: Contest }) {
         <ScrollArea className="h-full w-full whitespace-nowrap">
           <div className="flex gap-4 pb-2">
             {contest.problems.map((problem) => {
-              const diffCircle = getDiffCircleStyle(problem.difficulty)
+              const diffCircle = getDiffCircleStyle(problem.difficulty, problem.difficultyColor)
 
               return (
                 <div

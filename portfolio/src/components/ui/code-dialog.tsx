@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils"
 import { AiReview } from "@/types/common"
-import { formatComplexityToTex } from "@/components/ui/contest-card"
+import { formatComplexityToTex } from "@/lib/format"
 
 function getRatingStyle(rating?: string) {
   switch (rating?.toUpperCase()) {

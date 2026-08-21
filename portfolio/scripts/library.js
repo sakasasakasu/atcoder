@@ -2,12 +2,18 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require("fs")
 const path = require("path")
+const {
+  MARKDOWN_EXTENSION_PATTERN,
+  collectMarkdownCategories,
+  listMarkdownFiles,
+  listSubdirectories,
+  readTextFile,
+  sortNamesAsc,
+  writeJson,
+} = require("./fs-utils")
 
 const DEFAULT_BASE_ROOT = path.join(__dirname, "..", "..", "library")
-const MARKDOWN_EXTENSION = ".md"
-const MARKDOWN_EXTENSION_PATTERN = /\.md$/
 const CPP_EXTENSION = ".cpp"
-const README_FILE_NAME = "README.md"
 
 /**
  * @typedef {Object} LibraryItem
@@ -24,61 +30,21 @@ const README_FILE_NAME = "README.md"
  */
 
 /**
- * ディレクトリ直下のサブディレクトリ名を列挙する
- * @param {string} dir
- * @returns {string[]}
+ * カテゴリ 1 件分のアイテム（.md）を読み込む。
+ * 同名の .cpp があれば本文として添付する
+ * @param {string} categoryDir
+ * @param {string} fileName
+ * @returns {LibraryItem}
  */
-function listSubdirectories(dir) {
-  return fs
-    .readdirSync(dir)
-    .filter((entry) => fs.statSync(path.join(dir, entry)).isDirectory())
-}
-
-/**
- * ディレクトリ直下の .md ファイル名を列挙する
- * README.md はカテゴリの説明用のため除外する
- * @param {string} dir
- * @returns {string[]}
- */
-function listMarkdownFiles(dir) {
-  return fs
-    .readdirSync(dir)
-    .filter((file) => file.endsWith(MARKDOWN_EXTENSION) && file !== README_FILE_NAME)
-}
-
-/**
- * カテゴリ名・アイテム名を日本語ロケールの昇順にソートする
- * @param {string[]} names
- * @returns {string[]}
- */
-function sortNamesAsc(names) {
-  return [...names].sort((a, b) => a.localeCompare(b, "ja"))
-}
-
-/**
- * カテゴリ 1 件分のデータを読み込む。
- * アイテム（.md）が 1 件もない場合は null を返す
- * @param {string} libraryBaseDir
- * @param {string} categoryName
- * @returns {LibraryCategory | null}
- */
-function collectLibraryCategory(libraryBaseDir, categoryName) {
-  const categoryDir = path.join(libraryBaseDir, categoryName)
-  const mdFiles = sortNamesAsc(listMarkdownFiles(categoryDir))
-  const items = mdFiles.map((fileName) => {
-    const id = fileName.replace(MARKDOWN_EXTENSION_PATTERN, "")
-    const mdPath = path.join(categoryDir, fileName)
-    const cppPath = path.join(categoryDir, `${id}${CPP_EXTENSION}`)
-    return {
-      id,
-      title: id,
-      content: fs.readFileSync(mdPath, "utf-8").trim(),
-      cpp: fs.existsSync(cppPath) ? fs.readFileSync(cppPath, "utf-8") : "",
-    }
-  })
-
-  if (items.length === 0) return null
-  return { category: categoryName, items }
+function collectLibraryItem(categoryDir, fileName) {
+  const id = fileName.replace(MARKDOWN_EXTENSION_PATTERN, "")
+  const cppPath = path.join(categoryDir, `${id}${CPP_EXTENSION}`)
+  return {
+    id,
+    title: id,
+    content: readTextFile(path.join(categoryDir, fileName)).trim(),
+    cpp: fs.existsSync(cppPath) ? readTextFile(cppPath) : "",
+  }
 }
 
 /**
@@ -87,14 +53,7 @@ function collectLibraryCategory(libraryBaseDir, categoryName) {
  * @returns {LibraryCategory[]}
  */
 function collectLibraryData(baseRoot = DEFAULT_BASE_ROOT) {
-  if (!fs.existsSync(baseRoot)) return []
-
-  const results = []
-  for (const categoryName of sortNamesAsc(listSubdirectories(baseRoot))) {
-    const category = collectLibraryCategory(baseRoot, categoryName)
-    if (category) results.push(category)
-  }
-  return results
+  return collectMarkdownCategories(baseRoot, collectLibraryItem)
 }
 
 /**
@@ -103,7 +62,7 @@ function collectLibraryData(baseRoot = DEFAULT_BASE_ROOT) {
  * @param {string} outputPath
  */
 function writeLibraryJson(results, outputPath) {
-  fs.writeFileSync(outputPath, JSON.stringify(results, null, 2), "utf-8")
+  writeJson(results, outputPath)
 }
 
 if (require.main === module) {

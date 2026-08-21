@@ -1,47 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
-const fs = require("fs")
-const path = require("path")
 const crypto = require("crypto")
-
-const CACHE_DIR = path.join(__dirname, ".cache")
-const CACHE_FILE = path.join(CACHE_DIR, "llm-reviews.json")
-
-/**
- * Node.js 実行時に .env ファイルが存在すれば自動読み込みして process.env に適用
- */
-function loadDotEnv() {
-  const envPaths = [
-    path.join(__dirname, "..", ".env"),
-    path.join(__dirname, "..", "..", ".env"),
-  ]
-  for (const envPath of envPaths) {
-    if (fs.existsSync(envPath)) {
-      try {
-        const content = fs.readFileSync(envPath, "utf-8")
-        for (const line of content.split(/\r?\n/)) {
-          const trimmed = line.trim()
-          if (!trimmed || trimmed.startsWith("#")) continue
-          const eqIdx = trimmed.indexOf("=")
-          if (eqIdx > 0) {
-            const key = trimmed.slice(0, eqIdx).trim()
-            let val = trimmed.slice(eqIdx + 1).trim()
-            if (
-              (val.startsWith('"') && val.endsWith('"')) ||
-              (val.startsWith("'") && val.endsWith("'"))
-            ) {
-              val = val.slice(1, -1)
-            }
-            if (!process.env[key]) {
-              process.env[key] = val
-            }
-          }
-        }
-      } catch (e) {
-        console.warn("Failed to load .env file:", e.message)
-      }
-    }
-  }
-}
+const { loadDotEnv } = require("./dotenv")
+const { CACHE_SCHEMA_VERSION, loadCache, saveCache } = require("./llm-cache")
 
 // スクリプト読み込み時に .env を適用
 loadDotEnv()
@@ -53,7 +13,6 @@ const MAX_REQUESTS_PER_RUN = 60
 
 const MODEL_NAME = "gemini-3.5-flash-lite"
 const FALLBACK_MODEL_NAME = "gemini-3.1-flash-lite"
-const CACHE_SCHEMA_VERSION = "v2"
 
 // responseSchema の定義
 const RESPONSE_SCHEMA = {
@@ -118,34 +77,6 @@ function computeHash(problem, codeFile, contestId) {
   const codeContent = `${codeFile.name}:${codeFile.code}`
   const contentStr = `${contestId}:${problem.id}:${problem.content}`
   return crypto.createHash("sha256").update(`${CACHE_SCHEMA_VERSION}:${contentStr}\n${codeContent}`).digest("hex")
-}
-
-function loadCache() {
-  if (!fs.existsSync(CACHE_DIR)) {
-    fs.mkdirSync(CACHE_DIR, { recursive: true })
-  }
-  if (fs.existsSync(CACHE_FILE)) {
-    try {
-      const data = JSON.parse(fs.readFileSync(CACHE_FILE, "utf-8"))
-      if (data && data.items) {
-        return data.items
-      }
-    } catch (e) {
-      console.warn("LLM レビューキャッシュの読み込みに失敗しました:", e.message)
-    }
-  }
-  return {}
-}
-
-function saveCache(cacheItems) {
-  if (!fs.existsSync(CACHE_DIR)) {
-    fs.mkdirSync(CACHE_DIR, { recursive: true })
-  }
-  const payload = {
-    version: CACHE_SCHEMA_VERSION,
-    items: cacheItems,
-  }
-  fs.writeFileSync(CACHE_FILE, JSON.stringify(payload, null, 2), "utf-8")
 }
 
 /**

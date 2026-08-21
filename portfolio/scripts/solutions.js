@@ -2,12 +2,20 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require("fs")
 const path = require("path")
+const {
+  MARKDOWN_EXTENSION_PATTERN,
+  collectMarkdownCategories,
+  extractTitle,
+  listMarkdownFiles,
+  listSubdirectories,
+  readTextFile,
+  sortNamesAsc,
+  stripTitleHeading,
+  writeJson,
+} = require("./fs-utils")
 
 const DEFAULT_BASE_ROOT = path.join(__dirname, "..", "..", "solutions")
-const MARKDOWN_EXTENSION = ".md"
-const MARKDOWN_EXTENSION_PATTERN = /\.md$/
 const CPP_EXTENSION = ".cpp"
-const README_FILE_NAME = "README.md"
 
 /**
  * @typedef {Object} Solution
@@ -26,48 +34,6 @@ const README_FILE_NAME = "README.md"
  */
 
 /**
- * ディレクトリ直下のサブディレクトリ名を列挙する
- * @param {string} dir
- * @returns {string[]}
- */
-function listSubdirectories(dir) {
-  return fs
-    .readdirSync(dir)
-    .filter((entry) => fs.statSync(path.join(dir, entry)).isDirectory())
-}
-
-/**
- * ディレクトリ直下の .md ファイル名を列挙する
- * README.md は説明用のため除外する
- * @param {string} dir
- * @returns {string[]}
- */
-function listMarkdownFiles(dir) {
-  return fs
-    .readdirSync(dir)
-    .filter((file) => file.endsWith(MARKDOWN_EXTENSION) && file !== README_FILE_NAME)
-}
-
-/**
- * ファイル名を日本語ロケールの昇順にソートする
- * @param {string[]} names
- * @returns {string[]}
- */
-function sortNamesAsc(names) {
-  return [...names].sort((a, b) => a.localeCompare(b, "ja"))
-}
-
-/**
- * Markdown の先頭見出し（# タイトル）を抽出する
- * @param {string} content
- * @returns {string}
- */
-function extractTitle(content) {
-  const match = content.match(/^#\s+(.+)$/m)
-  return match ? match[1].trim() : ""
-}
-
-/**
  * カテゴリ配下の解法 1 件分のデータを読み込む。
  * 先頭の # 見出しは title として切り出し、content からは除く
  * @param {string} categoryDir
@@ -76,17 +42,16 @@ function extractTitle(content) {
  */
 function collectSolution(categoryDir, fileName) {
   const id = fileName.replace(MARKDOWN_EXTENSION_PATTERN, "")
-  const content = fs.readFileSync(path.join(categoryDir, fileName), "utf-8")
+  const content = readTextFile(path.join(categoryDir, fileName))
   const title = extractTitle(content) || id
-  const body = content.replace(/^#\s+.+(\r?\n|$)/, "").trim()
 
   const cppPath = path.join(categoryDir, `${id}${CPP_EXTENSION}`)
   return {
     id,
     title,
-    content: body,
+    content: stripTitleHeading(content),
     codes: fs.existsSync(cppPath)
-      ? [{ name: id, code: fs.readFileSync(cppPath, "utf-8") }]
+      ? [{ name: id, code: readTextFile(cppPath) }]
       : [],
     mentions: [],
     referencedBy: [],
@@ -99,27 +64,16 @@ function collectSolution(categoryDir, fileName) {
  * @returns {SolutionCategory[]}
  */
 function collectSolutionsData(baseRoot = DEFAULT_BASE_ROOT) {
-  if (!fs.existsSync(baseRoot)) return []
-
-  const results = []
-  for (const categoryName of sortNamesAsc(listSubdirectories(baseRoot))) {
-    const categoryDir = path.join(baseRoot, categoryName)
-    const mdFiles = sortNamesAsc(listMarkdownFiles(categoryDir))
-    const items = mdFiles.map((fileName) => collectSolution(categoryDir, fileName))
-    // .md が 1 件もないカテゴリは出力しない
-    if (items.length === 0) continue
-    results.push({ category: categoryName, items })
-  }
-  return results
+  return collectMarkdownCategories(baseRoot, collectSolution)
 }
 
 /**
  * 集計結果を JSON ファイルへ出力する
- * @param {Solution[]} results
+ * @param {SolutionCategory[]} results
  * @param {string} outputPath
  */
 function writeSolutionsJson(results, outputPath) {
-  fs.writeFileSync(outputPath, JSON.stringify(results, null, 2), "utf-8")
+  writeJson(results, outputPath)
 }
 
 if (require.main === module) {
