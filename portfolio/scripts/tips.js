@@ -13,7 +13,7 @@ const {
   writeJson,
 } = require("./fs-utils")
 
-const DEFAULT_BASE_ROOT = path.join(__dirname, "..", "..", "tips")
+const DEFAULT_BASE_ROOT = path.join(__dirname, "..", "..", "content", "tips")
 
 /**
  * @typedef {Object} Tip

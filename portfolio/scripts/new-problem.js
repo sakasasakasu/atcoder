@@ -3,7 +3,7 @@
 const fs = require("fs")
 const path = require("path")
 
-const DEFAULT_BASE_ROOT = path.join(__dirname, "..", "..", "problems")
+const DEFAULT_BASE_ROOT = path.join(__dirname, "..", "..", "content", "problems")
 const CONTEST_ID_PATTERN = /^ABC\d{3}$/
 const LETTERS = ["A", "B", "C", "D", "E", "F", "G"]
 const VALID_LETTERS = new Set(LETTERS)

@@ -9,10 +9,10 @@ const { applyCrossReferences } = require("./mentions")
 const { fetchProblemModels, enrichContestsWithAtCoderData } = require("./atcoder-api")
 const { enrichContestsWithLlmReviews } = require("./llm-review")
 
-const PROBLEMS_ROOT = path.join(__dirname, "..", "..", "problems")
-const SOLUTIONS_ROOT = path.join(__dirname, "..", "..", "solutions")
-const LIBRARY_ROOT = path.join(__dirname, "..", "..", "library")
-const TIPS_ROOT = path.join(__dirname, "..", "..", "tips")
+const PROBLEMS_ROOT = path.join(__dirname, "..", "..", "content", "problems")
+const SOLUTIONS_ROOT = path.join(__dirname, "..", "..", "content", "solutions")
+const LIBRARY_ROOT = path.join(__dirname, "..", "..", "content", "library")
+const TIPS_ROOT = path.join(__dirname, "..", "..", "content", "tips")
 const OUTPUT_DIR = path.join(__dirname, "..", "public")
 
 /**

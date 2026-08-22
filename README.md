@@ -13,7 +13,7 @@ mainブランチにpushされるとGithub ActionsABCディレクトリ以降の�
 
 ## 新しい問題を追加する
 
-`problems/ABC/ABC###/`（例: `ABC471`）の新規問題ディレクトリは、手作業でファイルを作らずに CLI で生成できます。
+`content/problems/ABC/ABC###/`（例: `ABC471`）の新規問題ディレクトリは、手作業でファイルを作らずに CLI で生成できます。
 
 リポジトリ直下（`/atcoder`）で実行します。
 
@@ -43,7 +43,7 @@ mainブランチにpushされるとGithub ActionsABCディレクトリ以降の�
 ### 生成されるファイル
 
 ```
-problems/ABC/ABC471/
+content/problems/ABC/ABC471/
 ├── README.md        # 問題一覧の元データ。`## A問題` のようなセクションを含む
 ├── A.cpp            # A問題の解答コード
 ├── A1.cpp           # （任意）A問題の別解コード
@@ -54,14 +54,14 @@ problems/ABC/ABC471/
 
 ### セクションの追加
 
-`problems/` 直下の各ディレクトリが「セクション」です。サブディレクトリ（コンテスト形式）または直下の `.cpp`（典型形式）が自動で拾われるため、`ARC/` などを追加するだけで一覧に反映されます。詳しくは [`problems/README.md`](problems/README.md) を参照してください。
+`content/problems/` 直下の各ディレクトリが「セクション」です。サブディレクトリ（コンテスト形式）または直下の `.cpp`（典型形式）が自動で拾われるため、`ARC/` などを追加するだけで一覧に反映されます。詳しくは [`content/problems/README.md`](content/problems/README.md) を参照してください。
 
 ## 解法（solutions/）
 
-問題の解き方のメモは `solutions/` ディレクトリに**グループ（ディレクトリ）**ごとに置きます。
+問題の解き方のメモは `content/solutions/` ディレクトリに**グループ（ディレクトリ）**ごとに置きます。
 
 ```
-solutions/
+content/solutions/
 ├── README.md          # このファイルは解析対象外
 └── 典型テクニック/
     ├── ダイクストラ法.md
@@ -74,10 +74,10 @@ solutions/
 
 ## Tips（tips/）
 
-短い小ネタ・コツは `tips/` ディレクトリにグループごとに置きます（タイル一覧＋クリックでモーダル表示）。
+短い小ネタ・コツは `content/tips/` ディレクトリにグループごとに置きます（タイル一覧＋クリックでモーダル表示）。
 
 ```
-tips/
+content/tips/
 ├── README.md          # このファイルは解析対象外
 └── 典型テクニック/
     └── 二分探索の終了条件.md
@@ -103,7 +103,7 @@ tips/
 
 ## 新しい解法・Tips・ライブラリを追加する
 
-`solutions/` / `tips/` にグループディレクトリと `.md` を、`library/` にカテゴリディレクトリと `.md` を置くだけです。表示には JSON の再生成が必要です。
+`content/solutions/` / `content/tips/` にグループディレクトリと `.md` を、`content/library/` にカテゴリディレクトリと `.md` を置くだけです。表示には JSON の再生成が必要です。
 
 ### オプション
 
@@ -120,4 +120,4 @@ tips/
 - コンテスト ID は `ABC###` または `###`（3桁）の形式のみ受け付けます。実在確認は行いません。
 - 既に同じディレクトリ・ファイルが存在する場合はエラーになり、上書きはしません。
 - 生成コマンドは Git 操作（add / commit / push）を実行しません。
-- 生成後は `npm run dev`（または `npm run build`）を実行すると、`predev` / `prebuild` で `problems/` が JSON 化され、問題一覧に反映されます。
+- 生成後は `npm run dev`（または `npm run build`）を実行すると、`predev` / `prebuild` で `content/problems/` が JSON 化され、問題一覧に反映されます。

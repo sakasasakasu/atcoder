@@ -193,7 +193,7 @@ function collectFlatSection(sectionDir, sectionName) {
  * @param {string} [baseRoot]
  * @returns {Contest[]}
  */
-function collectProblemsData(baseRoot = path.join(__dirname, "..", "..", "problems")) {
+function collectProblemsData(baseRoot = path.join(__dirname, "..", "..", "content", "problems")) {
   const results = []
 
   for (const sectionName of sortNamesAsc(listSubdirectories(baseRoot))) {
@@ -229,7 +229,7 @@ function writeProblemsJson(results, outputPath) {
 }
 
 if (require.main === module) {
-  const baseRoot = path.join(__dirname, "..", "..", "problems")
+  const baseRoot = path.join(__dirname, "..", "..", "content", "problems")
   const results = collectProblemsData(baseRoot)
   const outputPath = path.join(__dirname, "..", "public", "problems.json")
   writeProblemsJson(results, outputPath)

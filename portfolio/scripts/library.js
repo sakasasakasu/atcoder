@@ -12,7 +12,7 @@ const {
   writeJson,
 } = require("./fs-utils")
 
-const DEFAULT_BASE_ROOT = path.join(__dirname, "..", "..", "library")
+const DEFAULT_BASE_ROOT = path.join(__dirname, "..", "..", "content", "library")
 const CPP_EXTENSION = ".cpp"
 
 /**
