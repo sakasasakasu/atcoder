@@ -21,13 +21,6 @@ AtCoder での競技プログラミング精進の記録を、管理し、静的
 | CI/CD | GitHub Actions → GitHub Pages |
 | LLM | Google Gemini API |
 
-## アーキテクチャ
-
-`main` ブランチへ push するとに、GitHub Actions が実行されます:
-
-1. `scripts/generate.js` が `content/` を走査して JSON 化
-2. Next.js を静的エクスポートし、GitHub Pages へデプロイ
-
 ## 新しい問題を追加する
 
 リポジトリ直下の CLI で雛形を生成できます（手作業でのファイル作成は不要）:
